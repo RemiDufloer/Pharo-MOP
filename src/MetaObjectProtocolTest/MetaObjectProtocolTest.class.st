@@ -40,18 +40,17 @@ MetaObjectProtocolTest >> testMetaObjectInstrumentation [
 	object := MOPTestObject new.
 	metaObject := MetaObject new.
 	expectedArgument := Object new.
-	op1 := Operation apply: [ :op | receiver := op receiver ].
-	op2 := Operation apply: [ :op | 1halt. selector := op method selector ].
+	op1 := Operation operation: [ :op | receiver := op receiver ].
+	op2 := Operation operation: [ :op | selector := op method selector ].
 	operations := LinkedList new.
 	operations add: op2; add: op1.
 	instrumentation := Instrumentation new operations: operations .
 	astNode := (object class methodNamed: #exampleMethod:) ast.
-	1halt.
 	metaObject addInstrumentation: instrumentation  on: astNode .
 	object exampleMethod: expectedArgument.	
 	
-	self assert: selector equals: #exampleMethod:.
 	self assert: receiver equals: object.
+	self assert: selector equals: #exampleMethod:.
 		                   
 
 	

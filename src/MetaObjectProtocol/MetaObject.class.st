@@ -11,7 +11,7 @@ Class {
 MetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 
 	instrumentations at: anAstNode put: anInstrumentation.
-	self installInstrumentationOn: anAstNode .
+	anAstNode link: (self installInstrumentationOn: anAstNode) .
 ]
 
 { #category : #initialization }
@@ -23,7 +23,16 @@ MetaObject >> initialize [
 { #category : #adding }
 MetaObject >> installInstrumentationOn: anAstNode [
 
-	(instrumentations at: anAstNode) operations do: [ :operation | self installOperation: operation on: anAstNode  ]
+	
+	| link |
+	link := MetaLink new.
+	link control: #instead.
+
+	link metaObject: (instrumentations at: anAstNode) .
+	link selector: #value:.
+	link arguments: #( operation ).
+	link optionCompileOnLinkInstallation: true.
+	^ link
 ]
 
 { #category : #adding }

@@ -3,13 +3,13 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'requirement',
-		'apply'
+		'operation'
 	],
 	#category : #MetaObjectProtocol
 }
 
 { #category : #creating }
-Operation class >> apply: aRFOperation [
+Operation class >> operation: aRFOperation [
 
 	^ self requirement: [ true ] apply: aRFOperation
 ]
@@ -19,20 +19,20 @@ Operation class >> requirement: aBlock apply: aRFOperation [
 
 	^ self new
 		  requirement: aBlock;
-		  apply: aRFOperation;
+		  operation: aRFOperation;
 		  yourself
-]
-
-{ #category : #accessing }
-Operation >> apply [
-
-	requirement value ifTrue: [ ^ apply ]
 ]
 
 { #category : #accessing }
 Operation >> apply: aRFOperation [
 
-	apply := aRFOperation 
+	requirement value ifTrue: [ ^ operation value: aRFOperation ]
+]
+
+{ #category : #accessing }
+Operation >> operation: aBlock [
+
+	operation := aBlock
 ]
 
 { #category : #accessing }

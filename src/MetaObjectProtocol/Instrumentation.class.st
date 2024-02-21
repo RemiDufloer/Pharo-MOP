@@ -18,3 +18,14 @@ Instrumentation >> operations: aCollection [
 
 	operations := aCollection 
 ]
+
+{ #category : #'message performing' }
+Instrumentation >> perform: aRFOperation [
+
+	operations do:[ :o | o apply]
+]
+
+{ #category : #'message performing' }
+Instrumentation >> value: aRFOperation [
+	^ operations do:[ :o | o apply: aRFOperation  ] 
+]
