@@ -1,5 +1,5 @@
 Class {
-	#name : #MetaObjectProtocol,
+	#name : #MOPProtocol,
 	#superclass : #Object,
 	#instVars : [
 		'object'
@@ -11,25 +11,25 @@ Class {
 }
 
 { #category : #accessing }
-MetaObjectProtocol class >> mopAt: anObject [ 
+MOPProtocol class >> mopAt: anObject [ 
 
 	^ self mopRegistry at: anObject hash ifAbsentPut: [ self new onObject: anObject ] 
 ]
 
 { #category : #accessing }
-MetaObjectProtocol class >> mopRegistry [
+MOPProtocol class >> mopRegistry [
 
 	^ mopRegistry ifNil: [ mopRegistry := WeakKeyDictionary new ]
 ]
 
 { #category : #'instance creation' }
-MetaObjectProtocol class >> onObject: anObject [
+MOPProtocol class >> onObject: anObject [
 	
 	^ self new object: anObject .
 ]
 
 { #category : #api }
-MetaObjectProtocol >> beforeMessageSend: aMessage do: aBlock [
+MOPProtocol >> beforeMessageSend: aMessage do: aBlock [
 
 	| method ast |
 	method := object class methodNamed: aMessage.
@@ -40,7 +40,7 @@ MetaObjectProtocol >> beforeMessageSend: aMessage do: aBlock [
 ]
 
 { #category : #'links - installing' }
-MetaObjectProtocol >> installLinkForMessageSendDo: aBlock [
+MOPProtocol >> installLinkForMessageSendDo: aBlock [
 
 	| link |
 	link := MetaLink new.
@@ -54,7 +54,7 @@ MetaObjectProtocol >> installLinkForMessageSendDo: aBlock [
 ]
 
 { #category : #accessing }
-MetaObjectProtocol >> object: aMOPObjectMock [
+MOPProtocol >> object: anObject [
 
-	object := aMOPObjectMock
+	object := anObject
 ]

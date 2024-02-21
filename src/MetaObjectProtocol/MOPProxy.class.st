@@ -15,14 +15,14 @@ MOPProxy >> doesNotUnderstand: aMessage [
 ]
 
 { #category : #'link api' }
-MOPProxy >> metaObject: aMetaObject [
+MOPProxy >> object: anObject metaObject: aMetaObject [
 
-	metaObject := aMetaObject
-]
-
-{ #category : #'link api' }
-MOPProxy >> object: anObject [
+	(object isNotNil or: [ metaObject isNotNil ]) ifTrue: [
+		Error signal: 'Proxy already instanciated with an object and its meta-object.' 
+	].
 
 	object := anObject.
-	object become: self.
+	metaObject := aMetaObject.
+
+	object become: self
 ]

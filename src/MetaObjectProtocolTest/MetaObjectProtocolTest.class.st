@@ -33,14 +33,37 @@ MetaObjectProtocolTest >> testBeforeMessageSend [
 ]
 
 { #category : #tests }
+MetaObjectProtocolTest >> testMetaObjectInstrumentation [
+
+	| metaObject instrumentation op1 op2 operations object receiver selector astNode expectedArgument|
+	
+	object := MOPTestObject new.
+	metaObject := MetaObject new.
+	expectedArgument := Object new.
+	op1 := Operation apply: [ :op | receiver := op receiver ].
+	op2 := Operation apply: [ :op | 1halt. selector := op method selector ].
+	operations := LinkedList new.
+	operations add: op2; add: op1.
+	instrumentation := Instrumentation new operations: operations .
+	astNode := (object class methodNamed: #exampleMethod:) ast.
+	1halt.
+	metaObject addInstrumentation: instrumentation  on: astNode .
+	object exampleMethod: expectedArgument.	
+	
+	self assert: selector equals: #exampleMethod:.
+	self assert: receiver equals: object.
+		                   
+
+	
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testProxyCreation [
 
 	| object proxy result expectedArgument |
-
 	object := Object new.
 	proxy := MOPProxy new
-		         metaObject: MOPTestObject new;
-		         object: object;
+		         object: object metaObject: MOPTestObject new;
 		         yourself.
 	expectedArgument := 'expected'.
 
