@@ -40,17 +40,44 @@ MetaObjectProtocolTest >> testMetaObjectInstrumentation [
 	object := MOPTestObject new.
 	metaObject := MetaObject new.
 	expectedArgument := Object new.
+	operations := LinkedList new.
+	astNode := (object class methodNamed: #exampleMethod:) ast.
 	op1 := Operation operation: [ :op | receiver := op receiver ].
 	op2 := Operation operation: [ :op | selector := op method selector ].
+	
+	operations add: op2; add: op1.
+	instrumentation := Instrumentation new operations: operations .
+	metaObject addInstrumentation: instrumentation  on: astNode .
+	object exampleMethod: expectedArgument.	
+	
+	self assert: receiver equals: object.
+	self assert: selector equals: #exampleMethod:.
+		                   
+
+	
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testMetaObjectInstrumentationInGoodOrder [
+
+	| metaObject instrumentation op1 op2 operations object compteur astNode expectedArgument|
+	
+	object := MOPTestObject new.
+	metaObject := MetaObject new.
+	expectedArgument := Object new.
+	compteur := 0.
+	op1 := Operation operation: [ :op | compteur := 1 ].
+	op2 := Operation operation: [ :op | compteur := 2 ].
 	operations := LinkedList new.
+	
 	operations add: op2; add: op1.
 	instrumentation := Instrumentation new operations: operations .
 	astNode := (object class methodNamed: #exampleMethod:) ast.
 	metaObject addInstrumentation: instrumentation  on: astNode .
 	object exampleMethod: expectedArgument.	
 	
-	self assert: receiver equals: object.
-	self assert: selector equals: #exampleMethod:.
+	self assert: compteur equals: 1.
+
 		                   
 
 	
