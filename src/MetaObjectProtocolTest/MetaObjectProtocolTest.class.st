@@ -13,7 +13,7 @@ MetaObjectProtocolTest >> tearDown [
 ]
 
 { #category : #tests }
-MetaObjectProtocolTest >> testBeforeMessageSend [
+MetaObjectProtocolTest >> testInstallMetaLink [
 
 	| object receiver selector arguments expectedArgument |
 	object := MOPTestObject new.
@@ -35,18 +35,17 @@ MetaObjectProtocolTest >> testBeforeMessageSend [
 { #category : #tests }
 MetaObjectProtocolTest >> testMetaObjectInstrumentation [
 
-	| metaObject instrumentation op1 op2 operations object receiver selector astNode expectedArgument|
+	| metaObject instrumentation op1 op2 object receiver selector astNode expectedArgument|
 	
 	object := MOPTestObject new.
 	metaObject := MetaObject new.
 	expectedArgument := Object new.
-	operations := LinkedList new.
+
 	astNode := (object class methodNamed: #exampleMethod:) ast.
-	op1 := Operation operation: [ :op | receiver := op receiver ].
-	op2 := Operation operation: [ :op | selector := op method selector ].
+	op1 := BlockOperation  block: [ :op | receiver := op receiver ].
+	op2 := BlockOperation block: [ :op | selector := op method selector ].
 	
-	operations add: op2; add: op1.
-	instrumentation := Instrumentation new operations: operations .
+	instrumentation := Instrumentation new addOperation: op2 ; addOperation: op1.
 	metaObject addInstrumentation: instrumentation  on: astNode .
 	object exampleMethod: expectedArgument.	
 	
@@ -60,18 +59,17 @@ MetaObjectProtocolTest >> testMetaObjectInstrumentation [
 { #category : #tests }
 MetaObjectProtocolTest >> testMetaObjectInstrumentationInGoodOrder [
 
-	| metaObject instrumentation op1 op2 operations object compteur astNode expectedArgument|
+	| metaObject instrumentation op1 op2 object compteur astNode expectedArgument|
 	
 	object := MOPTestObject new.
 	metaObject := MetaObject new.
 	expectedArgument := Object new.
 	compteur := 0.
-	op1 := Operation operation: [ :op | compteur := 1 ].
-	op2 := Operation operation: [ :op | compteur := 2 ].
-	operations := LinkedList new.
+	op1 := BlockOperation  block: [ :op | compteur := 1 ].
+	op2 := BlockOperation block: [ :op | compteur := 2 ].
+
 	
-	operations add: op2; add: op1.
-	instrumentation := Instrumentation new operations: operations .
+	instrumentation := Instrumentation new addOperation: op2 ; addOperation: op1.
 	astNode := (object class methodNamed: #exampleMethod:) ast.
 	metaObject addInstrumentation: instrumentation  on: astNode .
 	object exampleMethod: expectedArgument.	

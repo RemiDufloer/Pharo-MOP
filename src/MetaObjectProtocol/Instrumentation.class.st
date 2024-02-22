@@ -8,24 +8,31 @@ Class {
 }
 
 { #category : #accessing }
+Instrumentation >> addOperation: anOperation [
+
+	operations add: anOperation 
+]
+
+{ #category : #execution }
+Instrumentation >> execute: aRFOperation [
+
+	^ operations do:[ :o | o apply: aRFOperation ]
+]
+
+{ #category : #accessing }
+Instrumentation >> initialize [
+
+	operations := OrderedCollection new
+]
+
+{ #category : #accessing }
 Instrumentation >> operations [
 
 	^ operations
 ]
 
 { #category : #accessing }
-Instrumentation >> operations: aCollection [
+Instrumentation >> removeOperation: anOperation [
 
-	operations := aCollection 
-]
-
-{ #category : #'message performing' }
-Instrumentation >> perform: aRFOperation [
-
-	operations do:[ :o | o apply]
-]
-
-{ #category : #'message performing' }
-Instrumentation >> value: aRFOperation [
-	^ operations do:[ :o | o apply: aRFOperation  ] 
+	operations remove: anOperation 
 ]

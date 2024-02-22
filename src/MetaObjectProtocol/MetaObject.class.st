@@ -29,7 +29,7 @@ MetaObject >> installInstrumentationOn: anAstNode [
 	link control: #instead.
 
 	link metaObject: (instrumentations at: anAstNode) .
-	link selector: #value:.
+	link selector: #execute:.
 	link arguments: #( operation ).
 	link optionCompileOnLinkInstallation: true.
 	^ link
