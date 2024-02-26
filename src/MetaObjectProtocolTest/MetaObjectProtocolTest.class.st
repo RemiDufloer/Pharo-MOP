@@ -60,6 +60,30 @@ MetaObjectProtocolTest >> testInstrumentationWithInstallationRequirementComposit
 ]
 
 { #category : #tests }
+MetaObjectProtocolTest >> testInstrumentationWithInstallationRequirementCompositeBadRequirement [
+
+	| metaObject instrumentation op1 object receiver requirement astNode expectedArgument |
+	object := MOPTestObject new.
+	metaObject := MetaObject new.
+	expectedArgument := Object new.
+	requirement := (SelectorNameRequirement name: 'exampleMethod:') and:
+		               (ArgumentsSizeRequirement size: 2).
+	
+
+	astNode := (object class methodNamed: #exampleMethod:) ast.
+	op1 := BlockOperation block: [ :op | receiver := op receiver ].
+
+
+	instrumentation := Instrumentation new addOperation: op1.
+	instrumentation requirement: requirement.
+
+	metaObject addInstrumentation: instrumentation on: astNode.
+	object exampleMethod: expectedArgument.
+
+	self assert: receiver equals: nil
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testInstrumentationWithOneInstallationRequirement [
 
 	| metaObject instrumentation op1 object receiver requirement astNode expectedArgument|
