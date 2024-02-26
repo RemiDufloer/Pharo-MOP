@@ -11,7 +11,8 @@ Class {
 MetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 
 	instrumentations at: anAstNode put: anInstrumentation.
-	anAstNode link: (self installInstrumentationOn: anAstNode) .
+	(anInstrumentation requirement allRequirementVerify: anAstNode) ifTrue: [
+		anAstNode link: (self installInstrumentationOn: anAstNode) ]
 ]
 
 { #category : #initialization }
@@ -35,27 +36,7 @@ MetaObject >> installInstrumentationOn: anAstNode [
 	^ link
 ]
 
-{ #category : #adding }
-MetaObject >> installLinkWithOperation: AnOperation [
-
-	| link |
-	link := MetaLink new.
-	link control: #instead.
-
-	link metaObject: AnOperation apply.
-	link selector: #value:.
-	link arguments: #( operation ).
-	link optionCompileOnLinkInstallation: true.
-	^ link
-]
-
-{ #category : #adding }
-MetaObject >> installOperation: anOperation on: anAstNode [ 
-
-	anAstNode link: (self installLinkWithOperation: anOperation)
-]
-
-{ #category : #initialization }
+{ #category : #accessing }
 MetaObject >> instrumentations [
 
 	^ instrumentations 

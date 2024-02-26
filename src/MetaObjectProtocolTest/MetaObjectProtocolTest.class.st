@@ -33,6 +33,87 @@ MetaObjectProtocolTest >> testInstallMetaLink [
 ]
 
 { #category : #tests }
+MetaObjectProtocolTest >> testInstrumentationWithInstallationRequirementComposite [
+
+	| metaObject instrumentation op1 object receiver requirement astNode expectedArgument|
+	
+	object := MOPTestObject new.
+	metaObject := MetaObject new.
+	expectedArgument := Object new.
+	requirement := (SelectorNameRequirement name: 'exampleMethod:') and: ((ArgumentsSizeRequirement size: 2) or:  NoRequirement new ) .
+
+	astNode := (object class methodNamed: #exampleMethod:) ast.
+	op1 := BlockOperation  block: [ :op | receiver := op receiver ].
+
+	
+	instrumentation := Instrumentation new addOperation: op1.
+	instrumentation requirement: requirement.
+	
+	metaObject addInstrumentation: instrumentation  on: astNode .
+	object exampleMethod: expectedArgument.	
+	
+	self assert: receiver equals: object.
+
+		                   
+
+	
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testInstrumentationWithOneInstallationRequirement [
+
+	| metaObject instrumentation op1 object receiver requirement astNode expectedArgument|
+	
+	object := MOPTestObject new.
+	metaObject := MetaObject new.
+	expectedArgument := Object new.
+	requirement := SelectorNameRequirement name: 'exampleMethod:' .
+
+	astNode := (object class methodNamed: #exampleMethod:) ast.
+	op1 := BlockOperation  block: [ :op | receiver := op receiver ].
+
+	
+	instrumentation := Instrumentation new addOperation: op1.
+	instrumentation requirement: requirement.
+	
+	metaObject addInstrumentation: instrumentation  on: astNode .
+	object exampleMethod: expectedArgument.	
+	
+	self assert: receiver equals: object.
+
+		                   
+
+	
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testInstrumentationWithOneInstallationRequirementNotGood [
+
+	| metaObject instrumentation op1 object receiver requirement astNode expectedArgument|
+	
+	object := MOPTestObject new.
+	metaObject := MetaObject new.
+	expectedArgument := Object new.
+	requirement := SelectorNameRequirement name: 'blablatest' .
+
+	astNode := (object class methodNamed: #exampleMethod:) ast.
+	op1 := BlockOperation  block: [ :op | receiver := op receiver ].
+
+	
+	instrumentation := Instrumentation new addOperation: op1.
+	instrumentation requirement: requirement.
+	
+	metaObject addInstrumentation: instrumentation  on: astNode .
+	object exampleMethod: expectedArgument.	
+	
+	self assert: receiver equals: nil.
+
+		                   
+
+	
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testMetaObjectInstrumentation [
 
 	| metaObject instrumentation op1 op2 object receiver selector astNode expectedArgument|
