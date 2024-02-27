@@ -189,13 +189,12 @@ MetaObjectProtocolTest >> testMetaObjectInstrumentationInGoodOrder [
 { #category : #tests }
 MetaObjectProtocolTest >> testProxyCreation [
 
-	| object proxy result expectedArgument |
+	| object result expectedArgument |
+
 	object := MOPTestObject new.
-	proxy := MOPProxy new
-		         object: object metaObject: MOPMetaObject new;
-		         yourself.
 	expectedArgument := 'expected'.
 
+	object mop.
 	result := object exampleMethod: expectedArgument.
 
 	self assert: result equals: expectedArgument

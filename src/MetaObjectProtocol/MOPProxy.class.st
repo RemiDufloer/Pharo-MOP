@@ -10,5 +10,9 @@ Class {
 { #category : #'reflective operations' }
 MOPProxy >> doesNotUnderstand: aMessage [
 
+	<debuggerCompleteToSender>
+	
+	aMessage crTrace.
+	
 	^ metaObject handle: aMessage
 ]
