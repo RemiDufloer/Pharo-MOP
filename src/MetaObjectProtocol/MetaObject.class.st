@@ -11,8 +11,17 @@ Class {
 MetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 
 	instrumentations at: anAstNode put: anInstrumentation.
-	(anInstrumentation requirement allRequirementVerify: anAstNode) ifTrue: [
+	(anInstrumentation requirement verify: anAstNode) ifTrue: [
 		anAstNode link: (self installInstrumentationOn: anAstNode) ]
+]
+
+{ #category : #'as yet unclassified' }
+MetaObject >> handle: aMessage on: aObject [
+
+	^ MirrorPrimitives
+		  withReceiver: aObject
+		  perform: aMessage selector
+		  withArguments: aMessage arguments asArray
 ]
 
 { #category : #initialization }
@@ -40,4 +49,15 @@ MetaObject >> installInstrumentationOn: anAstNode [
 MetaObject >> instrumentations [
 
 	^ instrumentations 
+]
+
+{ #category : #'as yet unclassified' }
+MetaObject >> on: aReceiver perform: aSelector withArguments: aArguments [
+
+	^ MirrorPrimitives
+		  withReceiver: aReceiver
+		  perform: aSelector
+		
+		
+		  withArguments: aArguments asArray
 ]

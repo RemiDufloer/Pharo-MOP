@@ -1,56 +1,25 @@
 Class {
 	#name : #Requirement,
 	#superclass : #Object,
-	#instVars : [
-		'andRequirementCollection',
-		'orRequirementCollection'
-	],
 	#category : #MetaObjectProtocol
 }
 
-{ #category : #verifying }
-Requirement >> allRequirementVerify: anASTNode [
+{ #category : #controlling }
+Requirement class >> and: aRequirement [
 
-	| andRequirementBoolean orRequirementBoolean notRequirementBoolean|
+	^ AndRequirement left: self right: aRequirement 
+]
+
+{ #category : #controlling }
+Requirement >> and: aRequirement [ 
 	
-	andRequirementBoolean := self andRequirementVerify: anASTNode.
-	orRequirementBoolean := self orRequirementVerify: anASTNode.
-
-	^ (((self verify: anASTNode) and: [ ^ andRequirementBoolean ]) or: [ ^ orRequirementBoolean ]) 
+	^ AndRequirement left: self right: aRequirement 
 ]
 
 { #category : #controlling }
-Requirement >> and: aRequirement [
-
-	andRequirementCollection add: aRequirement 
-]
-
-{ #category : #verifying }
-Requirement >> andRequirementVerify: anASTNode [
-
-	^ andRequirementCollection allSatisfy: [ :a |
-		  a allRequirementVerify: anASTNode ]
-]
-
-{ #category : #initialization }
-Requirement >> initialize [
-
-	andRequirementCollection := OrderedCollection new.
-	orRequirementCollection := OrderedCollection new.
-]
-
-{ #category : #controlling }
-Requirement >> or: aRequirement [
-
-	orRequirementCollection add: aRequirement 
-]
-
-{ #category : #verifing }
-Requirement >> orRequirementVerify: anASTNode [
-
-	^ orRequirementCollection anySatisfy:  [ :o |
-		  o allRequirementVerify: anASTNode ].
-
+Requirement >> or: aRequirement [ 
+	
+	^ OrRequirement left: self right: aRequirement  
 ]
 
 { #category : #verifying }

@@ -11,7 +11,7 @@ Class {
 { #category : #'reflective operations' }
 MOPProxy >> doesNotUnderstand: aMessage [
 
-	^ metaObject perform: aMessage selector withArguments: aMessage arguments
+	^ metaObject handle: aMessage on: object
 ]
 
 { #category : #'link api' }
