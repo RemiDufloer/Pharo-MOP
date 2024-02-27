@@ -40,7 +40,7 @@ MetaObjectProtocolTest >> testInstrumentationWithInstallationRequirementComposit
 	object := MOPTestObject new.
 	metaObject := MetaObject new.
 	expectedArgument := Object new.
-	requirement := (SelectorNameRequirement name: 'exampleMethod:') and: ((ArgumentsSizeRequirement size: 2) or:  NoRequirement new ) .
+	requirement := (SelectorNameRequirement name: 'exampleMethod:') and: ((ArgumentsSizeRequirement size: 2) or: NoRequirement new ) .
 
 	astNode := (object class methodNamed: #exampleMethod:) ast.
 	op1 := BlockOperation  block: [ :op | receiver := op receiver ].
@@ -190,13 +190,41 @@ MetaObjectProtocolTest >> testMetaObjectInstrumentationInGoodOrder [
 MetaObjectProtocolTest >> testProxyCreation [
 
 	| object proxy result expectedArgument |
-	object := Object new.
+	object := MOPTestObject new.
 	proxy := MOPProxy new
-		         object: object metaObject: MOPTestObject new;
+		         object: object metaObject: MetaObject new;
 		         yourself.
 	expectedArgument := 'expected'.
 
 	result := object exampleMethod: expectedArgument.
 
 	self assert: result equals: expectedArgument
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testRequirementCheckNameMethod [
+
+	| requirement node result name |
+	name := 'testMethod'.
+	node := RBMethodNode selector: name.
+	requirement := SelectorNameRequirement name: name .
+	
+
+	result := requirement verify: node.
+
+	self assert: result
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testRequirementCheckNameVariable [
+
+	| requirement node result name |
+	name := 'testVariable'.
+	node := RBVariableNode named: name.
+	requirement := NameVariableRequirement name: name.
+	
+
+	result := requirement verify: node.
+
+	self assert: result
 ]
