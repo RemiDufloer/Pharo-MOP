@@ -15,12 +15,17 @@ MetaObjectProtocolTest >> tearDown [
 { #category : #tests }
 MetaObjectProtocolTest >> testInstallMetaLink [
 
-	| object receiver selector arguments expectedArgument |
+	| object receiver selector arguments expectedArgument astNode metaObject op instrumentation |
 	object := MOPTestObject new.
-	object mop beforeMessageSend: #exampleMethod: do: [ :op |
-		receiver := op receiver.
-		selector := op method selector.
-		arguments := op arguments ].
+	astNode :=  (object class methodNamed: #exampleMethod:) ast.
+	metaObject := MOPMetaObject new.
+	op := BlockOperation block: [ :o |
+		      receiver := o receiver.
+		      selector := o method selector.
+		      arguments := o arguments ].
+	instrumentation := Instrumentation new addOperation: op.
+	metaObject addInstrumentation: instrumentation on: astNode.
+
 
 	expectedArgument := Object new.
 	object exampleMethod: expectedArgument.
