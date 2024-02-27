@@ -1,14 +1,15 @@
 Class {
-	#name : #MetaObject,
+	#name : #MOPMetaObject,
 	#superclass : #Object,
 	#instVars : [
-		'instrumentations'
+		'instrumentations',
+		'object'
 	],
 	#category : #MetaObjectProtocol
 }
 
 { #category : #adding }
-MetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
+MOPMetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 
 	instrumentations at: anAstNode put: anInstrumentation.
 	(anInstrumentation requirement verify: anAstNode) ifTrue: [
@@ -16,22 +17,22 @@ MetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 ]
 
 { #category : #'as yet unclassified' }
-MetaObject >> handle: aMessage on: aObject [
+MOPMetaObject >> handle: aMessage [
 
 	^ MirrorPrimitives
-		  withReceiver: aObject
+		  withReceiver: object
 		  perform: aMessage selector
 		  withArguments: aMessage arguments asArray
 ]
 
 { #category : #initialization }
-MetaObject >> initialize [ 
+MOPMetaObject >> initialize [ 
 
 	instrumentations := Dictionary  new
 ]
 
 { #category : #adding }
-MetaObject >> installInstrumentationOn: anAstNode [
+MOPMetaObject >> installInstrumentationOn: anAstNode [
 
 	
 	| link |
@@ -46,18 +47,21 @@ MetaObject >> installInstrumentationOn: anAstNode [
 ]
 
 { #category : #accessing }
-MetaObject >> instrumentations [
+MOPMetaObject >> instrumentations [
 
 	^ instrumentations 
 ]
 
-{ #category : #'as yet unclassified' }
-MetaObject >> on: aReceiver perform: aSelector withArguments: aArguments [
+{ #category : #accessing }
+MOPMetaObject >> object: anObject [
 
-	^ MirrorPrimitives
-		  withReceiver: aReceiver
-		  perform: aSelector
-		
-		
-		  withArguments: aArguments asArray
+	| proxy |
+	proxy := MOPProxy new.
+
+	object become: proxy.
+
+	MirrorPrimitives
+		fieldOf: object
+		at: (MOPProxy slotNamed: #metaObject) index
+		put: self
 ]

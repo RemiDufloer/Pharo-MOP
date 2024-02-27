@@ -38,7 +38,7 @@ MetaObjectProtocolTest >> testInstrumentationWithInstallationRequirementComposit
 	| metaObject instrumentation op1 object receiver requirement astNode expectedArgument|
 	
 	object := MOPTestObject new.
-	metaObject := MetaObject new.
+	metaObject := MOPMetaObject new.
 	expectedArgument := Object new.
 	requirement := (SelectorNameRequirement name: 'exampleMethod:') and: ((ArgumentsSizeRequirement size: 2) or: NoRequirement new ) .
 
@@ -64,7 +64,7 @@ MetaObjectProtocolTest >> testInstrumentationWithInstallationRequirementComposit
 
 	| metaObject instrumentation op1 object receiver requirement astNode expectedArgument |
 	object := MOPTestObject new.
-	metaObject := MetaObject new.
+	metaObject := MOPMetaObject new.
 	expectedArgument := Object new.
 	requirement := (SelectorNameRequirement name: 'exampleMethod:') and:
 		               (ArgumentsSizeRequirement size: 2).
@@ -89,7 +89,7 @@ MetaObjectProtocolTest >> testInstrumentationWithOneInstallationRequirement [
 	| metaObject instrumentation op1 object receiver requirement astNode expectedArgument|
 	
 	object := MOPTestObject new.
-	metaObject := MetaObject new.
+	metaObject := MOPMetaObject new.
 	expectedArgument := Object new.
 	requirement := SelectorNameRequirement name: 'exampleMethod:' .
 
@@ -116,7 +116,7 @@ MetaObjectProtocolTest >> testInstrumentationWithOneInstallationRequirementNotGo
 	| metaObject instrumentation op1 object receiver requirement astNode expectedArgument|
 	
 	object := MOPTestObject new.
-	metaObject := MetaObject new.
+	metaObject := MOPMetaObject new.
 	expectedArgument := Object new.
 	requirement := SelectorNameRequirement name: 'blablatest' .
 
@@ -143,7 +143,7 @@ MetaObjectProtocolTest >> testMetaObjectInstrumentation [
 	| metaObject instrumentation op1 op2 object receiver selector astNode expectedArgument|
 	
 	object := MOPTestObject new.
-	metaObject := MetaObject new.
+	metaObject := MOPMetaObject new.
 	expectedArgument := Object new.
 
 	astNode := (object class methodNamed: #exampleMethod:) ast.
@@ -167,7 +167,7 @@ MetaObjectProtocolTest >> testMetaObjectInstrumentationInGoodOrder [
 	| metaObject instrumentation op1 op2 object compteur astNode expectedArgument|
 	
 	object := MOPTestObject new.
-	metaObject := MetaObject new.
+	metaObject := MOPMetaObject new.
 	expectedArgument := Object new.
 	compteur := 0.
 	op1 := BlockOperation  block: [ :op | compteur := 1 ].
@@ -192,7 +192,7 @@ MetaObjectProtocolTest >> testProxyCreation [
 	| object proxy result expectedArgument |
 	object := MOPTestObject new.
 	proxy := MOPProxy new
-		         object: object metaObject: MetaObject new;
+		         object: object metaObject: MOPMetaObject new;
 		         yourself.
 	expectedArgument := 'expected'.
 
