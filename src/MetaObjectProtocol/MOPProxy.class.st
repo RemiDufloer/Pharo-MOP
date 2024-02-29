@@ -1,18 +1,27 @@
 Class {
 	#name : #MOPProxy,
-	#superclass : #nil,
+	#superclass : #ProtoObject,
 	#instVars : [
 		'metaObject'
 	],
 	#category : #MetaObjectProtocol
 }
 
-{ #category : #'reflective operations' }
+{ #category : #comparing }
 MOPProxy >> doesNotUnderstand: aMessage [
 
-	<debuggerCompleteToSender>
-	
-	aMessage crTrace.
-	
 	^ metaObject handle: aMessage
+]
+
+{ #category : #accessing }
+MOPProxy >> metaObject: aMOPMetaObject [
+
+	metaObject := aMOPMetaObject
+]
+
+{ #category : #'as yet unclassified' }
+MOPProxy >> mop [
+
+	metaObject object asString crTrace.
+	^ metaObject protocol
 ]

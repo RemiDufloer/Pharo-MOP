@@ -7,6 +7,8 @@ Class {
 { #category : #testing }
 MOPTestObject >> exampleMethod [
 
+	self halt.
+
 	^ self
 ]
 

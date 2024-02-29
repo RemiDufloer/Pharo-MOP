@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'instrumentations',
-		'object'
+		'object',
+		'protocol'
 	],
 	#category : #MetaObjectProtocol
 }
@@ -19,8 +20,6 @@ MOPMetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 { #category : #'as yet unclassified' }
 MOPMetaObject >> handle: aMessage [
 
-	<debuggerCompleteToSender>
-
 	^ MirrorPrimitives
 		  withReceiver: object
 		  perform: aMessage selector
@@ -28,9 +27,11 @@ MOPMetaObject >> handle: aMessage [
 ]
 
 { #category : #initialization }
-MOPMetaObject >> initialize [ 
+MOPMetaObject >> initialize [
 
-	instrumentations := Dictionary  new
+	instrumentations := Dictionary new.
+	protocol := MOPProtocol new metaObject: self; yourself.
+	
 ]
 
 { #category : #adding }
@@ -55,23 +56,19 @@ MOPMetaObject >> instrumentations [
 ]
 
 { #category : #accessing }
+MOPMetaObject >> object [
+
+ ^ object
+]
+
+{ #category : #accessing }
 MOPMetaObject >> object: anObject [
+ 
+	object := anObject
+]
 
-	| proxy |
-	proxy := MOPProxy basicNew.
+{ #category : #accessing }
+MOPMetaObject >> protocol [
 
-	MirrorPrimitives
-		fixedFieldOf: proxy
-		at: (MOPProxy slotNamed: #metaObject) index
-		put: self.
-
-	anObject become: proxy.
-	" 
-	After the use of the ProtoObject >> #become primitive:
-	- The references to the object are now pointing to the proxy.
-	- And the references to the proxy are now pointing to the object.
-	
-	So, to store the object in an instance variable, we must affect it using the variable proxy. 
-	"
-	object := proxy
+	^ protocol 
 ]

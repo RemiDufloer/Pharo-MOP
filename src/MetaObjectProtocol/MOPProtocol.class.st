@@ -11,9 +11,12 @@ Class {
 }
 
 { #category : #accessing }
-MOPProtocol >> object: anObject [
+MOPProtocol >> metaObject [
+	^ metaObject
+]
 
-	metaObject := MOPMetaObject new
-		              object: anObject;
-		              yourself
+{ #category : #accessing }
+MOPProtocol >> metaObject: aMOPMetaObject [
+
+	metaObject := aMOPMetaObject 
 ]

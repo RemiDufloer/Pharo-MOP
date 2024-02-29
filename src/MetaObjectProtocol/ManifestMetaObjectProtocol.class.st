@@ -11,5 +11,5 @@ Class {
 ManifestMetaObjectProtocol class >> ruleBadMessageRule2V1FalsePositive [
 
 	<ignoreForCoverage>
-	^ #(#(#(#RGMethodDefinition #(#MOPProxy #object:metaObject: #false)) #'2024-02-19T17:04:45.732924+01:00') )
+	^ #(#(#(#RGMethodDefinition #(#MsOPProxy #object:metaObject: #false)) #'2024-02-19T17:04:45.732924+01:00') )
 ]

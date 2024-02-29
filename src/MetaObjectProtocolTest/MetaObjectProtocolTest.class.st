@@ -38,6 +38,31 @@ MetaObjectProtocolTest >> testInstallMetaLink [
 ]
 
 { #category : #tests }
+MetaObjectProtocolTest >> testInstrumentationMessage [
+
+| object result expectedArgument requirement astNode op1 op2 receiver selector instrumentation |
+    object := MOPTestObject new.
+    requirement := (SelectorNameRequirement name: 'exampleMethod:') and:
+                       ((ArgumentsSizeRequirement size: 2) or:
+                            NoRequirement new).
+    astNode := (object class methodNamed: #exampleMethod:) ast.
+    op1 := BlockOperation block: [ :op | receiver := op receiver ].
+    op2 := BlockOperation block: [ :op | selector := op method selector ].
+    instrumentation := Instrumentation new
+                           addOperation: op2;
+                           addOperation: op1.
+    expectedArgument := 'expected'.
+
+    object mop metaObject addInstrumentation: instrumentation on: astNode.
+    result := object exampleMethod: expectedArgument.
+
+    self assert: receiver equals: object.
+    self assert: selector equals: #exampleMethod:.
+
+
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testInstrumentationWithInstallationRequirementComposite [
 
 	| metaObject instrumentation op1 object receiver requirement astNode expectedArgument|
