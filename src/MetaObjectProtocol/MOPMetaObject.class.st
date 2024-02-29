@@ -56,19 +56,13 @@ MOPMetaObject >> instrumentations [
 ]
 
 { #category : #accessing }
-MOPMetaObject >> object [
-
- ^ object
-]
-
-{ #category : #accessing }
 MOPMetaObject >> object: anObject [
  
 	object := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #'as yet unclassified' }
 MOPMetaObject >> protocol [
 
-	^ protocol 
+	^ protocol
 ]
