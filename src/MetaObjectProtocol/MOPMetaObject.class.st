@@ -21,7 +21,7 @@ MOPMetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 MOPMetaObject >> handle: aMessage [
 
 	^ MirrorPrimitives
-		  withReceiver: object
+		  withReceiver: self object
 		  perform: aMessage selector
 		  withArguments: aMessage arguments asArray
 ]
@@ -29,9 +29,12 @@ MOPMetaObject >> handle: aMessage [
 { #category : #initialization }
 MOPMetaObject >> initialize [
 
-	instrumentations := Dictionary new.
-	protocol := MOPProtocol new metaObject: self; yourself.
-	
+	object := Object new.
+
+	protocol := MOPProtocol new.
+	protocol metaObject: self.
+
+	instrumentations := Dictionary new
 ]
 
 { #category : #adding }

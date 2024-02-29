@@ -7,21 +7,20 @@ Class {
 	#category : #MetaObjectProtocol
 }
 
-{ #category : #comparing }
+{ #category : #'as yet unclassified' }
 MOPProxy >> doesNotUnderstand: aMessage [
 
 	^ metaObject handle: aMessage
 ]
 
-{ #category : #accessing }
-MOPProxy >> metaObject: aMOPMetaObject [
+{ #category : #'as yet unclassified' }
+MOPProxy >> hash [
 
-	metaObject := aMOPMetaObject
+	^ self identityHash
 ]
 
 { #category : #'as yet unclassified' }
-MOPProxy >> mop [
+MOPProxy >> mop [ 
 
-	metaObject object asString crTrace.
 	^ metaObject protocol
 ]
