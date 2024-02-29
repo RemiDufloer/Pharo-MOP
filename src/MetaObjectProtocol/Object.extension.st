@@ -3,9 +3,7 @@ Extension { #name : #Object }
 { #category : #'*MetaObjectProtocol' }
 Object >> mop [
 
-	|  proxy metaObject |
-	
-
+	| proxy metaObject |
 	proxy := MOPProxy basicNew.
 	metaObject := MOPMetaObject new.
 

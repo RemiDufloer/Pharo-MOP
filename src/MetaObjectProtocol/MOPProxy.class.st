@@ -1,26 +1,44 @@
 Class {
 	#name : #MOPProxy,
-	#superclass : #ProtoObject,
+	#superclass : #nil,
 	#instVars : [
 		'metaObject'
 	],
 	#category : #MetaObjectProtocol
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'reflective operations' }
+MOPProxy >> basicIdentityHash [
+	"See ProtoObject >> #basicIdentityHash"
+
+	<primitive: 75>
+	PrimitiveFailed signalFor: thisContext sender selector
+]
+
+{ #category : #'reflective operations' }
 MOPProxy >> doesNotUnderstand: aMessage [
 
+	<debuggerCompleteToSender>
+	
 	^ metaObject handle: aMessage
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #comparing }
 MOPProxy >> hash [
 
 	^ self identityHash
 ]
 
+{ #category : #'reflective operations' }
+MOPProxy >> identityHash [
+	
+	"See ProtoObject >> #identityHash"
+
+	^ self basicIdentityHash bitShift: 8
+]
+
 { #category : #'as yet unclassified' }
-MOPProxy >> mop [ 
+MOPProxy >> mop [
 
 	^ metaObject protocol
 ]

@@ -20,6 +20,8 @@ MOPMetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 { #category : #'as yet unclassified' }
 MOPMetaObject >> handle: aMessage [
 
+	<debuggerCompleteToSender>
+
 	^ MirrorPrimitives
 		  withReceiver: object
 		  perform: aMessage selector
