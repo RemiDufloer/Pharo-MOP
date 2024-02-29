@@ -21,7 +21,7 @@ MOPMetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 MOPMetaObject >> handle: aMessage [
 
 	^ MirrorPrimitives
-		  withReceiver: self object
+		  withReceiver: object
 		  perform: aMessage selector
 		  withArguments: aMessage arguments asArray
 ]
