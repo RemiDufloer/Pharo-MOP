@@ -7,7 +7,7 @@ Class {
 { #category : #creating }
 BlockOperation class >> block: aRFOperation [
 
-	^ self requirement: [ true ] block: aRFOperation
+	^ self requirement: NoRequirement new block: aRFOperation
 ]
 
 { #category : #creating }
@@ -22,7 +22,9 @@ BlockOperation class >> requirement: aRequirement block: aFullBlockClosure [
 { #category : #accessing }
 BlockOperation >> apply: aRFOperation [
 
-	requirement value ifTrue: [ ^ block value: aRFOperation ]
+	(requirement
+		verify: aRFOperation)
+		ifTrue: [ ^ block value: aRFOperation ]
 ]
 
 { #category : #accessing }
@@ -35,16 +37,4 @@ BlockOperation >> block [
 BlockOperation >> block: aFullBlockClosure [ 
 	
 	block := aFullBlockClosure
-]
-
-{ #category : #accessing }
-BlockOperation >> requirement [
-	
-	^ requirement 
-]
-
-{ #category : #accessing }
-BlockOperation >> requirement: aRequirement [
-
-	requirement := aRequirement
 ]
