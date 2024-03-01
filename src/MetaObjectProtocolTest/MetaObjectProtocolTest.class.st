@@ -40,26 +40,26 @@ MetaObjectProtocolTest >> testInstallMetaLink [
 { #category : #tests }
 MetaObjectProtocolTest >> testInstrumentationMessage [
 
-| object result expectedArgument requirement astNode op1 op2 receiver selector instrumentation |
-    object := MOPTestObject new.
-    requirement := (SelectorNameRequirement name: 'exampleMethod:') and:
-                       ((ArgumentsSizeRequirement size: 2) or:
-                            NoRequirement new).
-    astNode := (object class methodNamed: #exampleMethod:) ast.
-    op1 := BlockOperation block: [ :op | receiver := op receiver ].
-    op2 := BlockOperation block: [ :op | selector := op method selector ].
-    instrumentation := Instrumentation new
-                           addOperation: op2;
-                           addOperation: op1.
-    expectedArgument := 'expected'.
+	| op1 op2 selector instru requirement argument object |
+	object := MOPTestObject new.
 
-    object mop metaObject addInstrumentation: instrumentation on: astNode.
-    result := object exampleMethod: expectedArgument.
+	requirement := SelectorNameRequirement name: 'exampleMethod:'.
+	op1 := BlockOperation block: [ :op | argument := op arguments first ].
+	op2 := BlockOperation block: [ :op | selector := op method selector ].
+	instru := Instrumentation new
+		          requirement: requirement;
+		          addOperation: op2;
+		          addOperation: op1;
+		          yourself.
 
-    self assert: receiver equals: object.
-    self assert: selector equals: #exampleMethod:.
+	object mop
+		addInstrumentation: instru
+		on: (MOPTestObject >> #exampleMethod:) ast.
 
+	object exampleMethod: 'value'.
 
+	self assert: argument equals: 'value'.
+	self assert: selector equals: #exampleMethod:
 ]
 
 { #category : #tests }
@@ -168,6 +168,25 @@ MetaObjectProtocolTest >> testInstrumentationWithOneInstallationRequirementNotGo
 ]
 
 { #category : #tests }
+MetaObjectProtocolTest >> testMOPCreation [
+
+	| object  dictionary result |
+
+	object := MOPTestObject new.
+	dictionary := IdentityDictionary new.
+	dictionary at: object put: 'value'.
+	
+	object mop.
+	
+	self assert: object class equals: MOPTestObject.
+	self assert: (dictionary at: object) equals: 'value'.
+	
+	result := object exampleMethod: 'expected'.
+
+	self assert: result equals: 'expected'
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testMetaObjectInstrumentation [
 
 	| metaObject instrumentation op1 op2 object receiver selector astNode expectedArgument|
@@ -214,20 +233,6 @@ MetaObjectProtocolTest >> testMetaObjectInstrumentationInGoodOrder [
 		                   
 
 	
-]
-
-{ #category : #tests }
-MetaObjectProtocolTest >> testProxyCreation [
-
-	| object result expectedArgument |
-
-	object := MOPTestObject new.
-	expectedArgument := 'expected'.
-
-	object mop.
-	result := object exampleMethod: expectedArgument.
-
-	self assert: result equals: expectedArgument
 ]
 
 { #category : #tests }

@@ -12,7 +12,7 @@ MOPProxy >> basicIdentityHash [
 	"See ProtoObject >> #basicIdentityHash"
 
 	<primitive: 75>
-	PrimitiveFailed signalFor: thisContext sender selector
+	self primitiveFailed
 ]
 
 { #category : #'reflective operations' }
@@ -41,4 +41,26 @@ MOPProxy >> identityHash [
 MOPProxy >> mop [
 
 	^ metaObject protocol
+]
+
+{ #category : #'primitive failure' }
+MOPProxy >> primitiveFail [
+	"See ProtoObject >> #primitiveFail"
+
+	^ self primitiveFailed
+]
+
+{ #category : #'primitive failure' }
+MOPProxy >> primitiveFailed [
+
+	"See ProtoObject >> #primitiveFailed"
+	
+	^ self primitiveFailed: thisContext sender selector
+]
+
+{ #category : #'primitive failure' }
+MOPProxy >> primitiveFailed: selector [
+	"See ProtoObject >> #primitiveFailed:"
+
+	PrimitiveFailed signalFor: selector
 ]

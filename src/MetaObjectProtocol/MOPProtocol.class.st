@@ -10,6 +10,12 @@ Class {
 	#category : #MetaObjectProtocol
 }
 
+{ #category : #adding }
+MOPProtocol >> addInstrumentation: anInstrumentation on: anASTNode [
+
+	metaObject addInstrumentation:  anInstrumentation  on: anASTNode 
+]
+
 { #category : #accessing }
 MOPProtocol >> metaObject [
 	^ metaObject
