@@ -13,3 +13,15 @@ Operation >> apply: aRFOperation [
 
 	self subclassResponsibility 
 ]
+
+{ #category : #accessing }
+Operation >> requirement [
+	
+	^ requirement 
+]
+
+{ #category : #accessing }
+Operation >> requirement: aRequirement [
+
+	requirement := aRequirement
+]

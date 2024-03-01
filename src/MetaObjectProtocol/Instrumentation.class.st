@@ -28,6 +28,22 @@ Instrumentation >> initialize [
 	
 ]
 
+{ #category : #MetaLink }
+Instrumentation >> installOnNode: aNode [
+
+	| link |
+	(self requirement verify: aNode )ifFalse:  [ ^ nil ].
+	
+	link := MetaLink new.
+	link control: #instead.
+
+	link metaObject: self.
+	link selector: #execute:.
+	link arguments: #( operation ).
+	link optionCompileOnLinkInstallation: true.
+	aNode link: link
+]
+
 { #category : #accessing }
 Instrumentation >> operations [
 

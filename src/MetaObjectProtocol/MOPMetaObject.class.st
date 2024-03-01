@@ -10,6 +10,13 @@ Class {
 }
 
 { #category : #adding }
+MOPMetaObject >> addInstrumentation: anInstrumentation [ 
+	
+
+	instrumentations add: anInstrumentation.
+]
+
+{ #category : #adding }
 MOPMetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 
 	instrumentations at: anAstNode put: anInstrumentation.
@@ -21,6 +28,10 @@ MOPMetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
+	(aMessage receiver class methodNamed: aMessage selector) ast
+		allChildren do: [ :n |
+		self instrumentations do: [ :inst | inst installOnNode: n ] ].
+
 
 	^ MirrorPrimitives
 		  withReceiver: object
@@ -36,7 +47,7 @@ MOPMetaObject >> initialize [
 	protocol := MOPProtocol new.
 	protocol metaObject: self.
 
-	instrumentations := Dictionary new
+	instrumentations := OrderedCollection new
 ]
 
 { #category : #adding }
@@ -52,6 +63,12 @@ MOPMetaObject >> installInstrumentationOn: anAstNode [
 	link arguments: #( operation ).
 	link optionCompileOnLinkInstallation: true.
 	^ link
+]
+
+{ #category : #'as yet unclassified' }
+MOPMetaObject >> instrument: anASTNode [
+
+	self instrumentations do: [ :inst | (inst requirement verify: anASTNode) ifTrue: [ inst installOnNode: anASTNode ] ]
 ]
 
 { #category : #accessing }
