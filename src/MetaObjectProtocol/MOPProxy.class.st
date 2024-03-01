@@ -1,27 +1,44 @@
 Class {
 	#name : #MOPProxy,
-	#superclass : #ProtoObject,
+	#superclass : #nil,
 	#instVars : [
 		'metaObject'
 	],
 	#category : #MetaObjectProtocol
 }
 
-{ #category : #comparing }
+{ #category : #'reflective operations' }
+MOPProxy >> basicIdentityHash [
+	"See ProtoObject >> #basicIdentityHash"
+
+	<primitive: 75>
+	PrimitiveFailed signalFor: thisContext sender selector
+]
+
+{ #category : #'reflective operations' }
 MOPProxy >> doesNotUnderstand: aMessage [
 
+	<debuggerCompleteToSender>
+	
 	^ metaObject handle: aMessage
 ]
 
-{ #category : #accessing }
-MOPProxy >> metaObject: aMOPMetaObject [
+{ #category : #comparing }
+MOPProxy >> hash [
 
-	metaObject := aMOPMetaObject
+	^ self identityHash
+]
+
+{ #category : #'reflective operations' }
+MOPProxy >> identityHash [
+	
+	"See ProtoObject >> #identityHash"
+
+	^ self basicIdentityHash bitShift: 8
 ]
 
 { #category : #'as yet unclassified' }
 MOPProxy >> mop [
 
-	metaObject object asString crTrace.
 	^ metaObject protocol
 ]

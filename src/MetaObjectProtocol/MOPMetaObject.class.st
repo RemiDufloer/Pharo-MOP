@@ -20,6 +20,8 @@ MOPMetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 { #category : #'as yet unclassified' }
 MOPMetaObject >> handle: aMessage [
 
+	<debuggerCompleteToSender>
+
 	^ MirrorPrimitives
 		  withReceiver: object
 		  perform: aMessage selector
@@ -29,9 +31,12 @@ MOPMetaObject >> handle: aMessage [
 { #category : #initialization }
 MOPMetaObject >> initialize [
 
-	instrumentations := Dictionary new.
-	protocol := MOPProtocol new metaObject: self; yourself.
-	
+	object := Object new.
+
+	protocol := MOPProtocol new.
+	protocol metaObject: self.
+
+	instrumentations := Dictionary new
 ]
 
 { #category : #adding }

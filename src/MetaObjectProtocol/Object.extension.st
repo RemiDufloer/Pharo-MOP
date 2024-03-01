@@ -3,15 +3,18 @@ Extension { #name : #Object }
 { #category : #'*MetaObjectProtocol' }
 Object >> mop [
 
-	| proxy |
-	proxy := MOPProxyGenerator basicNew.
+	| proxy metaObject |
+	proxy := MOPProxy basicNew.
+	metaObject := MOPMetaObject new.
 
 	MirrorPrimitives
 		fixedFieldOf: proxy
-		at: (MOPProxyGenerator slotNamed: #metaObject) index
-		put: (MOPMetaObject new
-				 object: proxy;
-				 yourself).
+		at: (MOPProxy slotNamed: #metaObject) index
+		put: metaObject.
 
 	self become: proxy.
+
+	metaObject object: proxy.
+
+	^ self mop
 ]
