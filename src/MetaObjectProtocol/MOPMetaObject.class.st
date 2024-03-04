@@ -28,10 +28,10 @@ MOPMetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
-	(aMessage receiver class methodNamed: aMessage selector) ast
-		allChildren do: [ :n |
+	| method |
+	method := object class lookupSelector: aMessage selector.
+	method ast allChildren do: [ :n |
 		self instrumentations do: [ :inst | inst installOnNode: n ] ].
-
 
 	^ MirrorPrimitives
 		  withReceiver: object
