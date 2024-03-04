@@ -22,5 +22,6 @@ ArgumentsSizeRequirement >> size: anInteger [
 { #category : #verifying }
 ArgumentsSizeRequirement >> verify: anASTNode [
 
-	^ anASTNode arguments size = size
+	(anASTNode isMethod or: [anASTNode isBlock ]) ifTrue: [ ^ anASTNode arguments size = size ].
+	^ false
 ]

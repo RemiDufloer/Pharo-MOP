@@ -5,32 +5,28 @@ Class {
 }
 
 { #category : #tests }
-MetaObjectProtocolTest >> testMOPAddInstrumentation [
+MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 
-	| object result receiver selector arguments op instrumentation expectedArgument astNode requirement compteur |
+	| object protocol builder result |
 	object := MOPTestObject new.
 
+	protocol := object mop.
+	result := 'string :'.
+	builder := protocol newInstrumentation.
+	builder := builder newRequirementInstallation.
+	builder newRequirement:
+		(SelectorNameRequirement name: 'exampleMethod').
 
-	object mop.
+	builder := builder newOperation.
+	builder newBlockOperation: [ :o | result := result , 'op1' ].
 
-	compteur := 0.
-	op := BlockOperation block: [ :o | compteur := compteur + 1 ].
-	instrumentation := Instrumentation new addOperation: op.
-	expectedArgument := Object new.
-	astNode := (MOPTestObject >> #exampleMethod:) ast.
-
-
-	requirement := (SelectorNameRequirement name: 'exampleMethod:') or: (NameVariableRequirement name: '#anObject').
-	instrumentation requirement: requirement.
-
-	object mop addInstrumentation: instrumentation.
-
-	self assert: object class equals: MOPTestObject.
+	builder := builder newOperation.
+	builder newBlockOperation: [ :o | result := result , 'op2' ].
 
 
-	result := object exampleMethod: 'expected'.
+	object exampleMethod.
 
-	self assert: compteur equals: 1
+	self assert: result equals: 'string :op1op2'
 ]
 
 { #category : #tests }
