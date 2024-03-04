@@ -26,3 +26,9 @@ MOPProtocol >> metaObject: aMOPMetaObject [
 
 	metaObject := aMOPMetaObject 
 ]
+
+{ #category : #'instance creation' }
+MOPProtocol >> newInstrumentation [
+
+	^ InstrumentationBuilder new metaObject: self metaObject; yourself
+]
