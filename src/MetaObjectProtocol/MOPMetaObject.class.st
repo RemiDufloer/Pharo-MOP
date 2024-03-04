@@ -16,22 +16,18 @@ MOPMetaObject >> addInstrumentation: anInstrumentation [
 	instrumentations add: anInstrumentation.
 ]
 
-{ #category : #adding }
-MOPMetaObject >> addInstrumentation: anInstrumentation on: anAstNode [
+{ #category : #accessing }
+MOPMetaObject >> giveMethodAssociatedToMessage: aMessage [
 
-	instrumentations at: anAstNode put: anInstrumentation.
-	(anInstrumentation requirement verify: anAstNode) ifTrue: [
-		anAstNode link: (self installInstrumentationOn: anAstNode) ]
+	^ object class lookupSelector: aMessage selector.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'handling DNU' }
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
-	| method |
-	method := object class lookupSelector: aMessage selector.
-	method ast allChildren do: [ :n |
-		self instrumentations do: [ :inst | inst installOnNode: n ] ].
+	self instrumentMethod: (self giveMethodAssociatedToMessage: aMessage).
+
 
 	^ MirrorPrimitives
 		  withReceiver: object
@@ -50,25 +46,17 @@ MOPMetaObject >> initialize [
 	instrumentations := OrderedCollection new
 ]
 
-{ #category : #adding }
-MOPMetaObject >> installInstrumentationOn: anAstNode [
-
-	
-	| link |
-	link := MetaLink new.
-	link control: #instead.
-
-	link metaObject: (instrumentations at: anAstNode) .
-	link selector: #execute:.
-	link arguments: #( operation ).
-	link optionCompileOnLinkInstallation: true.
-	^ link
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #instrument }
 MOPMetaObject >> instrument: anASTNode [
 
 	self instrumentations do: [ :inst | (inst requirement verify: anASTNode) ifTrue: [ inst installOnNode: anASTNode ] ]
+]
+
+{ #category : #instrument }
+MOPMetaObject >> instrumentMethod: aMethode [
+
+	aMethode ast allChildren do: [ :n |
+		self instrumentations do: [ :inst | inst installOnNode: n ] ].
 ]
 
 { #category : #accessing }
@@ -83,7 +71,7 @@ MOPMetaObject >> object: anObject [
 	object := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPMetaObject >> protocol [
 
 	^ protocol

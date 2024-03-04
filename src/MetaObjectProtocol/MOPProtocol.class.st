@@ -11,9 +11,9 @@ Class {
 }
 
 { #category : #adding }
-MOPProtocol >> addInstrumentation: anInstrumentation on: anASTNode [
+MOPProtocol >> addInstrumentation: anInstrumentation [ 
 
-	metaObject addInstrumentation:  anInstrumentation  on: anASTNode 
+	metaObject addInstrumentation: anInstrumentation 
 ]
 
 { #category : #accessing }

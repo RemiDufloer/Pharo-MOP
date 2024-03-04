@@ -5,6 +5,35 @@ Class {
 }
 
 { #category : #tests }
+MetaObjectProtocolTest >> testMOPAddInstrumentation [
+
+	| object result receiver selector arguments op instrumentation expectedArgument astNode requirement compteur |
+	object := MOPTestObject new.
+
+
+	object mop.
+
+	compteur := 0.
+	op := BlockOperation block: [ :o | compteur := compteur + 1 ].
+	instrumentation := Instrumentation new addOperation: op.
+	expectedArgument := Object new.
+	astNode := (MOPTestObject >> #exampleMethod:) ast.
+
+
+	requirement := (SelectorNameRequirement name: 'exampleMethod:') or: (NameVariableRequirement name: '#anObject').
+	instrumentation requirement: requirement.
+
+	object mop addInstrumentation: instrumentation.
+
+	self assert: object class equals: MOPTestObject.
+
+
+	result := object exampleMethod: 'expected'.
+
+	self assert: compteur equals: 1
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testMOPCreation [
 
 	| object  dictionary result |

@@ -22,5 +22,7 @@ NameVariableRequirement >> name: aString [
 { #category : #verifying }
 NameVariableRequirement >> verify: anASTNode [
 
-	^ anASTNode name = name
+	anASTNode isVariable ifTrue: [ ^ anASTNode name = name ].
+	^ false
+	
 ]

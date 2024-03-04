@@ -12,8 +12,7 @@ MOPTestObject >> exampleMethod [
 
 { #category : #testing }
 MOPTestObject >> exampleMethod: anObject [
-
-	^ anObject 
+	^ anObject
 ]
 
 { #category : #testing }

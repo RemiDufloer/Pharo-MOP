@@ -22,5 +22,6 @@ SelectorNameRequirement >> name: aString [
 { #category : #verifying }
 SelectorNameRequirement >> verify: anASTNode [
 
-	^ anASTNode selector = name
+	anASTNode isMethod ifTrue: [ ^ anASTNode selector = name ].
+	^ false
 ]
