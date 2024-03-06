@@ -7,7 +7,7 @@ Class {
 { #category : #tests }
 MOPInstrumentationTest >> testInstall [
 
-	| selector instrumentation astNode receiver arguments op expectedArgument object |
+	| selector instrumentation receiver arguments op expectedArgument object requirement |
 	object := MOPTestObject new.
 	op := BlockOperation block: [ :o |
 		      receiver := o receiver.
@@ -15,10 +15,11 @@ MOPInstrumentationTest >> testInstall [
 		      arguments := o arguments ].
 	instrumentation := Instrumentation new addOperation: op.
 	expectedArgument := Object new.
-	astNode := (MOPTestObject >> #exampleMethod:) ast.
+	requirement := SelectorNameRequirement name: 'exampleMethod:'.
+	instrumentation requirement: requirement.
 
 
-	instrumentation installOnNode: astNode.
+	instrumentation installOnMethod: MOPTestObject >> #exampleMethod:.
 	object exampleMethod: expectedArgument.
 
 
@@ -161,5 +162,22 @@ MOPInstrumentationTest >> testMetaObjectInstrumentationInGoodOrder [
 { #category : #tests }
 MOPInstrumentationTest >> testUninstall [
 
-	self assert: false
+	| object op receiver instrumentation |
+	object := MOPTestObject new.
+	op := BlockOperation block: [ :o | receiver := o receiver ].
+	instrumentation := Instrumentation new addOperation: op.
+	instrumentation requirement:
+		(SelectorNameRequirement name: 'exampleMethod').
+
+	instrumentation installOnMethod: MOPTestObject >> #exampleMethod.
+	object exampleMethod.
+
+	self assert: receiver equals: object.
+
+	receiver := nil.
+	instrumentation uninstalAll.
+
+	object exampleMethod.
+
+	self assert: receiver equals: nil
 ]

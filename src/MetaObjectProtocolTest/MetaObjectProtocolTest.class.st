@@ -9,13 +9,14 @@ MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 
 	| object protocol builder result |
 	object := MOPTestObject new.
-
 	protocol := object mop.
 	result := 'string :'.
+
 	builder := protocol newInstrumentation.
 	builder := builder newRequirementInstallation.
 	builder newRequirement:
 		(SelectorNameRequirement name: 'exampleMethod').
+	builder andRequirement: (ArgumentsSizeRequirement new size: 1).
 
 	builder := builder newOperation.
 	builder newBlockOperation: [ :o | result := result , 'op1' ].
