@@ -14,6 +14,12 @@ Operation >> apply: aRFOperation [
 	self subclassResponsibility 
 ]
 
+{ #category : #initialization }
+Operation >> initialize [ 
+
+	self requirement: NoRequirement new
+]
+
 { #category : #accessing }
 Operation >> requirement [
 	
