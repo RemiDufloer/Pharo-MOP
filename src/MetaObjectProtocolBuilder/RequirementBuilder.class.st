@@ -4,10 +4,10 @@ Class {
 	#instVars : [
 		'requirement'
 	],
-	#category : #MetaObjectProtocol
+	#category : #MetaObjectProtocolBuilder
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 RequirementBuilder >> andRequirement: aRequirement [
 
 	self newRequirement: (requirement and: aRequirement)
@@ -21,13 +21,13 @@ RequirementBuilder >> newRequirement: aRequirement [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 RequirementBuilder >> orRequirement: aRequirement [
 
 	self newRequirement: (requirement or: aRequirement)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 RequirementBuilder >> pushRequirement [
 
 	instrumentationBuilder requirement: requirement .

@@ -1,7 +1,7 @@
 Class {
 	#name : #OperationBuilder,
 	#superclass : #MOPBuilder,
-	#category : #MetaObjectProtocol
+	#category : #MetaObjectProtocolBuilder
 }
 
 { #category : #'instance creation' }
