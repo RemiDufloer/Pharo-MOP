@@ -7,6 +7,7 @@ Class {
 { #category : #running }
 MOPTest >> tearDown [
 
+	super tearDown .
 	[ MetaLink uninstallAll ] on: Error do: [ :e | 
 		e crTrace 
 	]

@@ -1,9 +1,6 @@
 Class {
 	#name : #MOPNoRequirement,
 	#superclass : #MOPRequirement,
-	#instVars : [
-		'name'
-	],
 	#category : #MetaObjectProtocol
 }
 

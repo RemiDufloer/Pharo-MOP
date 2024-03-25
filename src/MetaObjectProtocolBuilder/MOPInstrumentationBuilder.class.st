@@ -20,7 +20,7 @@ MOPInstrumentationBuilder >> initialize [
 	instrumentation := MOPInstrumentation new.
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 MOPInstrumentationBuilder >> instrumentation [
 
 	^ instrumentation
