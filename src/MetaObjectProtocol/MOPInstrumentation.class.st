@@ -21,7 +21,7 @@ MOPInstrumentation >> execute: aRFOperation [
 	^ operations do:[ :o | o apply: aRFOperation ]
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 MOPInstrumentation >> initialize [
 
 	operations := OrderedCollection new.
