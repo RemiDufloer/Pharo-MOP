@@ -12,6 +12,8 @@ BaselineOfMetaObjectProtocol >> baseline: spec [
 		spec 
 			package: #MetaObjectProtocol.
 		spec 
+			package: #MetaObjectProtocolBuilder.
+		spec 
 			package: #MetaObjectProtocolTest with: [ spec requires: #('MetaObjectProtocol')  ].
  ]
 	
