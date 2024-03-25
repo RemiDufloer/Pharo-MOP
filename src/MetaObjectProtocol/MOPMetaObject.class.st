@@ -16,6 +16,16 @@ MOPMetaObject >> addInstrumentation: anInstrumentation [
 	instrumentations add: anInstrumentation.
 ]
 
+{ #category : #private }
+MOPMetaObject >> annonymousClassCreator [
+
+	object class traceCr.
+	object class isAnonymous ifFalse: [ 
+		object class newAnonymousSubclass adoptInstance: object ].
+	object class traceCr.
+	
+]
+
 { #category : #accessing }
 MOPMetaObject >> giveMethodAssociatedToMessage: aMessage [
 
@@ -68,7 +78,8 @@ MOPMetaObject >> instrumentations [
 { #category : #accessing }
 MOPMetaObject >> object: anObject [
  
-	object := anObject
+	object := anObject.
+	self annonymousClassCreator.
 ]
 
 { #category : #accessing }
