@@ -16,8 +16,8 @@ MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 
 	builder := builder newRequirementInstallation.
 	builder newRequirement:
-		(SelectorNameRequirement name: 'exampleMethod:').
-	builder andRequirement: (ArgumentsSizeRequirement new size: 1).
+		(MOPSelectorNameRequirement name: 'exampleMethod:').
+	builder andRequirement: (MOPArgumentsSizeRequirement new size: 1).
 
 	builder newOperation  newBlockOperation: [ :o | result := result , 'op1' ].
 

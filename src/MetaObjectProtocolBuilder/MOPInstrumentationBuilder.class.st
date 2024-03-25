@@ -1,5 +1,5 @@
 Class {
-	#name : #InstrumentationBuilder,
+	#name : #MOPInstrumentationBuilder,
 	#superclass : #Object,
 	#instVars : [
 		'metaObject',
@@ -9,31 +9,31 @@ Class {
 }
 
 { #category : #adding }
-InstrumentationBuilder >> addOperation: anOperation [ 
+MOPInstrumentationBuilder >> addOperation: anOperation [ 
 	
 	self instrumentation addOperation: anOperation 
 ]
 
 { #category : #initialization }
-InstrumentationBuilder >> initialize [ 
+MOPInstrumentationBuilder >> initialize [ 
 
-	instrumentation := Instrumentation new.
+	instrumentation := MOPInstrumentation new.
 ]
 
 { #category : #accesing }
-InstrumentationBuilder >> instrumentation [
+MOPInstrumentationBuilder >> instrumentation [
 
 	^ instrumentation
 ]
 
 { #category : #accessing }
-InstrumentationBuilder >> metaObject [
+MOPInstrumentationBuilder >> metaObject [
 
 	^ metaObject
 ]
 
 { #category : #accessing }
-InstrumentationBuilder >> metaObject: aMetaObject [
+MOPInstrumentationBuilder >> metaObject: aMetaObject [
 
 	metaObject := aMetaObject 
 
@@ -41,19 +41,19 @@ InstrumentationBuilder >> metaObject: aMetaObject [
 ]
 
 { #category : #'instance creation' }
-InstrumentationBuilder >> newRequirementInstallation [
+MOPInstrumentationBuilder >> newRequirementInstallation [
 	
-	^ RequirementBuilder new instrumentationBuilder: self ; yourself
+	^ MOPRequirementBuilder new instrumentationBuilder: self ; yourself
 ]
 
 { #category : #'API - remotes' }
-InstrumentationBuilder >> push [
+MOPInstrumentationBuilder >> push [
 	
 	self metaObject addInstrumentation: instrumentation 
 ]
 
 { #category : #accessing }
-InstrumentationBuilder >> requirement: aRequirement [ 
+MOPInstrumentationBuilder >> requirement: aRequirement [ 
 	
 	instrumentation requirement: aRequirement 
 ]

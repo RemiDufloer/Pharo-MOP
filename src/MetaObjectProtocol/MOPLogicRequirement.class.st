@@ -1,6 +1,6 @@
 Class {
-	#name : #LogicRequirement,
-	#superclass : #Requirement,
+	#name : #MOPLogicRequirement,
+	#superclass : #MOPRequirement,
 	#instVars : [
 		'left',
 		'right'
@@ -9,13 +9,13 @@ Class {
 }
 
 { #category : #testing }
-LogicRequirement class >> isAbstract [
+MOPLogicRequirement class >> isAbstract [
 
-	^ self == LogicRequirement
+	^ self == MOPLogicRequirement
 ]
 
 { #category : #'instance creation' }
-LogicRequirement class >> left: aRequirementLeft right: aRequirementRight [
+MOPLogicRequirement class >> left: aRequirementLeft right: aRequirementRight [
 
 	^ self new
 		  left: aRequirementLeft;
@@ -24,25 +24,25 @@ LogicRequirement class >> left: aRequirementLeft right: aRequirementRight [
 ]
 
 { #category : #accessing }
-LogicRequirement >> left [
+MOPLogicRequirement >> left [
 
 	^ left
 ]
 
 { #category : #accessing }
-LogicRequirement >> left: aRequirement [
+MOPLogicRequirement >> left: aRequirement [
 
 	left := aRequirement
 ]
 
 { #category : #accessing }
-LogicRequirement >> right [
+MOPLogicRequirement >> right [
 
 	^ right
 ]
 
 { #category : #accessing }
-LogicRequirement >> right: aRequirement [
+MOPLogicRequirement >> right: aRequirement [
 
 	right := aRequirement
 ]

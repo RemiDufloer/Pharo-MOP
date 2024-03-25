@@ -9,7 +9,7 @@ MOPOperationTest >> testApply [
 
 	| operation value |
 	
-	operation := BlockOperation block: [ :v | v + 2 ].
+	operation := MOPBlockOperation block: [ :v | v + 2 ].
 	value := 0.
 
 	self assert: (operation apply: value) equals: 2
@@ -21,8 +21,8 @@ MOPOperationTest >> testApplyWithBadRequirement [
 	| operation node requirement exepted |
 	exepted := 'test'.
 	node := RBVariableNode named: exepted.
-	requirement := NameVariableRequirement name: 'nil'.
-	operation := BlockOperation requirement: requirement   block: [ :v | v name: 'hello' ].
+	requirement := MOPNameVariableRequirement name: 'nil'.
+	operation := MOPBlockOperation requirement: requirement   block: [ :v | v name: 'hello' ].
 
 	operation apply: node.
 
@@ -36,8 +36,8 @@ MOPOperationTest >> testApplyWithGoodRequirement [
 	| operation node requirement exepted |
 	exepted := 'good'.
 	node := RBVariableNode named: 'test'.
-	requirement := NameVariableRequirement name: 'test'.
-	operation :=  BlockOperation requirement: requirement block: [ :v | v name: exepted ].
+	requirement := MOPNameVariableRequirement name: 'test'.
+	operation :=  MOPBlockOperation requirement: requirement block: [ :v | v name: exepted ].
 
 	operation apply: node.
 

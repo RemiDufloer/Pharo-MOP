@@ -1,6 +1,6 @@
 Class {
-	#name : #NoRequirement,
-	#superclass : #Requirement,
+	#name : #MOPNoRequirement,
+	#superclass : #MOPRequirement,
 	#instVars : [
 		'name'
 	],
@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #verifing }
-NoRequirement >> verify: anASTNode [
+MOPNoRequirement >> verify: anASTNode [
 
 	^ true
 ]

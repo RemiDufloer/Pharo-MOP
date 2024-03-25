@@ -1,5 +1,5 @@
 Class {
-	#name : #Instrumentation,
+	#name : #MOPInstrumentation,
 	#superclass : #Object,
 	#instVars : [
 		'operations',
@@ -10,27 +10,27 @@ Class {
 }
 
 { #category : #accessing }
-Instrumentation >> addOperation: anOperation [
+MOPInstrumentation >> addOperation: anOperation [
 
 	operations add: anOperation 
 ]
 
 { #category : #execution }
-Instrumentation >> execute: aRFOperation [
+MOPInstrumentation >> execute: aRFOperation [
 
 	^ operations do:[ :o | o apply: aRFOperation ]
 ]
 
 { #category : #accessing }
-Instrumentation >> initialize [
+MOPInstrumentation >> initialize [
 
 	operations := OrderedCollection new.
 	installedNodes := OrderedCollection new.
-	self requirement: NoRequirement new
+	self requirement: MOPNoRequirement new
 ]
 
 { #category : #MetaLink }
-Instrumentation >> installOnMethod: aRBMethod [
+MOPInstrumentation >> installOnMethod: aRBMethod [
 
 	| nodeOfMethodNeedToInstall |
 	nodeOfMethodNeedToInstall := aRBMethod ast allChildren.
@@ -40,7 +40,7 @@ Instrumentation >> installOnMethod: aRBMethod [
 ]
 
 { #category : #MetaLink }
-Instrumentation >> installOnNode: aNode [
+MOPInstrumentation >> installOnNode: aNode [
 
 	| link |
 	(self requirement verify: aNode) ifFalse: [ ^ nil ].
@@ -61,42 +61,42 @@ Instrumentation >> installOnNode: aNode [
 ]
 
 { #category : #accessing }
-Instrumentation >> installedNodes [
+MOPInstrumentation >> installedNodes [
 
 	^ installedNodes
 ]
 
 { #category : #accessing }
-Instrumentation >> installedNodes: anObject [
+MOPInstrumentation >> installedNodes: anObject [
 
 	installedNodes := anObject
 ]
 
 { #category : #accessing }
-Instrumentation >> operations [
+MOPInstrumentation >> operations [
 
 	^ operations
 ]
 
 { #category : #accessing }
-Instrumentation >> removeOperation: anOperation [
+MOPInstrumentation >> removeOperation: anOperation [
 
 	operations remove: anOperation 
 ]
 
 { #category : #accessing }
-Instrumentation >> requirement [
+MOPInstrumentation >> requirement [
 
 	^ requirement
 ]
 
 { #category : #accessing }
-Instrumentation >> requirement: aRequirement [ 
+MOPInstrumentation >> requirement: aRequirement [ 
 	
 	requirement := aRequirement 
 ]
 
 { #category : #installation }
-Instrumentation >> uninstalAll [
+MOPInstrumentation >> uninstalAll [
 	self installedNodes do: [ :n | n links do: [:l | l uninstall] ]
 ]

@@ -1,17 +1,17 @@
 Class {
-	#name : #BlockOperation,
-	#superclass : #Operation,
+	#name : #MOPBlockOperation,
+	#superclass : #MOPOperation,
 	#category : #MetaObjectProtocol
 }
 
 { #category : #creating }
-BlockOperation class >> block: aRFOperation [
+MOPBlockOperation class >> block: aRFOperation [
 
-	^ self requirement: NoRequirement new block: aRFOperation
+	^ self requirement: MOPNoRequirement new block: aRFOperation
 ]
 
 { #category : #creating }
-BlockOperation class >> requirement: aRequirement block: aFullBlockClosure [
+MOPBlockOperation class >> requirement: aRequirement block: aFullBlockClosure [
 
 	^ self new
 		  requirement: aRequirement;
@@ -20,7 +20,7 @@ BlockOperation class >> requirement: aRequirement block: aFullBlockClosure [
 ]
 
 { #category : #accessing }
-BlockOperation >> apply: aRFOperation [
+MOPBlockOperation >> apply: aRFOperation [
 
 	(requirement
 		verify: aRFOperation)
@@ -28,13 +28,13 @@ BlockOperation >> apply: aRFOperation [
 ]
 
 { #category : #accessing }
-BlockOperation >> block [
+MOPBlockOperation >> block [
 	
 	^ block  
 ]
 
 { #category : #accessing }
-BlockOperation >> block: aFullBlockClosure [ 
+MOPBlockOperation >> block: aFullBlockClosure [ 
 	
 	block := aFullBlockClosure
 ]

@@ -1,6 +1,6 @@
 Class {
-	#name : #NameVariableRequirement,
-	#superclass : #Requirement,
+	#name : #MOPNameVariableRequirement,
+	#superclass : #MOPRequirement,
 	#instVars : [
 		'name'
 	],
@@ -8,19 +8,19 @@ Class {
 }
 
 { #category : #accessing }
-NameVariableRequirement class >> name: aString [
+MOPNameVariableRequirement class >> name: aString [
 
 	^ self new name: aString 
 ]
 
 { #category : #accessing }
-NameVariableRequirement >> name: aString [
+MOPNameVariableRequirement >> name: aString [
 
 	name := aString
 ]
 
 { #category : #verifying }
-NameVariableRequirement >> verify: anASTNode [
+MOPNameVariableRequirement >> verify: anASTNode [
 
 	anASTNode isVariable ifTrue: [ ^ anASTNode name = name ].
 	^ false

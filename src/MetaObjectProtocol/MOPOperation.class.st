@@ -1,5 +1,5 @@
 Class {
-	#name : #Operation,
+	#name : #MOPOperation,
 	#superclass : #Object,
 	#instVars : [
 		'requirement',
@@ -9,25 +9,25 @@ Class {
 }
 
 { #category : #accessing }
-Operation >> apply: aRFOperation [
+MOPOperation >> apply: aRFOperation [
 
 	self subclassResponsibility 
 ]
 
 { #category : #initialization }
-Operation >> initialize [ 
+MOPOperation >> initialize [ 
 
-	self requirement: NoRequirement new
+	self requirement: MOPNoRequirement new
 ]
 
 { #category : #accessing }
-Operation >> requirement [
+MOPOperation >> requirement [
 	
 	^ requirement 
 ]
 
 { #category : #accessing }
-Operation >> requirement: aRequirement [
+MOPOperation >> requirement: aRequirement [
 
 	requirement := aRequirement
 ]

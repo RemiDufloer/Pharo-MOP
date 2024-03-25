@@ -1,11 +1,11 @@
 Class {
-	#name : #OrRequirement,
-	#superclass : #LogicRequirement,
+	#name : #MOPOrRequirement,
+	#superclass : #MOPLogicRequirement,
 	#category : #MetaObjectProtocol
 }
 
 { #category : #'instance creation' }
-OrRequirement class >> left: aRequirementLeft right: aRequirementRight [
+MOPOrRequirement class >> left: aRequirementLeft right: aRequirementRight [
 
 	^ self new
 		  left: aRequirementLeft;
@@ -14,7 +14,7 @@ OrRequirement class >> left: aRequirementLeft right: aRequirementRight [
 ]
 
 { #category : #verifying }
-OrRequirement >> verify: anASTNode [
+MOPOrRequirement >> verify: anASTNode [
 
 	^ (self left verify: anASTNode) or: [ self right verify: anASTNode ]
 ]

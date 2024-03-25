@@ -1,11 +1,11 @@
 Class {
-	#name : #AndRequirement,
-	#superclass : #LogicRequirement,
+	#name : #MOPAndRequirement,
+	#superclass : #MOPLogicRequirement,
 	#category : #MetaObjectProtocol
 }
 
 { #category : #verifying }
-AndRequirement >> verify: anASTNode [
+MOPAndRequirement >> verify: anASTNode [
 
 	^ (self left verify: anASTNode) and: [ self right verify: anASTNode ]
 ]

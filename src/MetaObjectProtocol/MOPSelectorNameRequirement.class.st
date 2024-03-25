@@ -1,6 +1,6 @@
 Class {
-	#name : #SelectorNameRequirement,
-	#superclass : #Requirement,
+	#name : #MOPSelectorNameRequirement,
+	#superclass : #MOPRequirement,
 	#instVars : [
 		'name'
 	],
@@ -8,19 +8,19 @@ Class {
 }
 
 { #category : #accessing }
-SelectorNameRequirement class >> name: aString [
+MOPSelectorNameRequirement class >> name: aString [
 
 	^ self new name: aString 
 ]
 
 { #category : #accessing }
-SelectorNameRequirement >> name: aString [
+MOPSelectorNameRequirement >> name: aString [
 
 	name := aString
 ]
 
 { #category : #verifying }
-SelectorNameRequirement >> verify: anASTNode [
+MOPSelectorNameRequirement >> verify: anASTNode [
 
 	anASTNode isMethod ifTrue: [ ^ anASTNode selector = name ].
 	^ false
