@@ -37,7 +37,7 @@ MOPProxy >> identityHash [
 	^ self basicIdentityHash bitShift: 8
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPProxy >> mop [
 
 	^ metaObject protocol

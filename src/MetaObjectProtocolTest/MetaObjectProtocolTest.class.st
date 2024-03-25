@@ -32,15 +32,17 @@ MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 { #category : #tests }
 MetaObjectProtocolTest >> testMOPCreation [
 
-	| object  dictionary result |
+	| object  dictionary result defaultClass |
 
 	object := MOPTestObject new.
 	dictionary := IdentityDictionary new.
 	dictionary at: object put: 'value'.
 	
+	self assert: object class equals: MOPTestObject.
+	
 	object mop.
 	
-	self assert: object class equals: MOPTestObject.
+	self assert: object class superclass equals: MOPTestObject  .
 	self assert: (dictionary at: object) equals: 'value'.
 	
 	result := object exampleMethod: 'expected'.
