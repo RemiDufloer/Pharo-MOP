@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'operations',
 		'requirement',
-		'installedNodes'
+		'instrumentationInstalleur'
 	],
 	#category : #MetaObjectProtocol
 }
@@ -25,51 +25,25 @@ MOPInstrumentation >> execute: aRFOperation [
 MOPInstrumentation >> initialize [
 
 	operations := OrderedCollection new.
-	installedNodes := OrderedCollection new.
 	self requirement: MOPNoRequirement new
 ]
 
-{ #category : #MetaLink }
-MOPInstrumentation >> installOnMethod: aRBMethod [
-
-	| nodeOfMethodNeedToInstall |
-	nodeOfMethodNeedToInstall := aRBMethod ast allChildren.
-	nodeOfMethodNeedToInstall removeAllFoundIn: self installedNodes.
-
-	nodeOfMethodNeedToInstall do: [ :n | self installOnNode: n ]
-]
-
-{ #category : #MetaLink }
-MOPInstrumentation >> installOnNode: aNode [
-
-	| link |
-	(self requirement verify: aNode) ifFalse: [ ^ nil ].
-
-	link := MetaLink new.
-	link arguments: #( operation ).
-	link control: #instead.
-	link metaObject: self.
-	link selector: #execute:.
-	link optionCompileOnLinkInstallation: true.
-
-	(link checkForCompatibilityWith: aNode) ifFalse: [ ^ nil ].
-
-	[ aNode link: link ]
-		on: Exception
-		do: [ link disable . ^ nil ].
-	self installedNodes add: aNode
+{ #category : #actions }
+MOPInstrumentation >> install [
+	self flag: 'todo'.
+	self instrumentationInstalleur install
 ]
 
 { #category : #accessing }
-MOPInstrumentation >> installedNodes [
+MOPInstrumentation >> instrumentationInstalleur [
 
-	^ installedNodes
+	^ instrumentationInstalleur
 ]
 
 { #category : #accessing }
-MOPInstrumentation >> installedNodes: anObject [
+MOPInstrumentation >> instrumentationInstalleur: anObject [
 
-	installedNodes := anObject
+	instrumentationInstalleur := anObject
 ]
 
 { #category : #accessing }
@@ -97,6 +71,8 @@ MOPInstrumentation >> requirement: aRequirement [
 ]
 
 { #category : #installation }
-MOPInstrumentation >> uninstalAll [
-	self installedNodes do: [ :n | n links do: [:l | l uninstall] ]
+MOPInstrumentation >> uninstall [
+
+	self instrumentationInstalleur uninstall: self
+	
 ]

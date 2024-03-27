@@ -32,7 +32,7 @@ MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 { #category : #tests }
 MetaObjectProtocolTest >> testMOPCreation [
 
-	| object  dictionary result defaultClass |
+	| object  dictionary result |
 
 	object := MOPTestObject new.
 	dictionary := IdentityDictionary new.
@@ -48,4 +48,37 @@ MetaObjectProtocolTest >> testMOPCreation [
 	result := object exampleMethod: 'expected'.
 
 	self assert: result equals: 'expected'
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testMOPObjectCentric [
+
+	| objectA objectB protocol builder result valueB |
+	
+	objectA := MOPTestObject new.
+	objectB := MOPTestObject new.
+	protocol := objectA mop.
+	result := 'string :'.
+
+	builder := protocol newInstrumentation.
+
+	builder := builder newRequirementInstallation.
+	builder newRequirement:
+		(MOPSelectorNameRequirement name: 'exampleMethod:').
+	builder andRequirement: (MOPArgumentsSizeRequirement new size: 1).
+
+	builder newOperation newBlockOperation: [ :o |
+		result := result , 'op1' ].
+
+	builder newOperation newBlockOperation: [ :o |
+		result := result , 'op2' ].
+
+	builder push.
+
+	objectA exampleMethod: 'test'.
+
+	valueB := objectB exampleMethod: 'test'.
+
+	self assert: result equals: 'string :op1op2'.
+	self assert: valueB equals: 'test'
 ]
