@@ -1,6 +1,6 @@
 Class {
-	#name : #ROCBottom,
-	#superclass : #ROCMiddle,
+	#name : #MOPBottom,
+	#superclass : #MOPMiddle,
 	#instVars : [
 		'var1'
 	],
@@ -8,34 +8,34 @@ Class {
 }
 
 { #category : #assignments }
-ROCBottom >> assignmentTest [
+MOPBottom >> assignmentTest [
 	var1 := 4 squared.
 ]
 
 { #category : #'as yet unclassified' }
-ROCBottom >> mWithSuper [
+MOPBottom >> mWithSuper [
 	^super mWithSuper + 1
 ]
 
 { #category : #'as yet unclassified' }
-ROCBottom >> redefineNoSuper [
+MOPBottom >> redefineNoSuper [
 	^1
 ]
 
 { #category : #'as yet unclassified' }
-ROCBottom >> superUpToMiddleHierarchy [
+MOPBottom >> superUpToMiddleHierarchy [
 	"I call super"
 	^ super superUpToMiddleHierarchy + 1
 ]
 
 { #category : #accessing }
-ROCBottom >> var1 [
+MOPBottom >> var1 [
 
 	^ var1
 ]
 
 { #category : #accessing }
-ROCBottom >> var1: anObject [
+MOPBottom >> var1: anObject [
 
 	var1 := anObject
 ]

@@ -1,5 +1,5 @@
 Class {
-	#name : #ROCTop,
+	#name : #MOPTop,
 	#superclass : #Object,
 	#instVars : [
 		'x'
@@ -8,45 +8,45 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-ROCTop >> index [
+MOPTop >> index [
 
 	^ -3
 ]
 
 { #category : #'as yet unclassified' }
-ROCTop >> instVarAccessInSuperCall [
+MOPTop >> instVarAccessInSuperCall [
 	^self index
 	
 ]
 
 { #category : #accessing }
-ROCTop >> m [
+MOPTop >> m [
  	x := self m2
 ]
 
 { #category : #accessing }
-ROCTop >> m2 [
+MOPTop >> m2 [
 	'coucou' crTrace.
  	^self
 ]
 
 { #category : #'as yet unclassified' }
-ROCTop >> mWithSuper [
+MOPTop >> mWithSuper [
 	^self index
 ]
 
 { #category : #'as yet unclassified' }
-ROCTop >> redefineNoSuper [
+MOPTop >> redefineNoSuper [
 
 	^ 1
 ]
 
 { #category : #'as yet unclassified' }
-ROCTop >> superUpToMiddleHierarchy [
+MOPTop >> superUpToMiddleHierarchy [
 	"I do nothing"
 ]
 
 { #category : #accessing }
-ROCTop >> x [
+MOPTop >> x [
 	 ^x
 ]

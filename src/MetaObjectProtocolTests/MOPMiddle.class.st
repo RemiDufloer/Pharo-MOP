@@ -1,28 +1,28 @@
 Class {
-	#name : #ROCMiddle,
-	#superclass : #ROCTop,
+	#name : #MOPMiddle,
+	#superclass : #MOPTop,
 	#category : #MetaObjectProtocolTests
 }
 
 { #category : #'as yet unclassified' }
-ROCMiddle >> instVarAccessInSuperCall [
+MOPMiddle >> instVarAccessInSuperCall [
 	x := 1 + super instVarAccessInSuperCall.
 	^x
 ]
 
 { #category : #'as yet unclassified' }
-ROCMiddle >> mWithSuper [
+MOPMiddle >> mWithSuper [
 	^super mWithSuper + 2
 ]
 
 { #category : #'as yet unclassified' }
-ROCMiddle >> redefineNoSuper [
+MOPMiddle >> redefineNoSuper [
 
 	^ super redefineNoSuper + 1
 ]
 
 { #category : #'as yet unclassified' }
-ROCMiddle >> superUpToMiddleHierarchy [
+MOPMiddle >> superUpToMiddleHierarchy [
 	"I do not call super"
 	^ 1
 ]

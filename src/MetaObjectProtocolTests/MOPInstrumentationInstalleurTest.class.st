@@ -34,15 +34,15 @@ MOPInstrumentationInstalleurTest >> testBeForObject [
 MOPInstrumentationInstalleurTest >> testBuildSuperSendsChainFromSourceMethodToHighestMethodInClassHierarchy [
 
 	|sourceMethod targetMethod chain lastFoundMethod|
-	sourceMethod := ROCBottom >> #mWithSuper.
-	targetMethod := ROCTop >> #mWithSuper.
+	sourceMethod := MOPBottom >> #mWithSuper.
+	targetMethod := MOPTop >> #mWithSuper.
 	chain := OrderedCollection new.
 	
 	lastFoundMethod := instrumenter buildSuperSendsChainFrom: sourceMethod upTo: nil in: chain.	
 	
 	self assert: chain size equals: 2.
 	self assert: chain first identicalTo: sourceMethod.
-	self assert: chain last identicalTo: (ROCMiddle >> #mWithSuper).
+	self assert: chain last identicalTo: (MOPMiddle >> #mWithSuper).
 	self assert: lastFoundMethod identicalTo: targetMethod
 
 	
@@ -52,8 +52,8 @@ MOPInstrumentationInstalleurTest >> testBuildSuperSendsChainFromSourceMethodToHi
 MOPInstrumentationInstalleurTest >> testBuildSuperSendsChainFromSourceMethodToTargetMethod [
 
 	|sourceMethod targetMethod chain lastFoundMethod|
-	sourceMethod := ROCBottom >> #mWithSuper.
-	targetMethod := ROCMiddle >> #mWithSuper.
+	sourceMethod := MOPBottom >> #mWithSuper.
+	targetMethod := MOPMiddle >> #mWithSuper.
 	chain := OrderedCollection new.
 	
 	lastFoundMethod := instrumenter buildSuperSendsChainFrom: sourceMethod upTo: targetMethod in: chain.	
@@ -69,8 +69,8 @@ MOPInstrumentationInstalleurTest >> testBuildSuperSendsChainFromSourceMethodToTa
 MOPInstrumentationInstalleurTest >> testBuildSuperSendsChainFromSourceMethodToTargetMethodFailure [
 
 	|sourceMethod targetMethod chain lastFoundMethod|
-	sourceMethod := ROCBottom >> #superUpToMiddleHierarchy.
-	targetMethod := ROCTop >> #superUpToMiddleHierarchy.
+	sourceMethod := MOPBottom >> #superUpToMiddleHierarchy.
+	targetMethod := MOPTop >> #superUpToMiddleHierarchy.
 	chain := OrderedCollection new.
 	
 	lastFoundMethod := instrumenter buildSuperSendsChainFrom: sourceMethod upTo: targetMethod in: chain.	
@@ -89,10 +89,10 @@ MOPInstrumentationInstalleurTest >> testCompileEmptySuperSendChain [
 MOPInstrumentationInstalleurTest >> testCompileSuperSendChain [
 
 	|chain compiledSelectors|
-	testObject := ROCBottom new.
+	testObject := MOPBottom new.
 	instrumenter beForObject: testObject.
 	 
-	chain := {ROCBottom >> #mWithSuper. ROCMiddle >> #mWithSuper. ROCTop >> #mWithSuper  }.
+	chain := {MOPBottom >> #mWithSuper. MOPMiddle >> #mWithSuper. MOPTop >> #mWithSuper  }.
 	compiledSelectors := instrumenter compileSuperSendChain: chain.
 	
 	self assert: compiledSelectors size equals: chain size.
@@ -104,19 +104,19 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChain [
 	self assert: (instrumenter compiledSelectorsMap at: compiledSelectors second) equals: compiledSelectors third.
 	self should: [(instrumenter compiledSelectorsMap at: compiledSelectors third)] raise: KeyNotFound.
 	
-	self assert: (testObject class >> compiledSelectors first) ast body sourceCode equals: (ROCBottom >> #mWithSuper) ast body sourceCode.
-	self assert: (testObject class >> compiledSelectors second) ast body sourceCode equals: (ROCMiddle >> #mWithSuper) ast body sourceCode.
-	self assert: (testObject class >> compiledSelectors third) ast body sourceCode equals: (ROCTop >> #mWithSuper) ast body sourceCode.
+	self assert: (testObject class >> compiledSelectors first) ast body sourceCode equals: (MOPBottom >> #mWithSuper) ast body sourceCode.
+	self assert: (testObject class >> compiledSelectors second) ast body sourceCode equals: (MOPMiddle >> #mWithSuper) ast body sourceCode.
+	self assert: (testObject class >> compiledSelectors third) ast body sourceCode equals: (MOPTop >> #mWithSuper) ast body sourceCode.
 ]
 
 { #category : #'tests - method flattening' }
 MOPInstrumentationInstalleurTest >> testCompileSuperSendChainWithoutSuper [
 
 	|chain compiledSelectors|
-	testObject := ROCBottom new.
+	testObject := MOPBottom new.
 	instrumenter beForObject: testObject.
 
-	chain := {ROCBottom >> #mWithSuper}.
+	chain := {MOPBottom >> #mWithSuper}.
 	compiledSelectors := instrumenter compileSuperSendChain: chain.
 	
 	self assert: compiledSelectors size equals: chain size.
@@ -124,7 +124,7 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChainWithoutSuper [
 	
 	self assertEmpty: (instrumenter compiledSelectorsMap).
 	
-	self assert: (testObject class >> compiledSelectors first) sourceCode equals: (ROCBottom >> #mWithSuper) sourceCode
+	self assert: (testObject class >> compiledSelectors first) sourceCode equals: (MOPBottom >> #mWithSuper) sourceCode
 ]
 
 { #category : #'tests - method flattening' }
@@ -132,14 +132,14 @@ MOPInstrumentationInstalleurTest >> testFindEmptySuperSendsChainFor [
 
 	|method chain|	
 	"Case 1: the method is not reachable from Bib instances"
-	instrumenter beForObject: ROCMiddle new.
-	method := ROCBottom >> #mWithSuper.
+	instrumenter beForObject: MOPMiddle new.
+	method := MOPBottom >> #mWithSuper.
 	chain := instrumenter findSuperSendsChainFor: method.	
 	self assertEmpty: chain.
 	
 	"Case 2: the method is not reachable from Bub instances"
-	instrumenter beForObject: ROCBottom new.
-	method := ROCMiddle >> #redefineNoSuper.
+	instrumenter beForObject: MOPBottom new.
+	method := MOPMiddle >> #redefineNoSuper.
 	chain := instrumenter findSuperSendsChainFor: method.	
 	self assertEmpty: chain
 ]
@@ -149,30 +149,30 @@ MOPInstrumentationInstalleurTest >> testFindSuperSendsChainFor [
 
 	|method chain|	
 	
-	instrumenter beForObject: ROCBottom new.
+	instrumenter beForObject: MOPBottom new.
 	
 	"Case 1: the method is reachable from Bub instances but has no super calls"
-	method := ROCMiddle >> #superUpToMiddleHierarchy.
+	method := MOPMiddle >> #superUpToMiddleHierarchy.
 	chain := instrumenter findSuperSendsChainFor: method.	
 	self assert: chain size equals: 2.
-	self assert: chain first identicalTo: (ROCBottom >> #superUpToMiddleHierarchy).
-	self assert: chain last identicalTo: (ROCMiddle >> #superUpToMiddleHierarchy).
+	self assert: chain first identicalTo: (MOPBottom >> #superUpToMiddleHierarchy).
+	self assert: chain last identicalTo: (MOPMiddle >> #superUpToMiddleHierarchy).
 	
 	"Case 2: the method is reachable from Bub instances and calls super up to Object"
-	method := ROCMiddle >> #mWithSuper.
+	method := MOPMiddle >> #mWithSuper.
 	chain := instrumenter findSuperSendsChainFor: method.	
 	self assert: chain size equals: 3.
-	self assert: chain first identicalTo: (ROCBottom >> #mWithSuper).
-	self assert: chain second identicalTo: (ROCMiddle >> #mWithSuper).
-	self assert: chain last identicalTo: (ROCTop >> #mWithSuper).
+	self assert: chain first identicalTo: (MOPBottom >> #mWithSuper).
+	self assert: chain second identicalTo: (MOPMiddle >> #mWithSuper).
+	self assert: chain last identicalTo: (MOPTop >> #mWithSuper).
 	
 	"Case 2 variant"
-	method := ROCBottom >> #mWithSuper.
+	method := MOPBottom >> #mWithSuper.
 	chain := instrumenter findSuperSendsChainFor: method.	
 	self assert: chain size equals: 3.
-	self assert: chain first identicalTo: (ROCBottom >> #mWithSuper).
-	self assert: chain second identicalTo: (ROCMiddle >> #mWithSuper).
-	self assert: chain last identicalTo: (ROCTop >> #mWithSuper).
+	self assert: chain first identicalTo: (MOPBottom >> #mWithSuper).
+	self assert: chain second identicalTo: (MOPMiddle >> #mWithSuper).
+	self assert: chain last identicalTo: (MOPTop >> #mWithSuper).
 ]
 
 { #category : #tests }
@@ -194,13 +194,13 @@ MOPInstrumentationInstalleurTest >> testInstrumentedClass [
 MOPInstrumentationInstalleurTest >> testIsMethodReachableInHierarchy [
 	
 	|method|
-	instrumenter beForObject: ROCMiddle new.
-	self assert: (instrumenter isClassReachableInHierarchy: ROCMiddle).
+	instrumenter beForObject: MOPMiddle new.
+	self assert: (instrumenter isClassReachableInHierarchy: MOPMiddle).
 	
-	method := ROCBottom >> #mWithSuper.	
+	method := MOPBottom >> #mWithSuper.	
 	self deny: (instrumenter isClassReachableInHierarchy: method methodClass).
 	
-	method := ROCTop >> #mWithSuper.
+	method := MOPTop >> #mWithSuper.
 	self assert: (instrumenter isClassReachableInHierarchy: method methodClass).
 	
 
@@ -245,9 +245,9 @@ MOPInstrumentationInstalleurTest >> testOriginalClass [
 MOPInstrumentationInstalleurTest >> testRedirectSuperSendsInToSelector [
 	|ast superSendNode result|
 
-	testObject := ROCBottom new.
+	testObject := MOPBottom new.
 	instrumenter beForObject: testObject.
-	testObject class compile: (ROCBottom>>#mWithSuper) sourceCode.
+	testObject class compile: (MOPBottom>>#mWithSuper) sourceCode.
 	testObject class compile: 'testSelector x := 42. ^x'.
 	ast := (testObject class>>#mWithSuper) ast.
 	superSendNode := (ast sendNodes select: [ :node | node receiver isSuperVariable ]) first.
@@ -259,4 +259,31 @@ MOPInstrumentationInstalleurTest >> testRedirectSuperSendsInToSelector [
 	result := testObject mWithSuper.	
 	self assert: result equals: 43.
 	self assert: testObject x equals: 42
+]
+
+{ #category : #'tests - method flattening' }
+MOPInstrumentationInstalleurTest >> testSuperChainMethodWriteInAnonymousClassWhenInstrumentMethod [
+
+	| testObjectClass result op instrumentation |
+	testObject := MOPBottom new.
+	testObjectClass := testObject class.
+	instrumenter beForObject: testObject.
+	result := 0.
+	op := MOPBlockOperation block: [ :o | result := result + 1 ].
+	instrumentation := MOPInstrumentation new addOperation: op.
+	instrumentation requirement:
+		(MOPSelectorNameRequirement name: 'mWithSuper').
+
+
+	self should: [ testObject class >> #mWithSuper ] raise: KeyNotFound.
+	self should: [ testObject class >> #_2_mWithSuper ] raise: KeyNotFound.
+	self should: [ testObject class >> #_3_mWithSuper ] raise: KeyNotFound.
+	
+	instrumenter install: instrumentation  onMethod: (testObjectClass >> #mWithSuper) .
+	
+	self assert: (testObject class methodDict keys includes:  #mWithSuper)  .
+	self assert: (testObject class methodDict keys includes:  #_2_mWithSuper).
+	self assert: (testObject class methodDict keys includes:  #_3_mWithSuper).
+	
+
 ]
