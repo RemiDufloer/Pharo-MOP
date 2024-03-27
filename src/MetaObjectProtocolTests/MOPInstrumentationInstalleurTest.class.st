@@ -23,7 +23,7 @@ MOPInstrumentationInstalleurTest >> setUp [
 { #category : #tests }
 MOPInstrumentationInstalleurTest >> testBeForObject [
 	
-	instrumenter beForObject: testObject.
+	instrumenter object: testObject.
 	self assert: instrumenter instrumentedObject identicalTo: testObject.
 	self assert: instrumenter instrumentedClass identicalTo: testObject class.
 	self assert: instrumenter instrumentedClass isAnonymous.
@@ -90,7 +90,7 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChain [
 
 	|chain compiledSelectors|
 	testObject := MOPBottom new.
-	instrumenter beForObject: testObject.
+	instrumenter object: testObject.
 	 
 	chain := {MOPBottom >> #mWithSuper. MOPMiddle >> #mWithSuper. MOPTop >> #mWithSuper  }.
 	compiledSelectors := instrumenter compileSuperSendChain: chain.
@@ -114,7 +114,7 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChainWithoutSuper [
 
 	|chain compiledSelectors|
 	testObject := MOPBottom new.
-	instrumenter beForObject: testObject.
+	instrumenter object: testObject.
 
 	chain := {MOPBottom >> #mWithSuper}.
 	compiledSelectors := instrumenter compileSuperSendChain: chain.
@@ -132,13 +132,13 @@ MOPInstrumentationInstalleurTest >> testFindEmptySuperSendsChainFor [
 
 	|method chain|	
 	"Case 1: the method is not reachable from Bib instances"
-	instrumenter beForObject: MOPMiddle new.
+	instrumenter object: MOPMiddle new.
 	method := MOPBottom >> #mWithSuper.
 	chain := instrumenter findSuperSendsChainFor: method.	
 	self assertEmpty: chain.
 	
 	"Case 2: the method is not reachable from Bub instances"
-	instrumenter beForObject: MOPBottom new.
+	instrumenter object: MOPBottom new.
 	method := MOPMiddle >> #redefineNoSuper.
 	chain := instrumenter findSuperSendsChainFor: method.	
 	self assertEmpty: chain
@@ -149,7 +149,7 @@ MOPInstrumentationInstalleurTest >> testFindSuperSendsChainFor [
 
 	|method chain|	
 	
-	instrumenter beForObject: MOPBottom new.
+	instrumenter object: MOPBottom new.
 	
 	"Case 1: the method is reachable from Bub instances but has no super calls"
 	method := MOPMiddle >> #superUpToMiddleHierarchy.
@@ -184,7 +184,7 @@ MOPInstrumentationInstalleurTest >> testInstantiation [
 { #category : #tests }
 MOPInstrumentationInstalleurTest >> testInstrumentedClass [
 
-	instrumenter beForObject: testObject.
+	instrumenter object: testObject.
 	self
 		assert: instrumenter instrumentedClass
 		identicalTo: testObject class
@@ -194,7 +194,7 @@ MOPInstrumentationInstalleurTest >> testInstrumentedClass [
 MOPInstrumentationInstalleurTest >> testIsMethodReachableInHierarchy [
 	
 	|method|
-	instrumenter beForObject: MOPMiddle new.
+	instrumenter object: MOPMiddle new.
 	self assert: (instrumenter isClassReachableInHierarchy: MOPMiddle).
 	
 	method := MOPBottom >> #mWithSuper.	
@@ -208,57 +208,10 @@ MOPInstrumentationInstalleurTest >> testIsMethodReachableInHierarchy [
 ]
 
 { #category : #tests }
-MOPInstrumentationInstalleurTest >> testNewLinkForSelector [
-	|link interceptor|
-	link := instrumenter newLinkForSelector: #selector.	
-	self assert: link control equals: #instead.
-	self assert: link selector equals: #execute.
-	self assertEmpty: link arguments.
-	self assert: link optionCompileOnLinkInstallation.
-	
-	interceptor := link metaObject.	
-	self assert: interceptor selector identicalTo: #selector.
-	self assert: interceptor metaObject equals: instrumenter metaObject.
-
-	
-	link := instrumenter newLinkForSelector: #selector:.	
-	self assert: link control equals: #instead.
-	self assert: link selector equals: #executeWithArgs:.
-	self assert: link arguments equals: #(arguments).
-	self assert: link optionCompileOnLinkInstallation.
-	
-	interceptor := link metaObject.	
-	self assert: interceptor selector identicalTo: #selector:.
-	self assert: interceptor metaObject equals: instrumenter metaObject
-
-	
-]
-
-{ #category : #tests }
 MOPInstrumentationInstalleurTest >> testOriginalClass [
 
-	instrumenter beForObject: testObject.
+	instrumenter object: testObject.
 	self assert: instrumenter originalClass identicalTo: Object
-]
-
-{ #category : #'tests - instrumentation' }
-MOPInstrumentationInstalleurTest >> testRedirectSuperSendsInToSelector [
-	|ast superSendNode result|
-
-	testObject := MOPBottom new.
-	instrumenter beForObject: testObject.
-	testObject class compile: (MOPBottom>>#mWithSuper) sourceCode.
-	testObject class compile: 'testSelector x := 42. ^x'.
-	ast := (testObject class>>#mWithSuper) ast.
-	superSendNode := (ast sendNodes select: [ :node | node receiver isSuperVariable ]) first.
-		
-	instrumenter redirectSuperSendsIn: ast toSelector: #testSelector.
-	
-	self assert: superSendNode links notEmpty.
-	
-	result := testObject mWithSuper.	
-	self assert: result equals: 43.
-	self assert: testObject x equals: 42
 ]
 
 { #category : #'tests - method flattening' }
@@ -267,7 +220,7 @@ MOPInstrumentationInstalleurTest >> testSuperChainMethodWriteInAnonymousClassWhe
 	| testObjectClass result op instrumentation |
 	testObject := MOPBottom new.
 	testObjectClass := testObject class.
-	instrumenter beForObject: testObject.
+	instrumenter object: testObject.
 	result := 0.
 	op := MOPBlockOperation block: [ :o | result := result + 1 ].
 	instrumentation := MOPInstrumentation new addOperation: op.

@@ -18,15 +18,6 @@ MOPMetaObject >> addInstrumentation: anInstrumentation [
 	
 ]
 
-{ #category : #private }
-MOPMetaObject >> annonymousClassCreator [
-
-	object class isAnonymous ifFalse: [ 
-		object class newAnonymousSubclass adoptInstance: object ].
-
-	
-]
-
 { #category : #accessing }
 MOPMetaObject >> giveMethodAssociatedToMessage: aMessage [
 
@@ -75,7 +66,6 @@ MOPMetaObject >> instrumentations [
 MOPMetaObject >> object: anObject [
  
 	object := anObject.
-	self annonymousClassCreator.
 	instrumentationInstalleur object: anObject
 	
 ]

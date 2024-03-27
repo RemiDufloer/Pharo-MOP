@@ -19,13 +19,13 @@ MOPInstrumentationInstalleur class >> for: aMetaObject [
 		  yourself
 ]
 
-{ #category : #'api - model' }
-MOPInstrumentationInstalleur >> beForObject: anObject [ 
-	
+{ #category : #'as yet unclassified' }
+MOPInstrumentationInstalleur >> anonymousClassForObject: anObject [
+
 	anObject class isAnonymous ifFalse: [ 
 		anObject class newAnonymousSubclass adoptInstance: anObject ].
-	instrumentedObject := anObject.
-	instrumentedClass := anObject class
+	^ anObject 
+
 	
 ]
 
@@ -163,60 +163,22 @@ MOPInstrumentationInstalleur >> install: anInstrumentation onNode: aNode [
 
 	(link checkForCompatibilityWith: aNode) ifFalse: [ ^ nil ].
 
+	"if a user has not put enough requirements it is possible that the chosen node does not support the metaLink, if this is the case then it deactivates it"
 	[ aNode link: link ]
 		on: Exception
-		do: [ link disable . ^ nil ].
-	(installedInstrumentation at:anInstrumentation ifAbsent: [installedInstrumentation at:anInstrumentation put: OrderedCollection new]) add: aNode .
-	
+		do: [
+			link disable.
+			^ nil ].
+		
+	(installedInstrumentation
+		 at: anInstrumentation
+		 ifAbsentPut: [ OrderedCollection new ]) add: aNode
 ]
 
 { #category : #accessing }
 MOPInstrumentationInstalleur >> installedInstrumentation [
 
 	^ installedInstrumentation
-]
-
-{ #category : #instrumentation }
-MOPInstrumentationInstalleur >> instrumentMethod: method selector: selector [
-
-	| newMethod methodsToInstrument compiledSelectors |
-	methodsToInstrument := self findSuperSendsChainFor: method.
-	self flag:
-		'Odd: can it really be empty? what about the method passed as paramter?'.
-	methodsToInstrument isEmpty ifTrue: [ ^ self ].
-
-	compiledSelectors := self compileSuperSendChain: methodsToInstrument.
-
-	compiledSelectors do: [ :cs | 
-		| ast |
-		newMethod := instrumentedClass >> cs.
-		ast := newMethod ast.
-		"self redirectSelfArgsIn: ast."  "link for selector instead with Nil"
-		self redirectMessagesSendIn: ast.
-		self redirectSelfReturnsIn: ast. "link for selector after with Nil"
-		self redirectVariableReadingIn: ast.
-		self redirectVariableWritingIn: ast.
-
-		self compiledSelectorsMap
-			at: cs
-			ifPresent: [ :redirectionSelector | 
-				self redirectSuperSendsIn: ast toSelector: redirectionSelector "link for selector" ] ]
-]
-
-{ #category : #instrumentation }
-MOPInstrumentationInstalleur >> instrumentSelector: selector withArgs: args [
-
-	| method |
-	method := instrumentedClass lookupSelector: selector.
-	method isPrimitive ifTrue: [ 
-		method primitive = 188 ifTrue: [ 			
-			method := args second.
-			self instrumentMethod: method selector: method selector.
-			args removeLast.
-			args addLast: (instrumentedClass lookupSelector: method selector)  ].
-		^ self ].
-	self instrumentMethod: method selector: selector.
-	
 ]
 
 { #category : #accessing }
@@ -262,153 +224,18 @@ MOPInstrumentationInstalleur >> metaObject: aMetaObject [
 	metaObject := aMetaObject
 ]
 
-{ #category : #instrumentation }
-MOPInstrumentationInstalleur >> newInsteadLinkForAssignments [
-
-	| link interceptor |
-	link := MetaLink new.
-	link control: #instead.
-
-	interceptor := Object new.
-	interceptor metaObject: metaObject.
-
-	link metaObject: interceptor.
-	link selector: #execute:.
-	link arguments: #( operation ).
-	"link selector: #execute:withValue:.
-	link arguments: #( name value )."
-	link optionCompileOnLinkInstallation: true.
-	^ link
-]
-
-{ #category : #instrumentation }
-MOPInstrumentationInstalleur >> newInsteadLinkForMessagesSend [
-
-	| link interceptor |
-	link := MetaLink new.
-	link control: #instead.
-
-	interceptor := Object new.
-	interceptor metaObject: metaObject.
-
-	link metaObject: interceptor.
-	link selector: #execute:.
-	link arguments: #( operation ).
-	"link arguments: #( selector receiver arguments value ).
-	link optionArgsAsArray: true."
-	link optionCompileOnLinkInstallation: true.
-	^ link
-]
-
-{ #category : #instrumentation }
-MOPInstrumentationInstalleur >> newInsteadLinkForVariableRead [
-
-	| link interceptor |
-	link := MetaLink new.
-	link control: #instead.
-
-	interceptor := Object new.
-	interceptor metaObject: metaObject.
-
-	link metaObject: interceptor.
-	"link selector: #execute:.
-	link arguments: #( operation )."
-	link selector: #execute:withValue:.
-	link arguments: #( name value).
-	link optionCompileOnLinkInstallation: true.
-	^ link
-]
-
-{ #category : #instrumentation }
-MOPInstrumentationInstalleur >> newLinkForSelector: selector [
-
-	| link interceptor |
-	link := MetaLink new.
-	link control: #instead.
+{ #category : #'api - model' }
+MOPInstrumentationInstalleur >> object: anObject [ 
 	
-	interceptor := Object new.
-	interceptor selector: selector.
-	interceptor metaObject: metaObject.
+	instrumentedObject := self anonymousClassForObject: anObject.
+	instrumentedClass := anObject class
 	
-	link metaObject: interceptor.
-	(selector notNil and: [selector isKeyword])
-		ifTrue: [ 
-			link selector: #executeWithArgs:.
-			link arguments: #( arguments )]
-		ifFalse: [ link selector: #execute ].
-
-	link optionCompileOnLinkInstallation: true.
-"	link level: 0."
-	^ link
-]
-
-{ #category : #accessing }
-MOPInstrumentationInstalleur >> object: anObject [
-
-	self instrumentedObject: anObject .
-	self instrumentedClass: anObject class
 ]
 
 { #category : #accessing }
 MOPInstrumentationInstalleur >> originalClass [
 
 	^ instrumentedClass superclass
-]
-
-{ #category : #instrumentation }
-MOPInstrumentationInstalleur >> redirectMessagesSendIn: ast [
-
-	| messageSendNode |
-	messageSendNode := ast sendNodes reject: [ :node | node isBinary ].
-	messageSendNode do: [ :node | 
-		node link: (self newInsteadLinkForMessagesSend) ]
-]
-
-{ #category : #instrumentation }
-MOPInstrumentationInstalleur >> redirectSelfReturnsIn: ast [
-
-	| returnNodes |
-	returnNodes := ast allChildren select: [ :node | 
-		               node isReturn and: [ node value isSelfVariable ] ].
-	returnNodes do: [ :node | 
-	
-		node value link:
-			((self newLinkForSelector: nil)
-				 control: #after;
-				 yourself) ]
-]
-
-{ #category : #installeur }
-MOPInstrumentationInstalleur >> redirectSuperSendsIn: ast toSelector: aSelector [
-	
-	| methodName nodes  |
-	methodName := ast methodNode method name.
-	nodes := ast sendNodes select: [ :node | node receiver isSuperVariable ].
-	nodes do: [ :node | 		
-		node link: (self newLinkForSelector: aSelector) ]
-]
-
-{ #category : #instrumentation }
-MOPInstrumentationInstalleur >> redirectVariableReadingIn: ast [
-
-	| variableReadNodes |
-	variableReadNodes := ast variableReadNodes.
-	variableReadNodes := variableReadNodes reject: [ :node | 
-		                     node isSelfVariable or: [ 
-			                     node isSuperVariable or: [ 
-				                     node isThisContextVariable or: [ 
-					                     ast hasArgumentNamed: node name ] ] ] ].
-	variableReadNodes do: [ :node | 
-		node link: self newInsteadLinkForVariableRead ]
-]
-
-{ #category : #instrumentation }
-MOPInstrumentationInstalleur >> redirectVariableWritingIn: ast [
-
-	| assignmentNodes |
-	assignmentNodes := ast assignmentNodes.
-	assignmentNodes do: [ :node | 
-		node link: self newInsteadLinkForAssignments ]
 ]
 
 { #category : #'as yet unclassified' }
