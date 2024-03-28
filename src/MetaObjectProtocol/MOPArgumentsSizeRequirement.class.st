@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'size'
 	],
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-Requirement'
 }
 
 { #category : #accessing }

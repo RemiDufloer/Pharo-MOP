@@ -15,10 +15,21 @@ MOPInstrumentation >> addOperation: anOperation [
 	operations add: anOperation 
 ]
 
+{ #category : #requirement }
+MOPInstrumentation >> checkRequirementMethod: aMethod [
+
+	| nodeOfMethodWantToCheck |
+	nodeOfMethodWantToCheck := aMethod ast allChildren.
+	^ nodeOfMethodWantToCheck anySatisfy: [ :n |
+		  self requirement verify: n ]
+]
+
 { #category : #execution }
 MOPInstrumentation >> execute: aRFOperation [
-
-	^ operations do:[ :o | o apply: aRFOperation ]
+	| return |
+	return := OrderedCollection new.
+	operations do: [ :o | return add: (o apply: aRFOperation) ].
+	^ return
 ]
 
 { #category : #initialization }

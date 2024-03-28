@@ -5,7 +5,7 @@ Class {
 		'requirement',
 		'block'
 	],
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-Operation'
 }
 
 { #category : #accessing }

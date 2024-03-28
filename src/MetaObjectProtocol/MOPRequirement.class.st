@@ -1,7 +1,7 @@
 Class {
 	#name : #MOPRequirement,
 	#superclass : #Object,
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-Requirement'
 }
 
 { #category : #controlling }

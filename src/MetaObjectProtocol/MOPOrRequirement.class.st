@@ -1,7 +1,7 @@
 Class {
 	#name : #MOPOrRequirement,
 	#superclass : #MOPLogicRequirement,
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-Requirement'
 }
 
 { #category : #'instance creation' }

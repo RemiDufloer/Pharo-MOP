@@ -19,7 +19,7 @@ MOPInstrumentationInstalleur class >> for: aMetaObject [
 		  yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #MetaLink }
 MOPInstrumentationInstalleur >> anonymousClassForObject: anObject [
 
 	anObject class isAnonymous ifFalse: [ 
@@ -118,37 +118,23 @@ MOPInstrumentationInstalleur >> initialize [
 ]
 
 { #category : #installeur }
-MOPInstrumentationInstalleur >> install: aMOPInstrumentation onMethod: aRBMethod [ 
-	
-	| nodeOfMethodNeedToInstall methodNeedToInstall methodsToInstrument compiledSelectors newMethod |
-	
-	
-	
+MOPInstrumentationInstalleur >> install: aMOPInstrumentation onMethod: aRBMethod [
+
+	| nodeOfMethodNeedToInstall methodNeedToInstall methodsToInstrument compiledSelectors |
 	methodsToInstrument := self findSuperSendsChainFor: aRBMethod.
-	self flag:
-		'Odd: can it really be empty? what about the method passed as paramter?'.
-	methodsToInstrument isEmpty ifTrue: [ ^ self ].
-
 	compiledSelectors := self compileSuperSendChain: methodsToInstrument.
-	"
-	compiledSelectors do: [ :cs | 
-		| ast |
-		newMethod := instrumentedClass >> cs.
-		ast := newMethod ast.
 
-		self compiledSelectorsMap
-			at: cs
-			ifPresent: [ :redirectionSelector | 
-				self redirectSuperSendsIn: ast toSelector: redirectionSelector link for selector] ]."
-		
-	
-	
-	methodNeedToInstall := self instrumentedClass >> (aRBMethod selector).
+	self compiledSelectorsMap ifNotNil: [ self superSendChainInstall ].
+
+
+
+	methodNeedToInstall := self instrumentedClass >> aRBMethod selector.
 	nodeOfMethodNeedToInstall := methodNeedToInstall ast allChildren.
-	nodeOfMethodNeedToInstall do: [ :n | self install: aMOPInstrumentation  onNode: n ]
+	nodeOfMethodNeedToInstall do: [ :n |
+		self install: aMOPInstrumentation onNode: n ]
 ]
 
-{ #category : #MetaLink }
+{ #category : #installeur }
 MOPInstrumentationInstalleur >> install: anInstrumentation onNode: aNode [
 
 	| link |
@@ -238,7 +224,31 @@ MOPInstrumentationInstalleur >> originalClass [
 	^ instrumentedClass superclass
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #instrumentation }
+MOPInstrumentationInstalleur >> superInstrumentation: selector [
+
+	| op instrumentation requirement |
+	op := MOPSuperSendOperation selector: selector.
+	instrumentation := MOPInstrumentation new addOperation: op.
+	requirement := MOPSuperSendRequirement new.
+	instrumentation requirement: requirement.
+	^ instrumentation 
+]
+
+{ #category : #installeur }
+MOPInstrumentationInstalleur >> superSendChainInstall [
+
+	compiledSelectorsMap associationsDo: [ :assoc |
+		| key value |
+		key := assoc key.
+		value := assoc value.
+		compiledSelectorsMap removeKey: key.
+		self
+			install: (self superInstrumentation: value)
+			onMethod: instrumentedObject class >> key asSymbol ]
+]
+
+{ #category : #instrumentation }
 MOPInstrumentationInstalleur >> uninstall: anInstrumentation [
 
 	(installedInstrumentation at: anInstrumentation) do: [ :n | n links do: [:l | l uninstall]]

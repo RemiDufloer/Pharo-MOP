@@ -1,7 +1,7 @@
 Class {
 	#name : #MOPBlockOperation,
 	#superclass : #MOPOperation,
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-Operation'
 }
 
 { #category : #creating }
@@ -22,9 +22,9 @@ MOPBlockOperation class >> requirement: aRequirement block: aFullBlockClosure [
 { #category : #accessing }
 MOPBlockOperation >> apply: aRFOperation [
 
-	(requirement
-		verify: aRFOperation)
-		ifTrue: [ ^ block value: aRFOperation ]
+
+	(requirement verify: aRFOperation) ifTrue: [
+		^ block value: aRFOperation ]
 ]
 
 { #category : #accessing }

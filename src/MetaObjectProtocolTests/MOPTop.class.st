@@ -32,7 +32,8 @@ MOPTop >> m2 [
 
 { #category : #'as yet unclassified' }
 MOPTop >> mWithSuper [
-	^self index
+'top' traceCr.
+	^ self index
 ]
 
 { #category : #'as yet unclassified' }

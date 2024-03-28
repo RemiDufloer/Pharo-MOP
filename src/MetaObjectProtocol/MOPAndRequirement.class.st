@@ -1,7 +1,7 @@
 Class {
 	#name : #MOPAndRequirement,
 	#superclass : #MOPLogicRequirement,
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-Requirement'
 }
 
 { #category : #verifying }

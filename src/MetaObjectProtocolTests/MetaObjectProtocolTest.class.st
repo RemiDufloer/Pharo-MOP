@@ -51,6 +51,26 @@ MetaObjectProtocolTest >> testMOPCreation [
 ]
 
 { #category : #tests }
+MetaObjectProtocolTest >> testMOPFlatten [
+
+	| object protocol builder result |
+	object := MOPBottom new.
+	protocol := object mop.
+
+	builder := protocol newInstrumentation.
+	builder := builder newRequirementInstallation.
+	builder newRequirement:
+		(MOPSelectorNameRequirement name: 'mWithSuper:').
+	builder newOperation newBlockOperation: [ :o | 'coucou' crTrace ].
+	builder push.
+
+	result := object mWithSuper.
+
+
+	self assert: result equals: 0
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testMOPObjectCentric [
 
 	| objectA objectB protocol builder result valueB |

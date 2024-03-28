@@ -5,7 +5,7 @@ Class {
 		'left',
 		'right'
 	],
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-Requirement'
 }
 
 { #category : #testing }

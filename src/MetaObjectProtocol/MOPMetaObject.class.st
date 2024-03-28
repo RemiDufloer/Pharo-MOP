@@ -53,7 +53,9 @@ MOPMetaObject >> initialize [
 { #category : #instrument }
 MOPMetaObject >> instrumentMethod: aMethode [
 
-	self instrumentations do: [ :inst | instrumentationInstalleur  install: inst onMethod: aMethode  ] .
+	self instrumentations do: [ :inst |
+		(inst checkRequirementMethod: aMethode) ifTrue: [
+			instrumentationInstalleur install: inst onMethod: aMethode ] ]
 ]
 
 { #category : #accessing }
