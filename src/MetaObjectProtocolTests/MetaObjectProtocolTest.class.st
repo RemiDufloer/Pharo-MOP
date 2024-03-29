@@ -60,8 +60,8 @@ MetaObjectProtocolTest >> testMOPFlatten [
 	builder := protocol newInstrumentation.
 	builder := builder newRequirementInstallation.
 	builder newRequirement:
-		(MOPSelectorNameRequirement name: 'mWithSuper:').
-	builder newOperation newBlockOperation: [ :o | 'coucou' crTrace ].
+		(MOPSelectorNameRequirement name: 'mWithSuper').
+	builder newOperation newBlockOperationBefore: [ :o | 'coucou' crTrace ].
 	builder push.
 
 	result := object mWithSuper.

@@ -11,7 +11,13 @@ Class {
 { #category : #adding }
 MOPInstrumentationBuilder >> addOperation: anOperation [ 
 	
-	self instrumentation addOperation: anOperation 
+	self instrumentation operation: anOperation 
+]
+
+{ #category : #adding }
+MOPInstrumentationBuilder >> before: anOperation [
+
+	self instrumentation before: anOperation
 ]
 
 { #category : #initialization }

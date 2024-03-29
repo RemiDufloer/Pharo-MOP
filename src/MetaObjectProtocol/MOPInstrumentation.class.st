@@ -2,7 +2,9 @@ Class {
 	#name : #MOPInstrumentation,
 	#superclass : #Object,
 	#instVars : [
-		'operations',
+		'operation',
+		'before',
+		'after',
 		'requirement',
 		'instrumentationInstalleur'
 	],
@@ -10,9 +12,27 @@ Class {
 }
 
 { #category : #accessing }
-MOPInstrumentation >> addOperation: anOperation [
+MOPInstrumentation >> after [
 
-	operations add: anOperation 
+	^ after
+]
+
+{ #category : #accessing }
+MOPInstrumentation >> after: anObject [
+
+	after := anObject
+]
+
+{ #category : #accessing }
+MOPInstrumentation >> before [
+
+	^ before
+]
+
+{ #category : #accessing }
+MOPInstrumentation >> before: anObject [
+
+	before := anObject
 ]
 
 { #category : #requirement }
@@ -26,16 +46,20 @@ MOPInstrumentation >> checkRequirementMethod: aMethod [
 
 { #category : #execution }
 MOPInstrumentation >> execute: aRFOperation [
-	| return |
+
+	| return returnDefaultOperation |
 	return := OrderedCollection new.
-	operations do: [ :o | return add: (o apply: aRFOperation) ].
-	^ return
+	before ifNotNil:[ return add: (before apply: aRFOperation)].
+	returnDefaultOperation := operation apply: aRFOperation.
+	return add: returnDefaultOperation.
+	after ifNotNil:[ return add: (before apply: aRFOperation)].
+	^ returnDefaultOperation
 ]
 
 { #category : #initialization }
 MOPInstrumentation >> initialize [
 
-	operations := OrderedCollection new.
+	operation := MOPDefaultOperation new.
 	self requirement: MOPNoRequirement new
 ]
 
@@ -58,15 +82,15 @@ MOPInstrumentation >> instrumentationInstalleur: anObject [
 ]
 
 { #category : #accessing }
-MOPInstrumentation >> operations [
+MOPInstrumentation >> operation [
 
-	^ operations
+	^ operation
 ]
 
 { #category : #accessing }
-MOPInstrumentation >> removeOperation: anOperation [
+MOPInstrumentation >> operation: anObject [
 
-	operations remove: anOperation 
+	operation := anObject
 ]
 
 { #category : #accessing }

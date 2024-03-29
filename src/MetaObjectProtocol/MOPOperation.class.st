@@ -11,7 +11,7 @@ Class {
 { #category : #accessing }
 MOPOperation >> apply: aRFOperation [
 
-	self subclassResponsibility 
+	^ aRFOperation value 
 ]
 
 { #category : #initialization }

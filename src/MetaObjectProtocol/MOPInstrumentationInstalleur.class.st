@@ -229,7 +229,7 @@ MOPInstrumentationInstalleur >> superInstrumentation: selector [
 
 	| op instrumentation requirement |
 	op := MOPSuperSendOperation selector: selector.
-	instrumentation := MOPInstrumentation new addOperation: op.
+	instrumentation := MOPInstrumentation new operation: op.
 	requirement := MOPSuperSendRequirement new.
 	instrumentation requirement: requirement.
 	^ instrumentation 

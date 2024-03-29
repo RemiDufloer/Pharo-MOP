@@ -223,7 +223,7 @@ MOPInstrumentationInstalleurTest >> testSuperChainMethodWriteInAnonymousClassWhe
 	instrumenter object: testObject.
 	result := 0.
 	op := MOPBlockOperation block: [ :o | result := result + 1 ].
-	instrumentation := MOPInstrumentation new addOperation: op.
+	instrumentation := MOPInstrumentation new operation: op.
 	instrumentation requirement:
 		(MOPSelectorNameRequirement name: 'mWithSuper').
 
