@@ -19,7 +19,7 @@ MOPInstrumentationTest >> testInstall [
 	expectedArgument := Object new.
 	requirement := MOPSelectorNameRequirement name: 'exampleMethod:'.
 	instrumentation requirement: requirement.
-	instrumentationInstalleur := MOPInstrumentationInstalleur new.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
 	instrumentationInstalleur object: object.
 
 
@@ -52,7 +52,7 @@ MOPInstrumentationTest >> testInstrumentationWithInstallationRequirementComposit
 		               ((MOPArgumentsSizeRequirement size: 1)) .
 	instrumentation requirement: requirement.
 	
-	instrumentationInstalleur := MOPInstrumentationInstalleur new.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
 	instrumentationInstalleur object: object .
 
 
@@ -84,7 +84,7 @@ MOPInstrumentationTest >> testInstrumentationWithInstallationRequirementComposit
 		               and: (MOPArgumentsSizeRequirement size: 2).
 	instrumentation requirement: requirement.
 
-	instrumentationInstalleur := MOPInstrumentationInstalleur new.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
 	instrumentationInstalleur object: object.
 
 
@@ -116,7 +116,7 @@ MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirement [
 	requirement := MOPSelectorNameRequirement name: 'exampleMethod:'.
 	instrumentation requirement: requirement.
 
-	instrumentationInstalleur := MOPInstrumentationInstalleur new.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
 	instrumentationInstalleur object: object.
 
 
@@ -149,7 +149,7 @@ MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirementNotGo
 	requirement := MOPArgumentsSizeRequirement size: 2.
 	instrumentation requirement: requirement.
 
-	instrumentationInstalleur := MOPInstrumentationInstalleur new.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
 	instrumentationInstalleur object: object.
 
 
@@ -179,7 +179,7 @@ MOPInstrumentationTest >> testMetaObjectInstrumentationInGoodOrder [
 	expectedArgument := Object new.
 	astNode := (MOPTestObject >> #exampleMethod:) ast.
 
-	instrumentationInstalleur := MOPInstrumentationInstalleur new.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
 	instrumentationInstalleur object: object.
 
 	instrumentationInstalleur
@@ -201,7 +201,7 @@ MOPInstrumentationTest >> testUninstall [
 	instrumentation requirement:
 		(MOPSelectorNameRequirement name: 'exampleMethod').
 
-	instrumentationInstalleur := MOPInstrumentationInstalleur new.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
 	instrumentationInstalleur object: object.
 	instrumentation instrumentationInstalleur: instrumentationInstalleur.
 	instrumentationInstalleur

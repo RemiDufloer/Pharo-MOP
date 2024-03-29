@@ -15,8 +15,6 @@ MOPBottom >> assignmentTest [
 { #category : #'as yet unclassified' }
 MOPBottom >> mWithSuper [
 
-	'bottom' traceCr.
-	(super mWithSuper + 1) asString crTrace.
 	^ super mWithSuper + 1
 ]
 

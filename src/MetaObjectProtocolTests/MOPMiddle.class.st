@@ -12,7 +12,7 @@ MOPMiddle >> instVarAccessInSuperCall [
 
 { #category : #'as yet unclassified' }
 MOPMiddle >> mWithSuper [
-'midlle' traceCr.
+
 	^ super mWithSuper + 2
 ]
 

@@ -18,18 +18,12 @@ MOPMetaObject >> addInstrumentation: anInstrumentation [
 	
 ]
 
-{ #category : #accessing }
-MOPMetaObject >> giveMethodAssociatedToMessage: aMessage [
-
-	^ object class lookupSelector: aMessage selector.
-]
-
 { #category : #'handling DNU' }
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
-	self instrumentMethod: (self giveMethodAssociatedToMessage: aMessage).
-	
+	(object class lookupSelector: aMessage selector) ifNotNil: [
+		:selector | self instrument: selector ].
 
 	^ MirrorPrimitives
 		  withReceiver: object
@@ -47,15 +41,22 @@ MOPMetaObject >> initialize [
 
 	instrumentations := OrderedCollection new.
 
-	instrumentationInstalleur := MOPInstrumentationInstalleur for: self
+	instrumentationInstalleur := MOPInstrumentationInstaller for: self
 ]
 
 { #category : #instrument }
-MOPMetaObject >> instrumentMethod: aMethode [
+MOPMetaObject >> instrument: aMethod [
 
-	self instrumentations do: [ :inst |
-		(inst checkRequirementMethod: aMethode) ifTrue: [
-			instrumentationInstalleur install: inst onMethod: aMethode ] ]
+	self instrumentations do: [ :instrumentation |
+		| nodes |
+		nodes := aMethod ast allChildren select: [ :n |
+			         instrumentation requirement verify: n ].
+
+		nodes ifNotEmpty: [  
+
+		MOPInstrumentationInstaller new
+			object: object;
+			installOn: aMethod ]]
 ]
 
 { #category : #accessing }

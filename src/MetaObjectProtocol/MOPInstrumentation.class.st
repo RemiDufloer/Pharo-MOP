@@ -5,8 +5,7 @@ Class {
 		'operation',
 		'before',
 		'after',
-		'requirement',
-		'instrumentationInstalleur'
+		'requirement'
 	],
 	#category : #MetaObjectProtocol
 }
@@ -35,15 +34,6 @@ MOPInstrumentation >> before: anObject [
 	before := anObject
 ]
 
-{ #category : #requirement }
-MOPInstrumentation >> checkRequirementMethod: aMethod [
-
-	| nodeOfMethodWantToCheck |
-	nodeOfMethodWantToCheck := aMethod ast allChildren.
-	^ nodeOfMethodWantToCheck anySatisfy: [ :n |
-		  self requirement verify: n ]
-]
-
 { #category : #execution }
 MOPInstrumentation >> execute: aRFOperation [
 
@@ -61,24 +51,6 @@ MOPInstrumentation >> initialize [
 
 	operation := MOPDefaultOperation new.
 	self requirement: MOPNoRequirement new
-]
-
-{ #category : #actions }
-MOPInstrumentation >> install [
-	self flag: 'todo'.
-	self instrumentationInstalleur install
-]
-
-{ #category : #accessing }
-MOPInstrumentation >> instrumentationInstalleur [
-
-	^ instrumentationInstalleur
-]
-
-{ #category : #accessing }
-MOPInstrumentation >> instrumentationInstalleur: anObject [
-
-	instrumentationInstalleur := anObject
 ]
 
 { #category : #accessing }
@@ -103,11 +75,4 @@ MOPInstrumentation >> requirement [
 MOPInstrumentation >> requirement: aRequirement [ 
 	
 	requirement := aRequirement 
-]
-
-{ #category : #installation }
-MOPInstrumentation >> uninstall [
-
-	self instrumentationInstalleur uninstall: self
-	
 ]

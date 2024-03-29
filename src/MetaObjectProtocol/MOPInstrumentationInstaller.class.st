@@ -1,5 +1,5 @@
 Class {
-	#name : #MOPInstrumentationInstalleur,
+	#name : #MOPInstrumentationInstaller,
 	#superclass : #Object,
 	#instVars : [
 		'installedInstrumentation',
@@ -12,25 +12,15 @@ Class {
 }
 
 { #category : #'instance creation' }
-MOPInstrumentationInstalleur class >> for: aMetaObject [
+MOPInstrumentationInstaller class >> for: aMetaObject [
 
 	^ self new
 		  metaObject: aMetaObject;
 		  yourself
 ]
 
-{ #category : #MetaLink }
-MOPInstrumentationInstalleur >> anonymousClassForObject: anObject [
-
-	anObject class isAnonymous ifFalse: [ 
-		anObject class newAnonymousSubclass adoptInstance: anObject ].
-	^ anObject 
-
-	
-]
-
 { #category : #instrumentation }
-MOPInstrumentationInstalleur >> buildSuperSendsChainFrom: method upTo: targetMethod in: methodChain [
+MOPInstrumentationInstaller >> buildSuperSendsChainFrom: method upTo: targetMethod in: methodChain [
 	
 	| selector nextMethod |
 	selector := method selector.
@@ -46,7 +36,7 @@ MOPInstrumentationInstalleur >> buildSuperSendsChainFrom: method upTo: targetMet
 ]
 
 { #category : #instrumentation }
-MOPInstrumentationInstalleur >> compileSuperSendChain: methodsToInstrument [
+MOPInstrumentationInstaller >> compileSuperSendChain: methodsToInstrument [
 
 	| newSelectors originalSelector lastSelector |
 	newSelectors := OrderedCollection new.
@@ -78,18 +68,25 @@ MOPInstrumentationInstalleur >> compileSuperSendChain: methodsToInstrument [
 ]
 
 { #category : #accessing }
-MOPInstrumentationInstalleur >> compiledSelectorsMap [
+MOPInstrumentationInstaller >> compiledSelectorsMap [
 
 	^ compiledSelectorsMap ifNil:[compiledSelectorsMap := Dictionary new]
 ]
 
+{ #category : #MetaLink }
+MOPInstrumentationInstaller >> createAnonymousClassFor: anObject [
+
+	anObject class isAnonymous ifTrue: [ ^ nil ].
+	anObject class newAnonymousSubclass adoptInstance: anObject
+]
+
 { #category : #instrumentation }
-MOPInstrumentationInstalleur >> findSuperSendsChainFor: aMethod [
+MOPInstrumentationInstaller >> findSuperSendsChainFor: aMethod [
 
 	| selector nextMethod methodChain |
-	(self isClassReachableInHierarchy: aMethod methodClass) ifFalse: [ 
-		^ OrderedCollection new ].
-
+	"(self isClassReachableInHierarchy: aMethod methodClass) ifFalse: [
+		^ OrderedCollection new ]."
+	
 	methodChain := OrderedCollection new.
 	selector := aMethod selector.
 	nextMethod := self originalClass lookupSelector: selector.
@@ -99,7 +96,7 @@ MOPInstrumentationInstalleur >> findSuperSendsChainFor: aMethod [
 		              upTo: aMethod
 		              in: methodChain.
 	nextMethod == aMethod ifFalse: [ ^ OrderedCollection new ].
-	nextMethod hasSuperSends ifFalse: [ 
+	nextMethod hasSuperSends ifFalse: [
 		methodChain add: nextMethod.
 		^ methodChain ].
 
@@ -112,13 +109,13 @@ MOPInstrumentationInstalleur >> findSuperSendsChainFor: aMethod [
 ]
 
 { #category : #initialization }
-MOPInstrumentationInstalleur >> initialize [ 
+MOPInstrumentationInstaller >> initialize [ 
 
 	installedInstrumentation := Dictionary new.
 ]
 
 { #category : #installeur }
-MOPInstrumentationInstalleur >> install: aMOPInstrumentation onMethod: aRBMethod [
+MOPInstrumentationInstaller >> install: aMOPInstrumentation onMethod: aRBMethod [
 
 	| nodeOfMethodNeedToInstall methodNeedToInstall methodsToInstrument compiledSelectors |
 	methodsToInstrument := self findSuperSendsChainFor: aRBMethod.
@@ -135,7 +132,7 @@ MOPInstrumentationInstalleur >> install: aMOPInstrumentation onMethod: aRBMethod
 ]
 
 { #category : #installeur }
-MOPInstrumentationInstalleur >> install: anInstrumentation onNode: aNode [
+MOPInstrumentationInstaller >> install: anInstrumentation onNode: aNode [
 
 	| link |
 	(anInstrumentation requirement verify: aNode) ifFalse: [ ^ nil ].
@@ -162,70 +159,70 @@ MOPInstrumentationInstalleur >> install: anInstrumentation onNode: aNode [
 ]
 
 { #category : #accessing }
-MOPInstrumentationInstalleur >> installedInstrumentation [
+MOPInstrumentationInstaller >> installedInstrumentation [
 
 	^ installedInstrumentation
 ]
 
 { #category : #accessing }
-MOPInstrumentationInstalleur >> instrumentedClass [
+MOPInstrumentationInstaller >> instrumentedClass [
 
 	^ instrumentedClass
 ]
 
 { #category : #accessing }
-MOPInstrumentationInstalleur >> instrumentedClass: anObject [
+MOPInstrumentationInstaller >> instrumentedClass: anObject [
 
 	instrumentedClass := anObject
 ]
 
 { #category : #accessing }
-MOPInstrumentationInstalleur >> instrumentedObject [
+MOPInstrumentationInstaller >> instrumentedObject [
 
 	^ instrumentedObject
 ]
 
 { #category : #accessing }
-MOPInstrumentationInstalleur >> instrumentedObject: anObject [
+MOPInstrumentationInstaller >> instrumentedObject: anObject [
 
 	instrumentedObject := anObject
 ]
 
 { #category : #testing }
-MOPInstrumentationInstalleur >> isClassReachableInHierarchy: aClass [
+MOPInstrumentationInstaller >> isClassReachableInHierarchy: aClass [
 
 	^ self originalClass == aClass or: [ 
 		  self originalClass allSuperclasses includes: aClass ]
 ]
 
 { #category : #accessing }
-MOPInstrumentationInstalleur >> metaObject [
+MOPInstrumentationInstaller >> metaObject [
 
 	^ metaObject
 ]
 
 { #category : #accessing }
-MOPInstrumentationInstalleur >> metaObject: aMetaObject [
+MOPInstrumentationInstaller >> metaObject: aMetaObject [
 
 	metaObject := aMetaObject
 ]
 
 { #category : #'api - model' }
-MOPInstrumentationInstalleur >> object: anObject [ 
+MOPInstrumentationInstaller >> object: anObject [ 
 	
-	instrumentedObject := self anonymousClassForObject: anObject.
+	instrumentedObject := self createAnonymousClassFor: anObject.
 	instrumentedClass := anObject class
 	
 ]
 
 { #category : #accessing }
-MOPInstrumentationInstalleur >> originalClass [
+MOPInstrumentationInstaller >> originalClass [
 
 	^ instrumentedClass superclass
 ]
 
 { #category : #instrumentation }
-MOPInstrumentationInstalleur >> superInstrumentation: selector [
+MOPInstrumentationInstaller >> superInstrumentation: selector [
 
 	| op instrumentation requirement |
 	op := MOPSuperSendOperation selector: selector.
@@ -236,7 +233,7 @@ MOPInstrumentationInstalleur >> superInstrumentation: selector [
 ]
 
 { #category : #installeur }
-MOPInstrumentationInstalleur >> superSendChainInstall [
+MOPInstrumentationInstaller >> superSendChainInstall [
 
 	compiledSelectorsMap associationsDo: [ :assoc |
 		| key value |
@@ -249,7 +246,7 @@ MOPInstrumentationInstalleur >> superSendChainInstall [
 ]
 
 { #category : #instrumentation }
-MOPInstrumentationInstalleur >> uninstall: anInstrumentation [
+MOPInstrumentationInstaller >> uninstall: anInstrumentation [
 
 	(installedInstrumentation at: anInstrumentation) do: [ :n | n links do: [:l | l uninstall]]
 ]

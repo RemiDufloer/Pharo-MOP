@@ -16,7 +16,7 @@ MOPInstrumentationInstalleurTest >> receive: selector [
 { #category : #tests }
 MOPInstrumentationInstalleurTest >> setUp [
 	super setUp.
-	instrumenter := MOPInstrumentationInstalleur for: self.
+	instrumenter := MOPInstrumentationInstaller for: self.
 	testObject := Object new
 ]
 
@@ -188,6 +188,20 @@ MOPInstrumentationInstalleurTest >> testInstrumentedClass [
 	self
 		assert: instrumenter instrumentedClass
 		identicalTo: testObject class
+]
+
+{ #category : #tests }
+MOPInstrumentationInstalleurTest >> testIntrumentationOfNotExistingMessage [
+
+	| object |
+	object := MOPTestObject new.
+	object mop.
+
+	self
+		should: [
+			
+			object notExistingMessage ]
+		raise: MessageNotUnderstood
 ]
 
 { #category : #'tests - method flattening' }
