@@ -1,3 +1,6 @@
+"
+I check if the variable name matches the expected one
+"
 Class {
 	#name : #MOPNameVariableRequirement,
 	#superclass : #MOPRequirement,

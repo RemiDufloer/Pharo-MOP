@@ -1,3 +1,6 @@
+"
+I check if the arguments have the expected size.
+"
 Class {
 	#name : #MOPArgumentsSizeRequirement,
 	#superclass : #MOPRequirement,

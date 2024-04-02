@@ -1,3 +1,7 @@
+"
+I have no requirement, i already return True
+
+"
 Class {
 	#name : #MOPNoRequirement,
 	#superclass : #MOPRequirement,

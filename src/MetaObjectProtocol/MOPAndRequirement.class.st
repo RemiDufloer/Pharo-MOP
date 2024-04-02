@@ -1,3 +1,6 @@
+"
+I compose conditions logically using the 'and' operators.
+"
 Class {
 	#name : #MOPAndRequirement,
 	#superclass : #MOPLogicRequirement,

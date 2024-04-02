@@ -1,3 +1,6 @@
+"
+I check if the selector matches the expected one.
+"
 Class {
 	#name : #MOPSelectorNameRequirement,
 	#superclass : #MOPRequirement,
