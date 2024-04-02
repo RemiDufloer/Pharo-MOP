@@ -19,7 +19,7 @@ MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 		(MOPSelectorNameRequirement name: 'exampleMethod:').
 	builder andRequirement: (MOPArgumentsSizeRequirement new size: 1).
 
-	builder newOperation  newBlockOperation: [ :o | result := result , 'op1' ].
+	builder newOperation  newBlockOperationBefore:  [ :o | result := result , 'op1' ].
 
 	builder newOperation  newBlockOperation: [ :o | result := result , 'op2' ].
 	
@@ -62,7 +62,6 @@ MetaObjectProtocolTest >> testMOPFlatten [
 	builder newRequirement: (MOPSelectorNameRequirement name: 'mWithSuper').
 	builder newOperation newBlockOperationBefore: [ :o | nil ].
 	builder push.
-
 	result := object mWithSuper.
 
 
@@ -86,7 +85,7 @@ MetaObjectProtocolTest >> testMOPObjectCentric [
 		(MOPSelectorNameRequirement name: 'exampleMethod:').
 	builder andRequirement: (MOPArgumentsSizeRequirement new size: 1).
 
-	builder newOperation newBlockOperation: [ :o |
+	builder newOperation newBlockOperationBefore: [ :o |
 		result := result , 'op1' ].
 
 	builder newOperation newBlockOperation: [ :o |

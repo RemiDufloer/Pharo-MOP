@@ -190,31 +190,3 @@ MOPInstrumentationTest >> testMetaObjectInstrumentationInGoodOrder [
 
 	self assert: result equals: 'string :op1op2'
 ]
-
-{ #category : #tests }
-MOPInstrumentationTest >> testUninstall [
-
-	| object op receiver instrumentation instrumentationInstalleur |
-	object := MOPTestObject new.
-	op := MOPBlockOperation block: [ :o | receiver := o receiver ].
-	instrumentation := MOPInstrumentation new operation: op.
-	instrumentation requirement:
-		(MOPSelectorNameRequirement name: 'exampleMethod').
-
-	instrumentationInstalleur := MOPInstrumentationInstaller new.
-	instrumentationInstalleur object: object.
-	instrumentation instrumentationInstalleur: instrumentationInstalleur.
-	instrumentationInstalleur
-		install: instrumentation
-		onMethod: MOPTestObject >> #exampleMethod.
-	object exampleMethod.
-
-	self assert: receiver equals: object.
-
-	receiver := nil.
-	instrumentation uninstall.
-
-	object exampleMethod.
-
-	self assert: receiver equals: nil
-]

@@ -35,36 +35,29 @@ MOPInstrumentationInstaller >> buildSuperSendsChainFrom: method upTo: targetMeth
 	^ nextMethod
 ]
 
-{ #category : #instrumentation }
-MOPInstrumentationInstaller >> compileSuperSendChain: methodsToInstrument [
-
-	| newSelectors originalSelector lastSelector |
-	newSelectors := OrderedCollection new.
-	methodsToInstrument isEmpty ifTrue: [ ^ newSelectors ].
-
-	instrumentedClass compile: methodsToInstrument first sourceCode.
-	originalSelector := methodsToInstrument first selector.
-	newSelectors add: originalSelector.
-	methodsToInstrument size = 1 ifTrue: [ ^ newSelectors ].
-
-	lastSelector := originalSelector.
-
-	2 to: methodsToInstrument size do: [ :i | 
-		| method newSourceCode newSelector |
-		method := methodsToInstrument at: i.
-
-		newSourceCode := String streamContents: [ :s | 
-			                 s << '_'.
-			                 s << i printString.
-			                 s << '_'.
-			                 s << method sourceCode ].
-
-		newSelector := instrumentedClass compile: newSourceCode.
-		newSelectors add: newSelector.
-		self compiledSelectorsMap at: lastSelector put: newSelector.
-		lastSelector := newSelector ].
+{ #category : #compiling }
+MOPInstrumentationInstaller >> compileMethodOnAnonymousClass: aMethod [
 	
-^newSelectors
+	self instrumentedClass compile: aMethod sourceCode.
+]
+
+{ #category : #instrumentation }
+MOPInstrumentationInstaller >> compileSuperSendChain: aMethodCollection [
+
+	| methods |
+	methods := DoubleLinkedList new.
+	aMethodCollection isEmpty ifTrue: [ ^ methods ].
+
+	1 to: aMethodCollection size do: [ :i |
+		| method code |
+		method := aMethodCollection at: i.
+		code := i > 1
+			        ifTrue: [
+				        String streamContents: [ :s |
+					        s << '_'<< i asString << '_' << method sourceCode ] ]
+			        ifFalse: [ method sourceCode ].
+		methods add: (instrumentedClass compile: code) ].
+	^ methods
 ]
 
 { #category : #accessing }
@@ -83,29 +76,19 @@ MOPInstrumentationInstaller >> createAnonymousClassFor: anObject [
 { #category : #instrumentation }
 MOPInstrumentationInstaller >> findSuperSendsChainFor: aMethod [
 
-	| selector nextMethod methodChain |
-	"(self isClassReachableInHierarchy: aMethod methodClass) ifFalse: [
-		^ OrderedCollection new ]."
-	
-	methodChain := OrderedCollection new.
-	selector := aMethod selector.
-	nextMethod := self originalClass lookupSelector: selector.
+	| method chain |
+	chain := OrderedCollection empty.
 
-	nextMethod := self
-		              buildSuperSendsChainFrom: nextMethod
-		              upTo: aMethod
-		              in: methodChain.
-	nextMethod == aMethod ifFalse: [ ^ OrderedCollection new ].
-	nextMethod hasSuperSends ifFalse: [
-		methodChain add: nextMethod.
-		^ methodChain ].
+	(aMethod methodClass isAnonymous or: [ aMethod hasSuperSends not ])
+		ifTrue: [ ^ chain ].
 
-	nextMethod := self
-		              buildSuperSendsChainFrom: nextMethod
-		              upTo: nil
-		              in: methodChain.
-	nextMethod ifNotNil: [ methodChain add: nextMethod ].
-	^ methodChain
+	method := aMethod.
+	chain add: aMethod.
+	[ chain last hasSuperSends ] whileTrue: [
+		method := method methodClass superclass lookupSelector:
+			          method selector.
+		chain add: method ].
+	^ chain
 ]
 
 { #category : #initialization }
@@ -120,8 +103,10 @@ MOPInstrumentationInstaller >> install: aMOPInstrumentation onMethod: aRBMethod 
 	| nodeOfMethodNeedToInstall methodNeedToInstall methodsToInstrument compiledSelectors |
 	methodsToInstrument := self findSuperSendsChainFor: aRBMethod.
 	compiledSelectors := self compileSuperSendChain: methodsToInstrument.
-
-	self compiledSelectorsMap ifNotNil: [ self superSendChainInstall ].
+	
+	self compileMethodOnAnonymousClass: aRBMethod.
+	compiledSelectors isEmpty ifFalse: [
+		self superSendChainInstall: compiledSelectors ].
 
 
 
@@ -209,8 +194,8 @@ MOPInstrumentationInstaller >> metaObject: aMetaObject [
 
 { #category : #'api - model' }
 MOPInstrumentationInstaller >> object: anObject [ 
-	
-	instrumentedObject := self createAnonymousClassFor: anObject.
+	self createAnonymousClassFor: anObject.
+	instrumentedObject :=  anObject .
 	instrumentedClass := anObject class
 	
 ]
@@ -233,16 +218,13 @@ MOPInstrumentationInstaller >> superInstrumentation: selector [
 ]
 
 { #category : #installeur }
-MOPInstrumentationInstaller >> superSendChainInstall [
+MOPInstrumentationInstaller >> superSendChainInstall: aDoubleLinkedList [
 
-	compiledSelectorsMap associationsDo: [ :assoc |
-		| key value |
-		key := assoc key.
-		value := assoc value.
-		compiledSelectorsMap removeKey: key.
+	aDoubleLinkedList linksDo: [ :link |
+		link hasSuccessor ifFalse: [ ^ nil ].
 		self
-			install: (self superInstrumentation: value)
-			onMethod: instrumentedObject class >> key asSymbol ]
+			install: (self superInstrumentation: link nextLink value)
+			onMethod: instrumentedObject class >> link value asSymbol ]
 ]
 
 { #category : #instrumentation }

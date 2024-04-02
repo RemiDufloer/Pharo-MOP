@@ -11,11 +11,9 @@ Class {
 }
 
 { #category : #adding }
-MOPMetaObject >> addInstrumentation: anInstrumentation [ 
-	
-	anInstrumentation instrumentationInstalleur: instrumentationInstalleur.
-	instrumentations add: anInstrumentation.
-	
+MOPMetaObject >> addInstrumentation: anInstrumentation [
+
+	instrumentations add: anInstrumentation
 ]
 
 { #category : #'handling DNU' }
@@ -56,7 +54,7 @@ MOPMetaObject >> instrument: aMethod [
 
 		MOPInstrumentationInstaller new
 			object: object;
-			installOn: aMethod ]]
+			install: instrumentation onMethod: aMethod ]]
 ]
 
 { #category : #accessing }
