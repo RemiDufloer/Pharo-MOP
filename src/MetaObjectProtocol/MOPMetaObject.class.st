@@ -7,7 +7,7 @@ Class {
 		'protocol',
 		'instrumentationInstalleur'
 	],
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-base'
 }
 
 { #category : #adding }

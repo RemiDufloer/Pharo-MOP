@@ -7,7 +7,7 @@ Class {
 		'after',
 		'requirement'
 	],
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-base'
 }
 
 { #category : #accessing }

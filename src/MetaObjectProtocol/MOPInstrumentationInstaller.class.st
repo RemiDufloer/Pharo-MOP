@@ -8,7 +8,7 @@ Class {
 		'metaObject',
 		'compiledSelectorsMap'
 	],
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-base'
 }
 
 { #category : #'instance creation' }

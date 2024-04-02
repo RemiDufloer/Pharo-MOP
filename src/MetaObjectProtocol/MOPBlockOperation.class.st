@@ -1,3 +1,7 @@
+"
+My comportement is define on a Block
+
+"
 Class {
 	#name : #MOPBlockOperation,
 	#superclass : #MOPOperation,

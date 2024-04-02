@@ -1,3 +1,6 @@
+"
+I redirect superclass nodes to another method whose selector is provided to me.
+"
 Class {
 	#name : #MOPSuperSendOperation,
 	#superclass : #MOPOperation,

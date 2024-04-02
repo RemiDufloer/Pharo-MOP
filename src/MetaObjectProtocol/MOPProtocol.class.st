@@ -7,7 +7,7 @@ Class {
 	#classInstVars : [
 		'mopRegistry'
 	],
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-base'
 }
 
 { #category : #adding }
