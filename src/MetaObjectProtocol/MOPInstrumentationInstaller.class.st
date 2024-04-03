@@ -20,28 +20,6 @@ MOPInstrumentationInstaller class >> for: aMetaObject [
 ]
 
 { #category : #instrumentation }
-MOPInstrumentationInstaller >> buildSuperSendsChainFrom: method upTo: targetMethod in: methodChain [
-	
-	| selector nextMethod |
-	selector := method selector.
-	nextMethod := method.
-	[ nextMethod ~~ targetMethod and: [ nextMethod hasSuperSends ] ] 
-		whileTrue: [ 
-			| nextClass |
-			methodChain add: nextMethod.
-			nextClass := nextMethod methodClass superclass 
-								ifNil: [^ nextMethod ].
-			nextMethod := nextClass lookupSelector: selector ].
-	^ nextMethod
-]
-
-{ #category : #compiling }
-MOPInstrumentationInstaller >> compileMethodOnAnonymousClass: aMethod [
-	
-	self instrumentedClass compile: aMethod sourceCode.
-]
-
-{ #category : #instrumentation }
 MOPInstrumentationInstaller >> compileSuperSendChain: aMethodCollection [
 
 	| methods |
@@ -102,9 +80,11 @@ MOPInstrumentationInstaller >> install: aMOPInstrumentation onMethod: aRBMethod 
 
 	| nodeOfMethodNeedToInstall methodNeedToInstall methodsToInstrument compiledSelectors |
 	methodsToInstrument := self findSuperSendsChainFor: aRBMethod.
+
 	compiledSelectors := self compileSuperSendChain: methodsToInstrument.
-	
-	self compileMethodOnAnonymousClass: aRBMethod.
+	(methodsToInstrument isEmpty and: [
+		 (instrumentedClass methods includes: aRBMethod) not ]) ifTrue: [
+		self instrumentedClass compile: aRBMethod sourceCode ].
 	compiledSelectors isEmpty ifFalse: [
 		self superSendChainInstall: compiledSelectors ].
 
@@ -113,7 +93,9 @@ MOPInstrumentationInstaller >> install: aMOPInstrumentation onMethod: aRBMethod 
 	methodNeedToInstall := self instrumentedClass >> aRBMethod selector.
 	nodeOfMethodNeedToInstall := methodNeedToInstall ast allChildren.
 	nodeOfMethodNeedToInstall do: [ :n |
-		self install: aMOPInstrumentation onNode: n ]
+		self install: aMOPInstrumentation onNode: n ].
+	methodNeedToInstall ast doSemanticAnalysis 
+	
 ]
 
 { #category : #installeur }
@@ -127,7 +109,7 @@ MOPInstrumentationInstaller >> install: anInstrumentation onNode: aNode [
 	link control: #instead.
 	link metaObject: anInstrumentation.
 	link selector: #execute:.
-	link optionCompileOnLinkInstallation: true.
+	"link optionCompileOnLinkInstallation: true."
 
 	(link checkForCompatibilityWith: aNode) ifFalse: [ ^ nil ].
 
@@ -137,7 +119,7 @@ MOPInstrumentationInstaller >> install: anInstrumentation onNode: aNode [
 		do: [
 			link disable.
 			^ nil ].
-		
+
 	(installedInstrumentation
 		 at: anInstrumentation
 		 ifAbsentPut: [ OrderedCollection new ]) add: aNode
