@@ -103,7 +103,6 @@ MOPInstrumentationInstaller >> install: anInstrumentation onNode: aNode [
 
 	| link |
 	(anInstrumentation requirement verify: aNode) ifFalse: [ ^ nil ].
-
 	link := MetaLink new.
 	link arguments: #( operation ).
 	link control: #instead.
