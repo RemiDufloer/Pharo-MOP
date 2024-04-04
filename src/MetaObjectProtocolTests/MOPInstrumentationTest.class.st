@@ -1,25 +1,31 @@
 Class {
 	#name : #MOPInstrumentationTest,
 	#superclass : #MOPTest,
-	#category : #MetaObjectProtocolTest
+	#category : #MetaObjectProtocolTests
 }
 
 { #category : #tests }
 MOPInstrumentationTest >> testInstall [
 
-	| selector instrumentation receiver arguments op expectedArgument object requirement |
+	| selector instrumentation receiver arguments op expectedArgument object requirement instrumentationInstalleur |
 	object := MOPTestObject new.
+
 	op := MOPBlockOperation block: [ :o |
 		      receiver := o receiver.
 		      selector := o method selector.
 		      arguments := o arguments ].
-	instrumentation := MOPInstrumentation new addOperation: op.
+
+	instrumentation := MOPInstrumentation new operation: op.
 	expectedArgument := Object new.
 	requirement := MOPSelectorNameRequirement name: 'exampleMethod:'.
 	instrumentation requirement: requirement.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
+	instrumentationInstalleur object: object.
 
 
-	instrumentation installOnMethod: MOPTestObject >> #exampleMethod:.
+	instrumentationInstalleur
+		install: instrumentation
+		onMethod: MOPTestObject >> #exampleMethod:.
 	object exampleMethod: expectedArgument.
 
 
@@ -32,22 +38,25 @@ MOPInstrumentationTest >> testInstall [
 { #category : #tests }
 MOPInstrumentationTest >> testInstrumentationWithInstallationRequirementComposite [
 
-	| selector instrumentation astNode receiver arguments op expectedArgument object requirement |
+	| selector instrumentation receiver arguments op expectedArgument object requirement instrumentationInstalleur |
 	object := MOPTestObject new.
 	op := MOPBlockOperation block: [ :o |
 		      receiver := o receiver.
 		      selector := o method selector.
 		      arguments := o arguments ].
-	instrumentation := MOPInstrumentation new addOperation: op.
+	instrumentation := MOPInstrumentation new operation: op.
 	expectedArgument := Object new.
-	astNode := (MOPTestObject >> #exampleMethod:) ast.
 
 
 	requirement := (MOPSelectorNameRequirement name: 'exampleMethod:') and:
 		               ((MOPArgumentsSizeRequirement size: 1)) .
 	instrumentation requirement: requirement.
 	
-	instrumentation installOnNode: astNode.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
+	instrumentationInstalleur object: object .
+
+
+	instrumentationInstalleur install: instrumentation onMethod: MOPTestObject >> #exampleMethod:.
 
 	object exampleMethod: expectedArgument.
 
@@ -60,22 +69,28 @@ MOPInstrumentationTest >> testInstrumentationWithInstallationRequirementComposit
 { #category : #tests }
 MOPInstrumentationTest >> testInstrumentationWithInstallationRequirementCompositeBadRequirement [
 
-	| selector instrumentation astNode receiver arguments op expectedArgument object requirement |
+	| selector instrumentation astNode receiver arguments op expectedArgument object requirement instrumentationInstalleur |
 	object := MOPTestObject new.
 	op := MOPBlockOperation block: [ :o |
 		      receiver := o receiver.
 		      selector := o method selector.
 		      arguments := o arguments ].
-	instrumentation := MOPInstrumentation new addOperation: op.
+	instrumentation := MOPInstrumentation new operation: op.
 	expectedArgument := Object new.
-	astNode := (MOPTestObject >> #exampleMethod:) ast.
 
 
-	requirement := (MOPSelectorNameRequirement name: 'exampleMethod:') and:
-		               (MOPArgumentsSizeRequirement size: 2).
+
+	requirement := (MOPSelectorNameRequirement name: 'exampleMethod:')
+		               and: (MOPArgumentsSizeRequirement size: 2).
 	instrumentation requirement: requirement.
 
-	instrumentation installOnNode: astNode.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
+	instrumentationInstalleur object: object.
+
+
+	instrumentationInstalleur
+		install: instrumentation
+		onMethod: MOPTestObject >> #exampleMethod:.
 
 	object exampleMethod: expectedArgument.
 
@@ -87,21 +102,27 @@ MOPInstrumentationTest >> testInstrumentationWithInstallationRequirementComposit
 { #category : #tests }
 MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirement [
 
-	| selector instrumentation astNode receiver arguments op expectedArgument object requirement |
+	| selector instrumentation astNode receiver arguments op expectedArgument object requirement instrumentationInstalleur |
 	object := MOPTestObject new.
 	op := MOPBlockOperation block: [ :o |
 		      receiver := o receiver.
 		      selector := o method selector.
 		      arguments := o arguments ].
-	instrumentation := MOPInstrumentation new addOperation: op.
+	instrumentation := MOPInstrumentation new operation: op.
 	expectedArgument := Object new.
 	astNode := (MOPTestObject >> #exampleMethod:) ast.
 
 
-	requirement := (MOPSelectorNameRequirement name: 'exampleMethod:').
+	requirement := MOPSelectorNameRequirement name: 'exampleMethod:'.
 	instrumentation requirement: requirement.
 
-	instrumentation installOnNode: astNode.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
+	instrumentationInstalleur object: object.
+
+
+	instrumentationInstalleur
+		install: instrumentation
+		onMethod: MOPTestObject >> #exampleMethod:.
 
 	object exampleMethod: expectedArgument.
 
@@ -114,13 +135,13 @@ MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirement [
 { #category : #tests }
 MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirementNotGood [
 
-	| selector instrumentation astNode receiver arguments op expectedArgument object requirement |
+	| selector instrumentation astNode receiver arguments op expectedArgument object requirement instrumentationInstalleur |
 	object := MOPTestObject new.
 	op := MOPBlockOperation block: [ :o |
 		      receiver := o receiver.
 		      selector := o method selector.
 		      arguments := o arguments ].
-	instrumentation := MOPInstrumentation new addOperation: op.
+	instrumentation := MOPInstrumentation new operation: op.
 	expectedArgument := Object new.
 	astNode := (MOPTestObject >> #exampleMethod:) ast.
 
@@ -128,7 +149,13 @@ MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirementNotGo
 	requirement := MOPArgumentsSizeRequirement size: 2.
 	instrumentation requirement: requirement.
 
-	instrumentation installOnNode: astNode.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
+	instrumentationInstalleur object: object.
+
+
+	instrumentationInstalleur
+		install: instrumentation
+		onMethod: MOPTestObject >> #exampleMethod:.
 
 	object exampleMethod: expectedArgument.
 
@@ -140,44 +167,26 @@ MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirementNotGo
 { #category : #tests }
 MOPInstrumentationTest >> testMetaObjectInstrumentationInGoodOrder [
 
-	| instrumentation astNode result expectedArgument object op1 op2 |
+	| instrumentation astNode result expectedArgument object op1 op2 instrumentationInstalleur |
 	object := MOPTestObject new.
 	result := 'string :'.
 	op1 := MOPBlockOperation block: [ :o | result := result , 'op1' ].
 	op2 := MOPBlockOperation block: [ :o | result := result , 'op2' ].
 	instrumentation := MOPInstrumentation new
-		                   addOperation: op1;
-		                   addOperation: op2;
+		                   before: op1;
+		                   operation: op2;
 		                   yourself.
 	expectedArgument := Object new.
 	astNode := (MOPTestObject >> #exampleMethod:) ast.
 
-	instrumentation installOnNode: astNode.
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
+	instrumentationInstalleur object: object.
+
+	instrumentationInstalleur
+		install: instrumentation
+		onMethod: MOPTestObject >> #exampleMethod:.
 
 	object exampleMethod: expectedArgument.
 
 	self assert: result equals: 'string :op1op2'
-]
-
-{ #category : #tests }
-MOPInstrumentationTest >> testUninstall [
-
-	| object op receiver instrumentation |
-	object := MOPTestObject new.
-	op := MOPBlockOperation block: [ :o | receiver := o receiver ].
-	instrumentation := MOPInstrumentation new addOperation: op.
-	instrumentation requirement:
-		(MOPSelectorNameRequirement name: 'exampleMethod').
-
-	instrumentation installOnMethod: MOPTestObject >> #exampleMethod.
-	object exampleMethod.
-
-	self assert: receiver equals: object.
-
-	receiver := nil.
-	instrumentation uninstalAll.
-
-	object exampleMethod.
-
-	self assert: receiver equals: nil
 ]

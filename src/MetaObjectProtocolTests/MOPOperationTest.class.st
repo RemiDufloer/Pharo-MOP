@@ -1,7 +1,7 @@
 Class {
 	#name : #MOPOperationTest,
 	#superclass : #TestCase,
-	#category : #MetaObjectProtocolTest
+	#category : #MetaObjectProtocolTests
 }
 
 { #category : #tests }

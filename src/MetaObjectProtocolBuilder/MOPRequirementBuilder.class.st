@@ -1,5 +1,5 @@
 Class {
-	#name : #RequirementBuilder,
+	#name : #MOPRequirementBuilder,
 	#superclass : #MOPBuilder,
 	#instVars : [
 		'requirement'
@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #'instance creation' }
-RequirementBuilder >> andRequirement: aRequirement [
+MOPRequirementBuilder >> andRequirement: aRequirement [
 
 	self newRequirement: (requirement and: aRequirement)
 ]
 
 { #category : #'instance creation' }
-RequirementBuilder >> newRequirement: aRequirement [ 
+MOPRequirementBuilder >> newRequirement: aRequirement [ 
 	
 	requirement := aRequirement.
 	self pushRequirement .
@@ -22,13 +22,13 @@ RequirementBuilder >> newRequirement: aRequirement [
 ]
 
 { #category : #'instance creation' }
-RequirementBuilder >> orRequirement: aRequirement [
+MOPRequirementBuilder >> orRequirement: aRequirement [
 
 	self newRequirement: (requirement or: aRequirement)
 ]
 
 { #category : #'instance creation' }
-RequirementBuilder >> pushRequirement [
+MOPRequirementBuilder >> pushRequirement [
 
 	instrumentationBuilder requirement: requirement .
 ]

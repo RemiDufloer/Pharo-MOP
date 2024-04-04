@@ -1,16 +1,16 @@
 Class {
-	#name : #MOPRequirement,
+	#name : #MOPRequirementTest,
 	#superclass : #MOPTest,
 	#category : #MetaObjectProtocolTest
 }
 
 { #category : #tests }
-MOPRequirement >> testRequirementCheckNameMethod [
+MOPRequirementTest >> testRequirementCheckNameMethod [
 
 	| requirement node result name |
 	name := 'testMethod'.
 	node := RBMethodNode selector: name.
-	requirement := SelectorNameRequirement name: name .
+	requirement := MOPSelectorNameRequirement name: name .
 	
 
 	result := requirement verify: node.
@@ -19,12 +19,12 @@ MOPRequirement >> testRequirementCheckNameMethod [
 ]
 
 { #category : #tests }
-MOPRequirement >> testRequirementCheckNameVariable [
+MOPRequirementTest >> testRequirementCheckNameVariable [
 
 	| requirement node result name |
 	name := 'testVariable'.
 	node := RBVariableNode named: name.
-	requirement := NameVariableRequirement name: name.
+	requirement := MOPNameVariableRequirement name: name.
 	
 
 	result := requirement verify: node.

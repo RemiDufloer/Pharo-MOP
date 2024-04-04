@@ -16,7 +16,7 @@ MOPBuilder >> instrumentationBuilder: anInstrumentationBuilder [
 { #category : #'instance creation' }
 MOPBuilder >> newOperation [
 	
-	^ OperationBuilder new instrumentationBuilder: instrumentationBuilder ; yourself
+	^ MOPOperationBuilder new instrumentationBuilder: instrumentationBuilder ; yourself
 ]
 
 { #category : #'API - remotes' }

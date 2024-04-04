@@ -4,40 +4,24 @@ Class {
 	#instVars : [
 		'instrumentations',
 		'object',
-		'protocol'
+		'protocol',
+		'instrumentationInstalleur'
 	],
-	#category : #MetaObjectProtocol
+	#category : #'MetaObjectProtocol-base'
 }
 
 { #category : #adding }
-MOPMetaObject >> addInstrumentation: anInstrumentation [ 
-	
+MOPMetaObject >> addInstrumentation: anInstrumentation [
 
-	instrumentations add: anInstrumentation.
-]
-
-{ #category : #private }
-MOPMetaObject >> annonymousClassCreator [
-
-	object class traceCr.
-	object class isAnonymous ifFalse: [ 
-		object class newAnonymousSubclass adoptInstance: object ].
-	object class traceCr.
-	
-]
-
-{ #category : #accessing }
-MOPMetaObject >> giveMethodAssociatedToMessage: aMessage [
-
-	^ object class lookupSelector: aMessage selector.
+	instrumentations add: anInstrumentation
 ]
 
 { #category : #'handling DNU' }
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
-	self instrumentMethod: (self giveMethodAssociatedToMessage: aMessage).
-
+	(object class lookupSelector: aMessage selector) ifNotNil: [
+		:selector | self instrument: selector ].
 
 	^ MirrorPrimitives
 		  withReceiver: object
@@ -53,20 +37,24 @@ MOPMetaObject >> initialize [
 	protocol := MOPProtocol new.
 	protocol metaObject: self.
 
-	instrumentations := OrderedCollection new
+	instrumentations := OrderedCollection new.
+
+	instrumentationInstalleur := MOPInstrumentationInstaller for: self
 ]
 
 { #category : #instrument }
-MOPMetaObject >> instrument: anASTNode [
+MOPMetaObject >> instrument: aMethod [
 
-	self instrumentations do: [ :inst | (inst requirement verify: anASTNode) ifTrue: [ inst installOnNode: anASTNode ] ]
-]
+	self instrumentations do: [ :instrumentation |
+		| nodes |
+		nodes := aMethod ast allChildren select: [ :n |
+			         instrumentation requirement verify: n ].
 
-{ #category : #instrument }
-MOPMetaObject >> instrumentMethod: aMethode [
+		nodes ifNotEmpty: [  
 
-	aMethode ast allChildren do: [ :n |
-		self instrumentations do: [ :inst | inst installOnNode: n ] ].
+		MOPInstrumentationInstaller new
+			object: object;
+			install: instrumentation onMethod: aMethod ]]
 ]
 
 { #category : #accessing }
@@ -79,7 +67,8 @@ MOPMetaObject >> instrumentations [
 MOPMetaObject >> object: anObject [
  
 	object := anObject.
-	self annonymousClassCreator.
+	instrumentationInstalleur object: anObject
+	
 ]
 
 { #category : #accessing }
