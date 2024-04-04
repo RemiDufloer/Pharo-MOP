@@ -42,7 +42,7 @@ MOPInstrumentation >> execute: aRFOperation [
 	before ifNotNil:[ return add: (before apply: aRFOperation)].
 	returnDefaultOperation := operation apply: aRFOperation.
 	return add: returnDefaultOperation.
-	after ifNotNil:[ return add: (before apply: aRFOperation)].
+	after ifNotNil:[ return add: (after apply: aRFOperation)].
 	^ returnDefaultOperation
 ]
 
