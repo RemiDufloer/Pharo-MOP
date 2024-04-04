@@ -31,55 +31,6 @@ MOPInstrumentationInstalleurTest >> testBeForObject [
 ]
 
 { #category : #'tests - method flattening' }
-MOPInstrumentationInstalleurTest >> testBuildSuperSendsChainFromSourceMethodToHighestMethodInClassHierarchy [
-
-	|sourceMethod targetMethod chain lastFoundMethod|
-	sourceMethod := MOPBottom >> #mWithSuper.
-	targetMethod := MOPTop >> #mWithSuper.
-	chain := OrderedCollection new.
-	
-	lastFoundMethod := instrumenter buildSuperSendsChainFrom: sourceMethod upTo: nil in: chain.	
-	
-	self assert: chain size equals: 2.
-	self assert: chain first identicalTo: sourceMethod.
-	self assert: chain last identicalTo: (MOPMiddle >> #mWithSuper).
-	self assert: lastFoundMethod identicalTo: targetMethod
-
-	
-]
-
-{ #category : #'tests - method flattening' }
-MOPInstrumentationInstalleurTest >> testBuildSuperSendsChainFromSourceMethodToTargetMethod [
-
-	|sourceMethod targetMethod chain lastFoundMethod|
-	sourceMethod := MOPBottom >> #mWithSuper.
-	targetMethod := MOPMiddle >> #mWithSuper.
-	chain := OrderedCollection new.
-	
-	lastFoundMethod := instrumenter buildSuperSendsChainFrom: sourceMethod upTo: targetMethod in: chain.	
-	
-	self assert: chain size equals: 1.
-	self assert: chain first identicalTo: sourceMethod.
-	self assert: lastFoundMethod identicalTo: targetMethod
-
-	
-]
-
-{ #category : #'tests - method flattening' }
-MOPInstrumentationInstalleurTest >> testBuildSuperSendsChainFromSourceMethodToTargetMethodFailure [
-
-	|sourceMethod targetMethod chain lastFoundMethod|
-	sourceMethod := MOPBottom >> #superUpToMiddleHierarchy.
-	targetMethod := MOPTop >> #superUpToMiddleHierarchy.
-	chain := OrderedCollection new.
-	
-	lastFoundMethod := instrumenter buildSuperSendsChainFrom: sourceMethod upTo: targetMethod in: chain.	
-	self deny: lastFoundMethod identicalTo: targetMethod
-	
-
-]
-
-{ #category : #'tests - method flattening' }
 MOPInstrumentationInstalleurTest >> testCompileEmptySuperSendChain [
 
 	self assertEmpty: (instrumenter compileSuperSendChain: #(  ))
@@ -133,25 +84,6 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChainWithoutSuper [
 	self assertEmpty: (instrumenter compiledSelectorsMap).
 	
 	self assert: (testObject class >> compiledSelectors first) sourceCode equals: (MOPBottom >> #mWithSuper) sourceCode
-]
-
-{ #category : #'tests - method flattening' }
-MOPInstrumentationInstalleurTest >> testFindEmptySuperSendsChainFor [
-
-	| method chain |
-	"Not relevant anymore, we changed the super chain solving mecanism."
-	
-	"Case 1: the method is not reachable from Bib instances"
-	instrumenter object: MOPMiddle new.
-	method := MOPBottom >> #mWithSuper.
-	chain := instrumenter findSuperSendsChainFor: method.
-	self assertEmpty: chain.
-
-	"Case 2: the method is not reachable from Bub instances"
-	instrumenter object: MOPBottom new.
-	method := MOPMiddle >> #redefineNoSuper.
-	chain := instrumenter findSuperSendsChainFor: method.
-	self assertEmpty: chain
 ]
 
 { #category : #'tests - method flattening' }

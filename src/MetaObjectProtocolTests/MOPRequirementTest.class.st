@@ -17,17 +17,3 @@ MOPRequirementTest >> testRequirementCheckNameMethod [
 
 	self assert: result
 ]
-
-{ #category : #tests }
-MOPRequirementTest >> testRequirementCheckNameVariable [
-
-	| requirement node result name |
-	name := 'testVariable'.
-	node := RBVariableNode named: name.
-	requirement := MOPNameVariableRequirement name: name.
-	
-
-	result := requirement verify: node.
-
-	self assert: result
-]

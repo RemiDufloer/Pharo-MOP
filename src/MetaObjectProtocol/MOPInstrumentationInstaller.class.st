@@ -108,7 +108,7 @@ MOPInstrumentationInstaller >> install: anInstrumentation onNode: aNode [
 	link control: #instead.
 	link metaObject: anInstrumentation.
 	link selector: #execute:.
-	"link optionCompileOnLinkInstallation: true."
+	link optionCompileOnLinkInstallation: true.
 
 	(link checkForCompatibilityWith: aNode) ifFalse: [ ^ nil ].
 
