@@ -5,6 +5,38 @@ Class {
 }
 
 { #category : #tests }
+MetaObjectProtocolTest >> test2InstrumentationOnSameNode [
+
+
+| alice collectionOfValue op requirement instrumentation expectedCollection |
+
+alice := Personne new nom: 'Tartenpion' ; prenom: 'alice' ; age: 22.
+collectionOfValue := OrderedCollection new .
+expectedCollection := OrderedCollection new.
+
+op := MOPBlockOperation block: [ :s | (s class == RFSlotWrite ifTrue: [ collectionOfValue add: (s variable read: s object)  ] ifFalse: [collectionOfValue add: s value])  ].
+requirement :=  ((MOPVariableReadRequirement new) or: (MOPAssignementVariableRequirement new)).
+instrumentation := MOPInstrumentation new before: op.
+instrumentation requirement: requirement.
+alice mop addInstrumentation: instrumentation.
+
+op := MOPBlockOperation block: [ :s |  13. ].
+requirement :=  (MOPNameVariableRequirement name: 'age').
+instrumentation := MOPInstrumentation new before: op.
+instrumentation requirement: requirement.
+alice mop addInstrumentation: instrumentation.
+
+alice age: 42.
+alice prenom .
+alice age.
+
+expectedCollection add: 22; add: 'alice'; add: 42.
+
+
+self assertCollection: collectionOfValue equals: expectedCollection
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 
 	| object protocol builder result |
@@ -99,4 +131,29 @@ MetaObjectProtocolTest >> testMOPObjectCentric [
 
 	self assert: result equals: 'string :op1op2'.
 	self assert: valueB equals: 'test'
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testWatchPointBefore [
+
+
+| alice collectionOfValue op requirement instrumentation expectedCollection |
+alice := Personne new nom: 'Tartenpion' ; prenom: 'alice' ; age: 22.
+collectionOfValue := OrderedCollection new .
+expectedCollection := OrderedCollection new.
+
+op := MOPBlockOperation block: [ :s | (s class == RFSlotWrite ifTrue: [ collectionOfValue add: (s variable read: s object)  ] ifFalse: [collectionOfValue add: s value])  ].
+requirement :=  ((MOPVariableReadRequirement new) or: (MOPAssignementVariableRequirement new)).
+instrumentation := MOPInstrumentation new before: op.
+instrumentation requirement: requirement.
+alice mop addInstrumentation: instrumentation.
+
+alice age: 42.
+alice prenom .
+alice age.
+
+expectedCollection add: 22; add: 'alice'; add: 42.
+
+
+self assertCollection: collectionOfValue equals: expectedCollection
 ]
