@@ -38,12 +38,6 @@ MOPInstrumentationInstaller >> compileSuperSendChain: aMethodCollection [
 	^ methods
 ]
 
-{ #category : #accessing }
-MOPInstrumentationInstaller >> compiledSelectorsMap [
-
-	^ compiledSelectorsMap ifNil:[compiledSelectorsMap := Dictionary new]
-]
-
 { #category : #MetaLink }
 MOPInstrumentationInstaller >> createAnonymousClassFor: anObject [
 
@@ -80,22 +74,19 @@ MOPInstrumentationInstaller >> install: aMOPInstrumentation onMethod: aRBMethod 
 
 	| nodeOfMethodNeedToInstall methodNeedToInstall methodsToInstrument compiledSelectors |
 	methodsToInstrument := self findSuperSendsChainFor: aRBMethod.
+   compiledSelectors := self compileSuperSendChain: methodsToInstrument.
 
-	compiledSelectors := self compileSuperSendChain: methodsToInstrument.
-	(methodsToInstrument isEmpty and: [
-		 (instrumentedClass methods includes: aRBMethod) not ]) ifTrue: [
+	(instrumentedClass methods select: [ :m |
+		 m selector = aRBMethod selector ]) isEmpty ifTrue: [
 		self instrumentedClass compile: aRBMethod sourceCode ].
+	
 	compiledSelectors isEmpty ifFalse: [
 		self superSendChainInstall: compiledSelectors ].
-
-
 
 	methodNeedToInstall := self instrumentedClass >> aRBMethod selector.
 	nodeOfMethodNeedToInstall := methodNeedToInstall ast allChildren.
 	nodeOfMethodNeedToInstall do: [ :n |
-		self install: aMOPInstrumentation onNode: n ].
-	methodNeedToInstall ast doSemanticAnalysis 
-	
+		self install: aMOPInstrumentation onNode: n ]
 ]
 
 { #category : #installeur }
@@ -103,6 +94,8 @@ MOPInstrumentationInstaller >> install: anInstrumentation onNode: aNode [
 
 	| link |
 	(anInstrumentation requirement verify: aNode) ifFalse: [ ^ nil ].
+	aNode hasMetaLinks ifTrue: [ self error:
+		(' there is already instrumentation on this node ') ].
 	link := MetaLink new.
 	link arguments: #( operation ).
 	link control: #instead.
@@ -152,13 +145,6 @@ MOPInstrumentationInstaller >> instrumentedObject [
 MOPInstrumentationInstaller >> instrumentedObject: anObject [
 
 	instrumentedObject := anObject
-]
-
-{ #category : #testing }
-MOPInstrumentationInstaller >> isClassReachableInHierarchy: aClass [
-
-	^ self originalClass == aClass or: [ 
-		  self originalClass allSuperclasses includes: aClass ]
 ]
 
 { #category : #accessing }

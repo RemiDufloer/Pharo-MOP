@@ -81,7 +81,7 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChainWithoutSuper [
 	self assert: compiledSelectors size equals: chain size.
 	self assert: compiledSelectors first equals: #mWithSuper.
 	
-	self assertEmpty: (instrumenter compiledSelectorsMap).
+	self assert: (compiledSelectors size) equals: 1.
 	
 	self assert: (testObject class >> compiledSelectors first) sourceCode equals: (MOPBottom >> #mWithSuper) sourceCode
 ]
@@ -146,23 +146,6 @@ MOPInstrumentationInstalleurTest >> testIntrumentationOfNotExistingMessage [
 			
 			object notExistingMessage ]
 		raise: MessageNotUnderstood
-]
-
-{ #category : #'tests - method flattening' }
-MOPInstrumentationInstalleurTest >> testIsMethodReachableInHierarchy [
-	
-	|method|
-	instrumenter object: MOPMiddle new.
-	self assert: (instrumenter isClassReachableInHierarchy: MOPMiddle).
-	
-	method := MOPBottom >> #mWithSuper.	
-	self deny: (instrumenter isClassReachableInHierarchy: method methodClass).
-	
-	method := MOPTop >> #mWithSuper.
-	self assert: (instrumenter isClassReachableInHierarchy: method methodClass).
-	
-
-	
 ]
 
 { #category : #tests }
