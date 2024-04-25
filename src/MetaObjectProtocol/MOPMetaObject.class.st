@@ -87,7 +87,7 @@ MOPMetaObject >> object: anObject [
 
 	object := anObject.
 	anObject class newAnonymousSubclass adoptInstance: anObject.
-	anObject class addSlot: #proxy => InstanceVariableSlot
+	anObject class addSlot: #proxy => MOPProxyInstanceVariableSlot 
 ]
 
 { #category : #accessing }
