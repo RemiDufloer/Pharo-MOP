@@ -7,6 +7,18 @@ Class {
 	#category : #MetaObjectProtocolTests
 }
 
+{ #category : #'as yet unclassified' }
+MOPBottom >> _2_mWithSuper [
+
+	^ super mWithSuper + 2
+]
+
+{ #category : #'as yet unclassified' }
+MOPBottom >> _3_mWithSuper [
+
+	^ self index
+]
+
 { #category : #assignments }
 MOPBottom >> assignmentTest [
 	var1 := 4 squared.

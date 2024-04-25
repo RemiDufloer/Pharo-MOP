@@ -46,7 +46,9 @@ MOPMetaObject >> initialize [
 { #category : #'as yet unclassified' }
 MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 
-	| ast selfCode sourceCode |
+	| ast selfCode sourceCode instanceProxy |
+	
+	instanceProxy := 'proxy', object hash asString.
 	ast := RBParser parseMethod: aRBMethod sourceCode.
 	aRBMethod ast containsReturn
 		ifTrue: [
@@ -54,8 +56,8 @@ MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 				            formattedCode.
 			sourceCode := ast formattedCode
 				              copyReplaceAll: selfCode
-				              with: '^ proxy' ]
-		ifFalse: [ sourceCode := ast sourceCode , '. ^ proxy' ].
+				              with: '^ ', instanceProxy ]
+		ifFalse: [ sourceCode := ast sourceCode , '. ^ ' , instanceProxy ].
 
 	object class compile: sourceCode
 ]
@@ -85,9 +87,13 @@ MOPMetaObject >> instrumentations [
 { #category : #accessing }
 MOPMetaObject >> object: anObject [
 
+	| instanceProxy |
+	
+	instanceProxy := 'proxy', anObject hash asString.
+	
 	object := anObject.
 	anObject class newAnonymousSubclass adoptInstance: anObject.
-	anObject class addSlot: #proxy => MOPProxyInstanceVariableSlot 
+	anObject class addSlot: instanceProxy asSymbol  => MOPProxyInstanceVariableSlot 
 ]
 
 { #category : #accessing }
@@ -99,10 +105,14 @@ MOPMetaObject >> protocol [
 { #category : #accessing }
 MOPMetaObject >> proxy: aMOPProxy [
 
+	| instanceProxy |
+	
+	instanceProxy := 'proxy', object hash asString.
+
 	proxy := aMOPProxy.
 	"here we put the proxy as an instance variable of the anonymous class, we do this so as not to return self in the methods of the proxied object but to return the proxy. This allows you to capture all the messages and not leave the MOP"
 	MirrorPrimitives
 		fixedFieldOf: object
-		at: ( object class slotNamed: #proxy) index
+		at: ( object class slotNamed: instanceProxy) index
 		put: aMOPProxy
 ]
