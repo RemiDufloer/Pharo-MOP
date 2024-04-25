@@ -5,7 +5,8 @@ Class {
 		'instrumentations',
 		'object',
 		'protocol',
-		'instrumentationInstalleur'
+		'instrumentationInstalleur',
+		'proxy'
 	],
 	#category : #'MetaObjectProtocol-base'
 }
@@ -42,19 +43,37 @@ MOPMetaObject >> initialize [
 	instrumentationInstalleur := MOPInstrumentationInstaller for: self
 ]
 
+{ #category : #'as yet unclassified' }
+MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
+
+	| ast selfCode sourceCode |
+	ast := RBParser parseMethod: aRBMethod sourceCode.
+	aRBMethod ast containsReturn
+		ifTrue: [
+			selfCode := (RBReturnNode value: RBVariableNode selfNode)
+				            formattedCode.
+			sourceCode := ast formattedCode
+				              copyReplaceAll: selfCode
+				              with: '^ proxy' ]
+		ifFalse: [ sourceCode := ast sourceCode , '. ^ proxy' ].
+
+	object class compile: sourceCode
+]
+
 { #category : #instrument }
 MOPMetaObject >> instrument: aMethod [
+
+	self installOnAnnonymousClass: aMethod.
 
 	self instrumentations do: [ :instrumentation |
 		| nodes |
 		nodes := aMethod ast allChildren select: [ :n |
 			         instrumentation requirement verify: n ].
 
-		nodes ifNotEmpty: [  
-
-		MOPInstrumentationInstaller new
-			object: object;
-			install: instrumentation onMethod: aMethod ]]
+		nodes ifNotEmpty: [
+			MOPInstrumentationInstaller new
+				object: object;
+				install: instrumentation onMethod: aMethod ] ]
 ]
 
 { #category : #accessing }
@@ -65,14 +84,25 @@ MOPMetaObject >> instrumentations [
 
 { #category : #accessing }
 MOPMetaObject >> object: anObject [
- 
+
 	object := anObject.
-	instrumentationInstalleur object: anObject
-	
+	anObject class newAnonymousSubclass adoptInstance: anObject.
+	anObject class addSlot: #proxy => InstanceVariableSlot
 ]
 
 { #category : #accessing }
 MOPMetaObject >> protocol [
 
 	^ protocol
+]
+
+{ #category : #accessing }
+MOPMetaObject >> proxy: aMOPProxy [
+
+	proxy := aMOPProxy.
+	"here we put the proxy as an instance variable of the anonymous class, we do this so as not to return self in the methods of the proxied object but to return the proxy. This allows you to capture all the messages and not leave the MOP"
+	MirrorPrimitives
+		fixedFieldOf: object
+		at: ( object class slotNamed: #proxy) index
+		put: aMOPProxy
 ]

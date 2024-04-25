@@ -13,6 +13,20 @@ MOPBottom >> assignmentTest [
 ]
 
 { #category : #'as yet unclassified' }
+MOPBottom >> escapeWithSelf [
+
+	var1 := 12.
+	^ self
+]
+
+{ #category : #'as yet unclassified' }
+MOPBottom >> escapeWithoutSelf [
+
+	var1 := 12.
+
+]
+
+{ #category : #'as yet unclassified' }
 MOPBottom >> mWithSuper [
 
 	^ super mWithSuper + 1

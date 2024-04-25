@@ -5,6 +5,63 @@ Class {
 }
 
 { #category : #tests }
+MetaObjectProtocolTest >> testEscapeSelf [
+
+	| object result |
+	
+	object := MOPBottom new.
+	object mop.
+	
+	result := object escapeWithSelf.
+	
+	self assert: result hash equals: object hash.
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testEscapeSelfProxy [
+
+	| object protocol builder result values |
+	object := MOPBottom new.
+	protocol := object mop.
+	values := OrderedCollection new.
+
+	builder := protocol newInstrumentation.
+	builder := builder newRequirementInstallation.
+	builder newRequirement: MOPAssignementVariableRequirement new.
+	builder newOperation newBlockOperationBefore: [ :o |
+		values add: (o variable read: o object) ].
+	builder push.
+	result := object escapeWithSelf.
+	result escapeWithSelf.
+
+
+
+
+	self assert: values size equals: 2
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testEscapeWithoutSelf [
+
+	| object protocol builder result values |
+	object := MOPBottom new.
+	protocol := object mop.
+	values := OrderedCollection new.
+
+	builder := protocol newInstrumentation.
+	builder := builder newRequirementInstallation.
+	builder newRequirement: (MOPAssignementVariableRequirement new).
+	builder newOperation newBlockOperationBefore: [ :o | values add: ( o variable read: o object) ].
+	builder push.
+	result := object escapeWithoutSelf .
+	result escapeWithSelf  .
+
+
+
+	self assert: values size equals: 2
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 
 	| object protocol builder result |
@@ -160,4 +217,36 @@ expectedCollection add: 22; add: 'alice'; add: 42.
 
 
 self assertCollection: collectionOfValue equals: expectedCollection
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testcallstack [
+
+	| alice collectionOfValue op requirement instrumentation expectedCollection |
+	alice := Personne new
+		         nom: 'Tartenpion';
+		         prenom: 'alice';
+		         age: 22.
+	collectionOfValue := OrderedCollection new.
+	expectedCollection := OrderedCollection new.
+
+	op := MOPBlockOperation block: [ :s | collectionOfValue add: s method selector].
+		
+	requirement := MOPMethodsRequirement class: alice class.
+	instrumentation := MOPInstrumentation new before: op.
+	instrumentation requirement: requirement.
+	alice mop addInstrumentation: instrumentation.
+
+	alice age.
+	alice age: 42.
+	alice prenom.
+	
+
+	expectedCollection
+		add: #age;
+		add: #age:;
+		add: #prenom.
+
+
+	self assertCollection: collectionOfValue equals: expectedCollection
 ]

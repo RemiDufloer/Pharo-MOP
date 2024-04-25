@@ -5,8 +5,7 @@ Class {
 		'installedInstrumentation',
 		'instrumentedObject',
 		'instrumentedClass',
-		'metaObject',
-		'compiledSelectorsMap'
+		'metaObject'
 	],
 	#category : #'MetaObjectProtocol-base'
 }
@@ -38,13 +37,6 @@ MOPInstrumentationInstaller >> compileSuperSendChain: aMethodCollection [
 	^ methods
 ]
 
-{ #category : #MetaLink }
-MOPInstrumentationInstaller >> createAnonymousClassFor: anObject [
-
-	anObject class isAnonymous ifTrue: [ ^ nil ].
-	anObject class newAnonymousSubclass adoptInstance: anObject
-]
-
 { #category : #instrumentation }
 MOPInstrumentationInstaller >> findSuperSendsChainFor: aMethod [
 
@@ -74,14 +66,13 @@ MOPInstrumentationInstaller >> install: aMOPInstrumentation onMethod: aRBMethod 
 
 	| nodeOfMethodNeedToInstall methodNeedToInstall methodsToInstrument compiledSelectors |
 	methodsToInstrument := self findSuperSendsChainFor: aRBMethod.
-   compiledSelectors := self compileSuperSendChain: methodsToInstrument.
 
-	(instrumentedClass methods select: [ :m |
-		 m selector = aRBMethod selector ]) isEmpty ifTrue: [
-		self instrumentedClass compile: aRBMethod sourceCode ].
-	
+	compiledSelectors := self compileSuperSendChain: methodsToInstrument.
+
 	compiledSelectors isEmpty ifFalse: [
 		self superSendChainInstall: compiledSelectors ].
+
+
 
 	methodNeedToInstall := self instrumentedClass >> aRBMethod selector.
 	nodeOfMethodNeedToInstall := methodNeedToInstall ast allChildren.
@@ -147,6 +138,13 @@ MOPInstrumentationInstaller >> instrumentedObject: anObject [
 	instrumentedObject := anObject
 ]
 
+{ #category : #testing }
+MOPInstrumentationInstaller >> isClassReachableInHierarchy: aClass [
+
+	^ self originalClass == aClass or: [ 
+		  self originalClass allSuperclasses includes: aClass ]
+]
+
 { #category : #accessing }
 MOPInstrumentationInstaller >> metaObject [
 
@@ -160,11 +158,10 @@ MOPInstrumentationInstaller >> metaObject: aMetaObject [
 ]
 
 { #category : #'api - model' }
-MOPInstrumentationInstaller >> object: anObject [ 
-	self createAnonymousClassFor: anObject.
-	instrumentedObject :=  anObject .
-	instrumentedClass := anObject class
-	
+MOPInstrumentationInstaller >> object: anObject [
+
+	instrumentedObject := anObject.
+	instrumentedClass := anObject class.
 ]
 
 { #category : #accessing }
