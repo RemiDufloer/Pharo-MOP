@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : #tests }
+MetaObjectProtocolTest >> testAnonymousClass [
+
+
+	| object |
+	object := MOPBottom new.
+	object mop.
+	self assert: object class superclass identicalTo: MOPBottom
+	
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testEscapeSelf [
 
 	| object result |

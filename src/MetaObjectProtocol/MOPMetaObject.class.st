@@ -41,7 +41,7 @@ MOPMetaObject >> initialize [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #install }
 MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 
 	| ast selfCode sourceCode instanceProxy |
@@ -66,10 +66,13 @@ MOPMetaObject >> instrument: aMethod [
 	| instrumentationInstalleur methodNeedToInstall |
 	instrumentationInstalleur := MOPInstrumentationInstaller new.
 	instrumentationInstalleur object: object.
-
+	
 	self installOnAnnonymousClass: aMethod.
+	instrumentationInstalleur superProblemeResolve: aMethod.
+	
 	methodNeedToInstall := object class >> aMethod selector.
-	instrumentationInstalleur superProblemeResolve: methodNeedToInstall.
+	
+	
 
 	self instrumentations do: [ :instrumentation |
 		| nodes |

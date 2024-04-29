@@ -3,9 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'installedInstrumentation',
-		'instrumentedObject',
-		'instrumentedClass',
-		'metaObject'
+		'object'
 	],
 	#category : #'MetaObjectProtocol-base'
 }
@@ -24,16 +22,14 @@ MOPInstrumentationInstaller >> compileSuperSendChain: aMethodCollection [
 	| methods |
 	methods := DoubleLinkedList new.
 	aMethodCollection isEmpty ifTrue: [ ^ methods ].
-
+	methods add: aMethodCollection first selector.
+	aMethodCollection removeFirst.
 	1 to: aMethodCollection size do: [ :i |
 		| method code |
 		method := aMethodCollection at: i.
-		code := i > 1
-			        ifTrue: [
-				        String streamContents: [ :s |
-					        s << '_'<< i asString << '_' << method sourceCode ] ]
-			        ifFalse: [ method sourceCode ].
-		methods add: (instrumentedClass compile: code) ].
+		code := String streamContents: [ :s |
+			        s << '_' << i asString << '_' << method sourceCode ].
+		methods add: (object class compile: code) ].
 	^ methods
 ]
 
@@ -64,18 +60,16 @@ MOPInstrumentationInstaller >> initialize [
 { #category : #installeur }
 MOPInstrumentationInstaller >> install: aMOPInstrumentation onMethod: aRBMethod [
 
-	| nodeOfMethodNeedToInstall methodNeedToInstall methodsToInstrument compiledSelectors |
-	methodsToInstrument := self findSuperSendsChainFor: aRBMethod.
+	| nodeOfMethodNeedToInstall methodNeedToInstall |
+	self superProblemeResolve: aRBMethod.
 
-	compiledSelectors := self compileSuperSendChain: methodsToInstrument.
+	methodNeedToInstall := self object class >> aRBMethod selector.
 
-	compiledSelectors isEmpty ifFalse: [
-		self superSendChainInstall: compiledSelectors ].
+	nodeOfMethodNeedToInstall := methodNeedToInstall ast allChildren
+		                             select: [ :n |
+		                             aMOPInstrumentation requirement
+			                             verify: n ].
 
-
-
-	methodNeedToInstall := self instrumentedClass >> aRBMethod selector.
-	nodeOfMethodNeedToInstall := methodNeedToInstall ast allChildren.
 	nodeOfMethodNeedToInstall do: [ :n |
 		self install: aMOPInstrumentation onNode: n ]
 ]
@@ -84,7 +78,6 @@ MOPInstrumentationInstaller >> install: aMOPInstrumentation onMethod: aRBMethod 
 MOPInstrumentationInstaller >> install: anInstrumentation onNode: aNode [
 
 	| link |
-	(anInstrumentation requirement verify: aNode) ifFalse: [ ^ nil ].
 	aNode hasMetaLinks ifTrue: [ self error:
 		(' there is already instrumentation on this node ') ].
 	link := MetaLink new.
@@ -115,59 +108,15 @@ MOPInstrumentationInstaller >> installedInstrumentation [
 ]
 
 { #category : #accessing }
-MOPInstrumentationInstaller >> instrumentedClass [
+MOPInstrumentationInstaller >> object [
 
-	^ instrumentedClass
-]
-
-{ #category : #accessing }
-MOPInstrumentationInstaller >> instrumentedClass: anObject [
-
-	instrumentedClass := anObject
-]
-
-{ #category : #accessing }
-MOPInstrumentationInstaller >> instrumentedObject [
-
-	^ instrumentedObject
-]
-
-{ #category : #accessing }
-MOPInstrumentationInstaller >> instrumentedObject: anObject [
-
-	instrumentedObject := anObject
-]
-
-{ #category : #testing }
-MOPInstrumentationInstaller >> isClassReachableInHierarchy: aClass [
-
-	^ self originalClass == aClass or: [ 
-		  self originalClass allSuperclasses includes: aClass ]
-]
-
-{ #category : #accessing }
-MOPInstrumentationInstaller >> metaObject [
-
-	^ metaObject
-]
-
-{ #category : #accessing }
-MOPInstrumentationInstaller >> metaObject: aMetaObject [
-
-	metaObject := aMetaObject
+	^ object
 ]
 
 { #category : #'api - model' }
 MOPInstrumentationInstaller >> object: anObject [
 
-	instrumentedObject := anObject.
-	instrumentedClass := anObject class.
-]
-
-{ #category : #accessing }
-MOPInstrumentationInstaller >> originalClass [
-
-	^ instrumentedClass superclass
+	object := anObject
 ]
 
 { #category : #instrumentation }
@@ -190,9 +139,7 @@ MOPInstrumentationInstaller >> superProblemeResolve: aRBMethod [
 	compiledSelectors := self compileSuperSendChain: methodsToInstrument.
 
 	compiledSelectors isEmpty ifFalse: [
-		self superSendChainInstall: compiledSelectors ].
-
-
+		self superSendChainInstall: compiledSelectors ]
 ]
 
 { #category : #installeur }
@@ -202,11 +149,12 @@ MOPInstrumentationInstaller >> superSendChainInstall: aDoubleLinkedList [
 		link hasSuccessor ifFalse: [ ^ nil ].
 		self
 			install: (self superInstrumentation: link nextLink value)
-			onMethod: instrumentedObject class >> link value asSymbol ]
+			onMethod: object class >> link value asSymbol ]
 ]
 
 { #category : #instrumentation }
 MOPInstrumentationInstaller >> uninstall: anInstrumentation [
 
+	self flag: 'Todo'.
 	(installedInstrumentation at: anInstrumentation) do: [ :n | n links do: [:l | l uninstall]]
 ]
