@@ -182,6 +182,20 @@ MOPInstrumentationInstaller >> superInstrumentation: selector [
 ]
 
 { #category : #installeur }
+MOPInstrumentationInstaller >> superProblemeResolve: aRBMethod [
+
+	| methodsToInstrument compiledSelectors |
+	methodsToInstrument := self findSuperSendsChainFor: aRBMethod.
+
+	compiledSelectors := self compileSuperSendChain: methodsToInstrument.
+
+	compiledSelectors isEmpty ifFalse: [
+		self superSendChainInstall: compiledSelectors ].
+
+
+]
+
+{ #category : #installeur }
 MOPInstrumentationInstaller >> superSendChainInstall: aDoubleLinkedList [
 
 	aDoubleLinkedList linksDo: [ :link |

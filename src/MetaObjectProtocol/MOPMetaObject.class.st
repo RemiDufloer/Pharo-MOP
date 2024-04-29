@@ -5,7 +5,6 @@ Class {
 		'instrumentations',
 		'object',
 		'protocol',
-		'instrumentationInstalleur',
 		'proxy'
 	],
 	#category : #'MetaObjectProtocol-base'
@@ -40,7 +39,6 @@ MOPMetaObject >> initialize [
 
 	instrumentations := OrderedCollection new.
 
-	instrumentationInstalleur := MOPInstrumentationInstaller for: self
 ]
 
 { #category : #'as yet unclassified' }
@@ -65,17 +63,21 @@ MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 { #category : #instrument }
 MOPMetaObject >> instrument: aMethod [
 
+	| instrumentationInstalleur methodNeedToInstall |
+	instrumentationInstalleur := MOPInstrumentationInstaller new.
+	instrumentationInstalleur object: object.
+
 	self installOnAnnonymousClass: aMethod.
+	methodNeedToInstall := object class >> aMethod selector.
+	instrumentationInstalleur superProblemeResolve: methodNeedToInstall.
 
 	self instrumentations do: [ :instrumentation |
 		| nodes |
-		nodes := aMethod ast allChildren select: [ :n |
+		nodes := methodNeedToInstall ast allChildren select: [ :n |
 			         instrumentation requirement verify: n ].
 
-		nodes ifNotEmpty: [
-			MOPInstrumentationInstaller new
-				object: object;
-				install: instrumentation onMethod: aMethod ] ]
+		nodes do: [ :n |
+			instrumentationInstalleur install: instrumentation onNode: n ] ]
 ]
 
 { #category : #accessing }
