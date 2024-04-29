@@ -30,6 +30,7 @@ MOPInstrumentationInstalleurTest >> testCompileEmptySuperSendChain [
 MOPInstrumentationInstalleurTest >> testCompileSuperSendChain [
 
 	| chain compiledSelectors |
+	self flag: 'bizarre de test comme ca car on a pas la classe ano ici'.
 	testObject := MOPBottom new.
 	instrumenter object: testObject.
 
@@ -62,6 +63,7 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChain [
 MOPInstrumentationInstalleurTest >> testCompileSuperSendChainWithoutSuper [
 
 	| chain compiledSelectors |
+	self flag: 'bizarre de test comme ca car on a pas la classe ano ici'.
 	testObject := MOPBottom new.
 	instrumenter object: testObject.
 

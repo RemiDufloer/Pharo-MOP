@@ -7,16 +7,16 @@ Class {
 	#category : #MetaObjectProtocolTests
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPTop >> index [
 
 	^ -3
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPTop >> instVarAccessInSuperCall [
-	^self index
-	
+
+	^ self index
 ]
 
 { #category : #accessing }
@@ -30,19 +30,19 @@ MOPTop >> m2 [
  	^self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPTop >> mWithSuper [
 
 	^ self index
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPTop >> redefineNoSuper [
 
 	^ 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPTop >> superUpToMiddleHierarchy [
 	"I do nothing"
 ]

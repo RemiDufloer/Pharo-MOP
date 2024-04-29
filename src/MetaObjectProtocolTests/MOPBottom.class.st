@@ -12,14 +12,14 @@ MOPBottom >> assignmentTest [
 	var1 := 4 squared.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #mock }
 MOPBottom >> escapeWithSelf [
 
 	var1 := 12.
 	^ self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #mock }
 MOPBottom >> escapeWithoutSelf [
 
 	var1 := 12.
