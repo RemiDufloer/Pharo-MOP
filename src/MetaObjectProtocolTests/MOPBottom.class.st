@@ -26,18 +26,18 @@ MOPBottom >> escapeWithoutSelf [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPBottom >> mWithSuper [
 
 	^ super mWithSuper + 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPBottom >> redefineNoSuper [
 	^1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPBottom >> superUpToMiddleHierarchy [
 	"I call super"
 	^ super superUpToMiddleHierarchy + 1
