@@ -24,10 +24,8 @@ MOPMethodsRequirement >> verify: anASTNode [
 	
 	
 	anASTNode isMethod ifFalse: [ ^ false].
-	anASTNode selector traceCr . 
-	anASTNode methodClass == ProtoObject ifTrue: [ 'proto' traceCr. ^ false ].
-	anASTNode methodClass == Object ifTrue: [ 'object' traceCr. ^ false ].
-	anASTNode methodClass superclass = class ifTrue: ['personne' traceCr].
+	anASTNode methodClass == ProtoObject ifTrue: [  ^ false ].
+	anASTNode methodClass == Object ifTrue: [  ^ false ].
 	^ true.
 
 

@@ -45,8 +45,8 @@ MOPMetaObject >> initialize [
 MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 
 	| ast selfCode sourceCode instanceProxy |
-	
-	instanceProxy := 'proxy', object hash asString.
+	aRBMethod methodClass = object class ifTrue: [ ^ nil ].
+	instanceProxy := 'proxy' , object hash asString.
 	ast := RBParser parseMethod: aRBMethod sourceCode.
 	aRBMethod ast containsReturn
 		ifTrue: [
@@ -54,7 +54,7 @@ MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 				            formattedCode.
 			sourceCode := ast formattedCode
 				              copyReplaceAll: selfCode
-				              with: '^ ', instanceProxy ]
+				              with: '^ ' , instanceProxy ]
 		ifFalse: [ sourceCode := ast sourceCode , '. ^ ' , instanceProxy ].
 
 	object class compile: sourceCode
@@ -66,18 +66,22 @@ MOPMetaObject >> instrument: aMethod [
 	| instrumentationInstalleur methodNeedToInstall |
 	instrumentationInstalleur := MOPInstrumentationInstaller new.
 	instrumentationInstalleur object: object.
-	
+
 	self installOnAnnonymousClass: aMethod.
 	instrumentationInstalleur superProblemeResolve: aMethod.
-	
+
 	methodNeedToInstall := object class >> aMethod selector.
-	
-	
+
+
 
 	self instrumentations do: [ :instrumentation |
 		| nodes |
 		nodes := methodNeedToInstall ast allChildren select: [ :n |
 			         instrumentation requirement verify: n ].
+		nodes := nodes select: [ :n |
+			         n hasMetaLinks
+				         ifTrue: [ n links first metaObject  ~= instrumentation ]
+				         ifFalse: [ true ] ].
 
 		nodes do: [ :n |
 			instrumentationInstalleur install: instrumentation onNode: n ] ]
