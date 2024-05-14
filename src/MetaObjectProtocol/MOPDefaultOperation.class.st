@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #accessing }
-MOPDefaultOperation >> apply: aRFOperation [
+MOPDefaultOperation >> apply: aRFOperation with: anOrderedCollection [
 
 	^ aRFOperation value
 ]

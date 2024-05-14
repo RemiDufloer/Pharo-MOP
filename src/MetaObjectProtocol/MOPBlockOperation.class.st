@@ -24,8 +24,7 @@ MOPBlockOperation class >> requirement: aRequirement block: aFullBlockClosure [
 ]
 
 { #category : #accessing }
-MOPBlockOperation >> apply: aRFOperation [
-
+MOPBlockOperation >> apply: aRFOperation with: anOrderedCollection [
 
 	(requirement verify: aRFOperation) ifTrue: [
 		^ block value: aRFOperation ]

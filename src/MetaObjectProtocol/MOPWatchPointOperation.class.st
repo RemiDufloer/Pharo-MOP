@@ -14,7 +14,7 @@ MOPWatchPointOperation class >> collection: aCollection [
 ]
 
 { #category : #accessing }
-MOPWatchPointOperation >> apply: aRFOperation [
+MOPWatchPointOperation >> apply: aRFOperation with: anOrderedCollection [
 
 	collection add: (aRFOperation class == RFSlotWrite
 			 ifTrue: [

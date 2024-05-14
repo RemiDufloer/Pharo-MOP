@@ -19,7 +19,7 @@ MOPSuperSendOperation class >> selector: aSelector [
 ]
 
 { #category : #accessing }
-MOPSuperSendOperation >> apply: aRFOperation [
+MOPSuperSendOperation >> apply: aRFOperation with: anOrderedCollection [
 
 	(requirement verify: aRFOperation) ifTrue: [
 		^ aRFOperation receiver
