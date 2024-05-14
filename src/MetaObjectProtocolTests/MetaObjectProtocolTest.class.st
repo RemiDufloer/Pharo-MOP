@@ -170,6 +170,28 @@ MetaObjectProtocolTest >> testMOPObjectCentric [
 ]
 
 { #category : #tests }
+MetaObjectProtocolTest >> testMetaLevel [
+
+	| alice op requirement instrumentation  |
+	alice := Personne new
+		         nom: 'Tartenpion';
+		         prenom: 'alice';
+		         age: 22.
+		
+	self halt.
+	op := MOPHaltOperation new.
+		
+	requirement := MOPMethodsRequirement new.
+	instrumentation := MOPInstrumentation new before: op.
+	instrumentation requirement: requirement.
+	alice mop addInstrumentation: instrumentation.
+
+	alice age.
+	alice age: 42.
+	alice prenom.
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testTwoInstrumentationOnSameNode [
 
 	| alice collectionOfValue op requirement instrumentation expectedCollection |
