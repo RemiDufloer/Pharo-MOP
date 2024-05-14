@@ -192,6 +192,19 @@ MetaObjectProtocolTest >> testMetaLevel [
 ]
 
 { #category : #tests }
+MetaObjectProtocolTest >> testMethodsPharoModels [
+
+	| object op result |
+	object := Personne new.
+	op := MOPBlockOperation block: [ :s | 'alice' ].
+	Personne >> #nom onCallDo: op onReceiver: object.
+	result := object nom.
+	self assert: result equals: 'alice'.
+	result := object age.
+	self assert: result ~= 'alice' 
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testTwoInstrumentationOnSameNode [
 
 	| alice collectionOfValue op requirement instrumentation expectedCollection |
