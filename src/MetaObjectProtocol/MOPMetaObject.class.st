@@ -5,7 +5,9 @@ Class {
 		'instrumentations',
 		'object',
 		'protocol',
-		'proxy'
+		'proxy',
+		'objectClass',
+		'objectAnoClass'
 	],
 	#category : #'MetaObjectProtocol-base'
 }
@@ -20,8 +22,12 @@ MOPMetaObject >> addInstrumentation: anInstrumentation [
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
-	(object class lookupSelector: aMessage selector) ifNotNil: [
-		:selector | self instrument: selector ].
+	
+	objectClass ifNotNil: [ :class |
+		(class lookupSelector: aMessage selector) ifNotNil: [ :selector | 
+			self instrument: selector 
+		]	
+	].
 
 	^ MirrorPrimitives
 		  withReceiver: object
@@ -45,7 +51,7 @@ MOPMetaObject >> initialize [
 MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 
 	| ast selfCode sourceCode instanceProxy |
-	aRBMethod methodClass = object class ifTrue: [ ^ nil ].
+	aRBMethod methodClass = objectAnoClass ifTrue: [ ^ nil ].
 	instanceProxy := 'proxy' , object hash asString.
 	ast := RBParser parseMethod: aRBMethod sourceCode.
 	aRBMethod ast containsReturn
@@ -57,7 +63,7 @@ MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 				              with: '^ ' , instanceProxy ]
 		ifFalse: [ sourceCode := ast sourceCode , '. ^ ' , instanceProxy ].
 
-	object class compile: sourceCode
+	objectAnoClass compile: sourceCode
 ]
 
 { #category : #instrument }
@@ -70,7 +76,7 @@ MOPMetaObject >> instrument: aMethod [
 	self installOnAnnonymousClass: aMethod.
 	instrumentationInstalleur superProblemeResolve: aMethod.
 
-	methodNeedToInstall := object class >> aMethod selector.
+	methodNeedToInstall := objectAnoClass >> aMethod selector.
 
 
 
@@ -101,8 +107,10 @@ MOPMetaObject >> object: anObject [
 	instanceProxy := 'proxy', anObject hash asString.
 	
 	object := anObject.
-	anObject class newAnonymousSubclass adoptInstance: anObject.
-	anObject class addSlot: instanceProxy asSymbol  => MOPProxyInstanceVariableSlot 
+	objectClass := anObject class.
+	objectAnoClass := objectClass newAnonymousSubclass.
+	objectAnoClass adoptInstance: anObject.
+	objectAnoClass addSlot: instanceProxy asSymbol  => MOPProxyInstanceVariableSlot 
 ]
 
 { #category : #accessing }
@@ -122,6 +130,6 @@ MOPMetaObject >> proxy: aMOPProxy [
 	"here we put the proxy as an instance variable of the anonymous class, we do this so as not to return self in the methods of the proxied object but to return the proxy. This allows you to capture all the messages and not leave the MOP"
 	MirrorPrimitives
 		fixedFieldOf: object
-		at: ( object class slotNamed: instanceProxy) index
+		at: (objectAnoClass slotNamed: instanceProxy) index
 		put: aMOPProxy
 ]

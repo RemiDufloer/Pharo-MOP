@@ -278,7 +278,7 @@ MetaObjectProtocolTest >> testcallstack [
 
 	op := MOPBlockOperation block: [ :s | collectionOfValue add: s method selector].
 		
-	requirement := MOPMethodsRequirement class: alice class.
+	requirement := MOPMethodsRequirement new.
 	instrumentation := MOPInstrumentation new before: op.
 	instrumentation requirement: requirement.
 	alice mop addInstrumentation: instrumentation.
