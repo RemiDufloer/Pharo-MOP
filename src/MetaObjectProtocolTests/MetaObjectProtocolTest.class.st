@@ -178,7 +178,6 @@ MetaObjectProtocolTest >> testMetaLevel [
 		         prenom: 'alice';
 		         age: 22.
 		
-	self halt.
 	op := MOPHaltOperation new.
 		
 	requirement := MOPMethodsRequirement new.
