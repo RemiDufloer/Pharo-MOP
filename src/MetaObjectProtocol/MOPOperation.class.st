@@ -28,7 +28,7 @@ Class {
 { #category : #accessing }
 MOPOperation >> apply: aRFOperation [
 
-	self apply: aRFOperation with: OrderedCollection new.
+	^ self apply: aRFOperation with: OrderedCollection new.
 ]
 
 { #category : #accessing }

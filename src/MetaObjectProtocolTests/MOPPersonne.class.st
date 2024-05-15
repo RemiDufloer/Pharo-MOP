@@ -1,52 +1,55 @@
+"
+this class is a mock class for performing mop operations such as testing
+"
 Class {
-	#name : #Personne,
+	#name : #MOPPersonne,
 	#superclass : #Object,
 	#instVars : [
 		'nom',
 		'prenom',
 		'age'
 	],
-	#category : #'MetaObjectProtocol-Demo'
+	#category : #MetaObjectProtocolTests
 }
 
 { #category : #accessing }
-Personne >> age [
+MOPPersonne >> age [
 
 	^ age
 ]
 
 { #category : #accessing }
-Personne >> age: anObject [
+MOPPersonne >> age: anObject [
 
 	age := anObject
 ]
 
 { #category : #accessing }
-Personne >> nom [
+MOPPersonne >> nom [
 
 	^ nom
 ]
 
 { #category : #accessing }
-Personne >> nom: anObject [
+MOPPersonne >> nom: anObject [
 
 	nom := anObject
 ]
 
 { #category : #accessing }
-Personne >> prenom [
+MOPPersonne >> prenom [
 
 	^ prenom
 ]
 
 { #category : #accessing }
-Personne >> prenom: anObject [
+MOPPersonne >> prenom: anObject [
 
 	prenom := anObject
 ]
 
 { #category : #accessing }
-Personne >> signature [
+MOPPersonne >> signature [
 
 	^ String streamContents: [ :s |
 		  s << ' ' << self nom << ' ' << self prenom << ' ' << self age  ]

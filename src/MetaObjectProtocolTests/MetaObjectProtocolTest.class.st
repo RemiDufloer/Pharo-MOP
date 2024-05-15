@@ -173,7 +173,7 @@ MetaObjectProtocolTest >> testMOPObjectCentric [
 MetaObjectProtocolTest >> testMetaLevel [
 
 	| alice op requirement instrumentation  |
-	alice := Personne new
+	alice := MOPPersonne new
 		         nom: 'Tartenpion';
 		         prenom: 'alice';
 		         age: 22.
@@ -194,9 +194,9 @@ MetaObjectProtocolTest >> testMetaLevel [
 MetaObjectProtocolTest >> testMethodsPharoModels [
 
 	| object op result |
-	object := Personne new.
+	object := MOPPersonne new.
 	op := MOPBlockOperation block: [ :s | 'alice' ].
-	Personne >> #nom onCallDo: op onReceiver: object.
+	MOPPersonne >> #nom onCallDo: op onReceiver: object.
 	result := object nom.
 	self assert: result equals: 'alice'.
 	result := object age.
@@ -207,7 +207,7 @@ MetaObjectProtocolTest >> testMethodsPharoModels [
 MetaObjectProtocolTest >> testTwoInstrumentationOnSameNode [
 
 	| alice collectionOfValue op requirement instrumentation expectedCollection |
-	alice := Personne new
+	alice := MOPPersonne new
 		         nom: 'Tartenpion';
 		         prenom: 'alice';
 		         age: 22.
@@ -244,7 +244,7 @@ MetaObjectProtocolTest >> testWatchPointBefore [
 
 
 | alice collectionOfValue op requirement instrumentation expectedCollection |
-alice := Personne new nom: 'Tartenpion' ; prenom: 'alice' ; age: 22.
+alice := MOPPersonne new nom: 'Tartenpion' ; prenom: 'alice' ; age: 22.
 collectionOfValue := OrderedCollection new .
 expectedCollection := OrderedCollection new.
 
@@ -268,7 +268,7 @@ self assertCollection: collectionOfValue equals: expectedCollection
 MetaObjectProtocolTest >> testcallstack [
 
 	| alice collectionOfValue op requirement instrumentation expectedCollection |
-	alice := Personne new
+	alice := MOPPersonne new
 		         nom: 'Tartenpion';
 		         prenom: 'alice';
 		         age: 22.
