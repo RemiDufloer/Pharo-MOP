@@ -4,25 +4,25 @@ Class {
 	#category : #MetaObjectProtocolTests
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPMiddle >> instVarAccessInSuperCall [
 	x := 1 + super instVarAccessInSuperCall.
 	^x
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPMiddle >> mWithSuper [
 
 	^ super mWithSuper + 2
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPMiddle >> redefineNoSuper [
 
 	^ super redefineNoSuper + 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPMiddle >> superUpToMiddleHierarchy [
 	"I do not call super"
 	^ 1

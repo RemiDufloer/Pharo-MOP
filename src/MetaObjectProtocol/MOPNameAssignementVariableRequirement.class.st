@@ -22,7 +22,7 @@ MOPNameAssignementVariableRequirement >> name: aString [
 { #category : #verifying }
 MOPNameAssignementVariableRequirement >> verify: anASTNode [
 
-	anASTNode isAssignment variable isInstanceVariable  ifFalse: [ ^ false ].
+	anASTNode isAssignment ifTrue:[anASTNode variable isInstanceVariable ifFalse: [^ false ] ] ifFalse:  [ ^ false ].
 
-	^ anASTNode name = name
+	^ anASTNode variable name = name
 ]

@@ -12,18 +12,32 @@ MOPBottom >> assignmentTest [
 	var1 := 4 squared.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #mock }
+MOPBottom >> escapeWithSelf [
+
+	var1 := 12.
+	^ self
+]
+
+{ #category : #mock }
+MOPBottom >> escapeWithoutSelf [
+
+	var1 := 12.
+
+]
+
+{ #category : #accessing }
 MOPBottom >> mWithSuper [
 
 	^ super mWithSuper + 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPBottom >> redefineNoSuper [
 	^1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MOPBottom >> superUpToMiddleHierarchy [
 	"I call super"
 	^ super superUpToMiddleHierarchy + 1

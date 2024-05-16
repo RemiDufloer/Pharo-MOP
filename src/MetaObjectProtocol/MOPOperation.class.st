@@ -28,7 +28,13 @@ Class {
 { #category : #accessing }
 MOPOperation >> apply: aRFOperation [
 
-	self subclassResponsibility 
+	^ self apply: aRFOperation with: OrderedCollection new.
+]
+
+{ #category : #accessing }
+MOPOperation >> apply: aRFOperation with: anOrderedCollection [
+   
+	self subclassResponsibility
 ]
 
 { #category : #initialization }

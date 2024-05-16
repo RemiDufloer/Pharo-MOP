@@ -16,18 +16,8 @@ MOPInstrumentationInstalleurTest >> receive: selector [
 { #category : #tests }
 MOPInstrumentationInstalleurTest >> setUp [
 	super setUp.
-	instrumenter := MOPInstrumentationInstaller for: self.
+	instrumenter := MOPInstrumentationInstaller new.
 	testObject := Object new
-]
-
-{ #category : #tests }
-MOPInstrumentationInstalleurTest >> testBeForObject [
-	
-	instrumenter object: testObject.
-	self assert: instrumenter instrumentedObject identicalTo: testObject.
-	self assert: instrumenter instrumentedClass identicalTo: testObject class.
-	self assert: instrumenter instrumentedClass isAnonymous.
-	self assert: instrumenter instrumentedClass superclass identicalTo: Object.
 ]
 
 { #category : #'tests - method flattening' }
@@ -40,6 +30,7 @@ MOPInstrumentationInstalleurTest >> testCompileEmptySuperSendChain [
 MOPInstrumentationInstalleurTest >> testCompileSuperSendChain [
 
 	| chain compiledSelectors |
+	self flag: 'bizarre de test comme ca car on a pas la classe ano ici'.
 	testObject := MOPBottom new.
 	instrumenter object: testObject.
 
@@ -47,12 +38,12 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChain [
 		         (MOPBottom >> #mWithSuper).
 		         (MOPMiddle >> #mWithSuper).
 		         (MOPTop >> #mWithSuper) }.
-	compiledSelectors := instrumenter compileSuperSendChain: chain.
+	compiledSelectors := instrumenter compileSuperSendChain: chain asOrderedCollection .
 
 	self assert: compiledSelectors size equals: chain size.
 	self assert: compiledSelectors firstLink value equals: #mWithSuper.
-	self assert: compiledSelectors firstLink nextLink value equals: #_2_mWithSuper.
-	self assert: compiledSelectors firstLink nextLink nextLink value equals: #_3_mWithSuper.
+	self assert: compiledSelectors firstLink nextLink value equals: #_1_mWithSuper.
+	self assert: compiledSelectors firstLink nextLink nextLink value equals: #_2_mWithSuper.
 
 	self
 		assert:
@@ -71,19 +62,20 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChain [
 { #category : #'tests - method flattening' }
 MOPInstrumentationInstalleurTest >> testCompileSuperSendChainWithoutSuper [
 
-	|chain compiledSelectors|
+	| chain compiledSelectors |
+	self flag: 'bizarre de test comme ca car on a pas la classe ano ici'.
 	testObject := MOPBottom new.
 	instrumenter object: testObject.
 
-	chain := {MOPBottom >> #mWithSuper}.
-	compiledSelectors := instrumenter compileSuperSendChain: chain.
-	
+	chain := { (MOPBottom >> #mWithSuper) }.
+	compiledSelectors := instrumenter compileSuperSendChain: chain asOrderedCollection .
+
 	self assert: compiledSelectors size equals: chain size.
 	self assert: compiledSelectors first equals: #mWithSuper.
-	
-	self assertEmpty: (instrumenter compiledSelectorsMap).
-	
-	self assert: (testObject class >> compiledSelectors first) sourceCode equals: (MOPBottom >> #mWithSuper) sourceCode
+
+	self
+		assert: (testObject class >> compiledSelectors first) sourceCode
+		equals: (MOPBottom >> #mWithSuper) sourceCode
 ]
 
 { #category : #'tests - method flattening' }
@@ -120,17 +112,11 @@ MOPInstrumentationInstalleurTest >> testFindSuperSendsChainFor [
 ]
 
 { #category : #tests }
-MOPInstrumentationInstalleurTest >> testInstantiation [
-
-	self assert: instrumenter metaObject identicalTo: self
-]
-
-{ #category : #tests }
 MOPInstrumentationInstalleurTest >> testInstrumentedClass [
 
 	instrumenter object: testObject.
 	self
-		assert: instrumenter instrumentedClass
+		assert: instrumenter object class
 		identicalTo: testObject class
 ]
 
@@ -146,62 +132,4 @@ MOPInstrumentationInstalleurTest >> testIntrumentationOfNotExistingMessage [
 			
 			object notExistingMessage ]
 		raise: MessageNotUnderstood
-]
-
-{ #category : #'tests - method flattening' }
-MOPInstrumentationInstalleurTest >> testIsMethodReachableInHierarchy [
-	
-	|method|
-	instrumenter object: MOPMiddle new.
-	self assert: (instrumenter isClassReachableInHierarchy: MOPMiddle).
-	
-	method := MOPBottom >> #mWithSuper.	
-	self deny: (instrumenter isClassReachableInHierarchy: method methodClass).
-	
-	method := MOPTop >> #mWithSuper.
-	self assert: (instrumenter isClassReachableInHierarchy: method methodClass).
-	
-
-	
-]
-
-{ #category : #tests }
-MOPInstrumentationInstalleurTest >> testOriginalClass [
-
-	instrumenter object: testObject.
-	self assert: instrumenter originalClass identicalTo: Object
-]
-
-{ #category : #'tests - method flattening' }
-MOPInstrumentationInstalleurTest >> testSuperChainMethodWriteInAnonymousClassWhenInstrumentMethod [
-
-	| testObjectClass result op instrumentation |
-	testObject := MOPBottom new.
-	testObjectClass := testObject class.
-	instrumenter object: testObject.
-
-	result := 0.
-	op := MOPBlockOperation block: [ :o | result := result + 1 ].
-	instrumentation := MOPInstrumentation new operation: op.
-	instrumentation requirement:
-		(MOPSelectorNameRequirement name: 'mWithSuper').
-
-
-	self should: [ testObject class >> #mWithSuper ] raise: KeyNotFound.
-	self
-		should: [ testObject class >> #_2_mWithSuper ]
-		raise: KeyNotFound.
-	self
-		should: [ testObject class >> #_3_mWithSuper ]
-		raise: KeyNotFound.
-
-	instrumenter
-		install: instrumentation
-		onMethod: testObjectClass >> #mWithSuper.
-
-	self assert: (testObject class methodDict keys includes: #mWithSuper).
-	self assert:
-		(testObject class methodDict keys includes: #_2_mWithSuper).
-	self assert:
-		(testObject class methodDict keys includes: #_3_mWithSuper)
 ]

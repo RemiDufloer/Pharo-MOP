@@ -25,6 +25,6 @@ MOPSelectorNameRequirement >> name: aString [
 { #category : #verifying }
 MOPSelectorNameRequirement >> verify: anASTNode [
 
-	anASTNode isMethod ifTrue: [ ^ anASTNode selector = name ].
+	anASTNode isMethod ifTrue: [^ anASTNode selector = name ].
 	^ false
 ]
