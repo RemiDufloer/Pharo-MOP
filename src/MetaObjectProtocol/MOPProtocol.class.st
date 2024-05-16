@@ -16,6 +16,18 @@ MOPProtocol >> addInstrumentation: anInstrumentation [
 	metaObject addInstrumentation: anInstrumentation 
 ]
 
+{ #category : #'instance creation' }
+MOPProtocol >> createInstrumentationWithRequirement: aMOPRequirement [
+
+	| instrumentation |
+	(self metaObject instrumentations select: [ :i |
+		 i requirement class = aMOPRequirement class ])
+		ifEmpty: [ instrumentation := MOPInstrumentation new ]
+		ifNotEmpty: [ :c | instrumentation := c first ].
+		
+	^ instrumentation 
+]
+
 { #category : #accessing }
 MOPProtocol >> metaObject [
 	^ metaObject

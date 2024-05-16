@@ -237,26 +237,34 @@ MetaObjectProtocolTest >> testVariablePharoModels [
 { #category : #tests }
 MetaObjectProtocolTest >> testWatchPointBefore [
 
-
-| alice collectionOfValue op requirement instrumentation expectedCollection |
-alice := MOPPersonne new nom: 'Tartenpion' ; prenom: 'alice' ; age: 22.
-collectionOfValue := OrderedCollection new .
-expectedCollection := OrderedCollection new.
-
-op := MOPBlockOperation block: [ :s | (s class == RFSlotWrite ifTrue: [ collectionOfValue add: (s variable read: s object)  ] ifFalse: [collectionOfValue add: s value])  ].
-requirement :=  ((MOPVariableReadRequirement new) or: (MOPAssignementVariableRequirement new)).
-instrumentation := MOPInstrumentation new before: op.
-instrumentation requirement: requirement.
-alice mop addInstrumentation: instrumentation.
-
-alice age: 42.
-alice prenom .
-alice age.
-
-expectedCollection add: 22; add: 'alice'; add: 42.
+	| alice collectionOfValue op expectedCollection |
+	alice := MOPPersonne new
+		         nom: 'Tartenpion';
+		         prenom: 'alice';
+		         age: 22.
+	collectionOfValue := OrderedCollection new.
+	expectedCollection := OrderedCollection new.
+	op := MOPBlockOperation block: [ :s |
+		      s class == RFSlotWrite
+			      ifTrue: [ collectionOfValue add: (s variable read: s object) ]
+			      ifFalse: [ collectionOfValue add: s value ] ].
 
 
-self assertCollection: collectionOfValue equals: expectedCollection
+	alice mop.
+	alice onAnyVarDoBefore: op.
+
+
+	alice age: 42.
+	alice prenom.
+	alice age.
+
+	expectedCollection
+		add: 22;
+		add: 'alice';
+		add: 42.
+
+
+	self assertCollection: collectionOfValue equals: expectedCollection
 ]
 
 { #category : #tests }
