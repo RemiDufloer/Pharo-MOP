@@ -14,7 +14,6 @@ Class {
 
 { #category : #adding }
 MOPMetaObject >> addInstrumentation: anInstrumentation [
-
 	instrumentations add: anInstrumentation
 ]
 
@@ -22,12 +21,10 @@ MOPMetaObject >> addInstrumentation: anInstrumentation [
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
-	
+	( protocol understand: aMessage ) ifTrue: [ ^ nil ].
 	objectClass ifNotNil: [ :class |
-		(class lookupSelector: aMessage selector) ifNotNil: [ :selector | 
-			self instrument: selector 
-		]	
-	].
+		(class lookupSelector: aMessage selector) ifNotNil: [ :selector |
+			self instrument: selector ] ].
 
 	^ MirrorPrimitives
 		  withReceiver: object

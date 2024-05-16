@@ -31,17 +31,14 @@ MetaObjectProtocolTest >> testEscapeSelf [
 { #category : #tests }
 MetaObjectProtocolTest >> testEscapeSelfProxy [
 
-	| object protocol builder result values |
+	| object protocol result values |
 	object := MOPBottom new.
 	protocol := object mop.
 	values := OrderedCollection new.
 
-	builder := protocol newInstrumentation.
-	builder := builder newRequirementInstallation.
-	builder newRequirement: MOPAssignementVariableRequirement new.
-	builder newOperation newBlockOperationBefore: [ :o |
-		values add: (o variable read: o object) ].
-	builder push.
+	object mop.
+	object onAnyVarAssigneDoBefore: (MOPBlockOperation block: [ :o |
+			 values add: (o variable read: o object) ]).
 	result := object escapeWithSelf.
 	result escapeWithSelf.
 
@@ -54,18 +51,15 @@ MetaObjectProtocolTest >> testEscapeSelfProxy [
 { #category : #tests }
 MetaObjectProtocolTest >> testEscapeWithoutSelf [
 
-	| object protocol builder result values |
+	| object result values |
 	object := MOPBottom new.
-	protocol := object mop.
 	values := OrderedCollection new.
-
-	builder := protocol newInstrumentation.
-	builder := builder newRequirementInstallation.
-	builder newRequirement: (MOPAssignementVariableRequirement new).
-	builder newOperation newBlockOperationBefore: [ :o | values add: ( o variable read: o object) ].
-	builder push.
-	result := object escapeWithoutSelf .
-	result escapeWithSelf  .
+	object mop.
+		object
+		onAnyVarAssigneDoBefore: (MOPBlockOperation block: [ :o |
+		values add: (o variable read: o object) ]).
+	result := object escapeWithoutSelf.
+	result escapeWithSelf.
 
 
 
@@ -75,26 +69,18 @@ MetaObjectProtocolTest >> testEscapeWithoutSelf [
 { #category : #tests }
 MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 
-	| object protocol builder result |
+	| object result |
 	object := MOPTestObject new.
-	protocol := object mop.
 	result := 'string :'.
+	object mop.
+	object
+		onCall: #exampleMethod:
+		doBefore:
+		(MOPBlockOperation block: [ :o | result := result , 'op1' ]).
 
-	builder := protocol newInstrumentation.
-
-	builder := builder newRequirementInstallation.
-	builder newRequirement:
-		(MOPSelectorNameRequirement name: 'exampleMethod:').
-	builder andRequirement: (MOPArgumentsSizeRequirement new size: 1).
-
-	builder newOperation  newBlockOperationBefore:  [ :o | result := result , 'op1' ].
-
-	builder newOperation  newBlockOperation: [ :o | result := result , 'op2' ].
-	
-	builder push.
 	object exampleMethod: 'test'.
 
-	self assert: result equals: 'string :op1op2'
+	self assert: result equals: 'string :op1'
 ]
 
 { #category : #tests }
@@ -121,15 +107,15 @@ MetaObjectProtocolTest >> testMOPCreation [
 { #category : #tests }
 MetaObjectProtocolTest >> testMOPFlatten [
 
-	| object protocol builder result |
+	| object result |
 	object := MOPBottom new.
-	protocol := object mop.
+	object mop.
 
-	builder := protocol newInstrumentation.
-	builder := builder newRequirementInstallation.
-	builder newRequirement: (MOPSelectorNameRequirement name: 'mWithSuper').
-	builder newOperation newBlockOperationBefore: [ :o | nil ].
-	builder push.
+	object
+		onCall: #exampleMethod:
+		doBefore:
+		(MOPBlockOperation block: [ :o | nil ]).
+		
 	result := object mWithSuper.
 
 
@@ -139,97 +125,92 @@ MetaObjectProtocolTest >> testMOPFlatten [
 { #category : #tests }
 MetaObjectProtocolTest >> testMOPObjectCentric [
 
-	| objectA objectB protocol builder result valueB |
-	
+	| objectA objectB result |
 	objectA := MOPTestObject new.
 	objectB := MOPTestObject new.
-	protocol := objectA mop.
 	result := 'string :'.
 
-	builder := protocol newInstrumentation.
+	objectA mop.
 
-	builder := builder newRequirementInstallation.
-	builder newRequirement:
-		(MOPSelectorNameRequirement name: 'exampleMethod:').
-	builder andRequirement: (MOPArgumentsSizeRequirement new size: 1).
-
-	builder newOperation newBlockOperationBefore: [ :o |
-		result := result , 'op1' ].
-
-	builder newOperation newBlockOperation: [ :o |
-		result := result , 'op2' ].
-
-	builder push.
+	objectA
+		onCall: #exampleMethod:
+		doBefore:
+		(MOPBlockOperation block: [ :o | result := result , 'op1' ]).
 
 	objectA exampleMethod: 'test'.
+	objectB exampleMethod: 'test'.
 
-	valueB := objectB exampleMethod: 'test'.
-
-	self assert: result equals: 'string :op1op2'.
-	self assert: valueB equals: 'test'
+	self assert: result equals: 'string :op1'
 ]
 
 { #category : #tests }
 MetaObjectProtocolTest >> testMetaLevel [
 
-	| alice op requirement instrumentation  |
+	| alice op |
 	alice := MOPPersonne new
 		         nom: 'Tartenpion';
 		         prenom: 'alice';
 		         age: 22.
-		
+
 	op := MOPHaltOperation new.
-		
-	requirement := MOPMethodsRequirement new.
-	instrumentation := MOPInstrumentation new before: op.
-	instrumentation requirement: requirement.
-	alice mop addInstrumentation: instrumentation.
+
+	alice mop .
+	alice onAnyCallDoInstead:  op.
 
 	alice age.
 	alice age: 42.
-	alice prenom.
+	alice prenom
 ]
 
 { #category : #tests }
-MetaObjectProtocolTest >> testMethodsPharoModels [
+MetaObjectProtocolTest >> testMethodPharoModels [
 
 	| object op result |
 	object := MOPPersonne new.
 	op := MOPBlockOperation block: [ :s | 'alice' ].
-	MOPPersonne >> #nom onCallDo: op onReceiver: object.
+	object mop.
+	object onCall: #nom doInstead: op.
 	result := object nom.
 	self assert: result equals: 'alice'.
 	result := object age.
-	self assert: result ~= 'alice' 
+	self assert: result ~= 'alice'
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testMethodPharoModelsWhithMultipleOperation [
+
+	| object op1 op2 result |
+	object := MOPPersonne new.
+	result := ''.
+	object mop.
+	op1 := MOPBlockOperation block: [ :s | result := result , 'alice' ].
+	op2 := MOPBlockOperation block: [ :s |
+		       result := result , 'tartenpion' ].
+	object onAnyCallDoInstead: op1.
+	object onAnyCallDoAfter: op2.
+	object nom.
+	self assert: result equals: 'alicetartenpion'
 ]
 
 { #category : #tests }
 MetaObjectProtocolTest >> testTwoInstrumentationOnSameNode [
 
-	| alice collectionOfValue op requirement instrumentation expectedCollection |
+	| alice collectionOfValue op expectedCollection |
 	alice := MOPPersonne new
 		         nom: 'Tartenpion';
 		         prenom: 'alice';
 		         age: 22.
 	collectionOfValue := OrderedCollection new.
 	expectedCollection := OrderedCollection new.
+	alice mop.
 
 	op := MOPBlockOperation block: [ :s |
 		      s class == RFSlotWrite
 			      ifTrue: [ collectionOfValue add: (s variable read: s object) ]
 			      ifFalse: [ collectionOfValue add: s value ] ].
-	requirement := MOPVariableReadRequirement new or:
-		               MOPAssignementVariableRequirement new.
-	instrumentation := MOPInstrumentation new before: op.
-	instrumentation requirement: requirement.
-	alice mop addInstrumentation: instrumentation.
+	alice onAnyVarDoBefore: op.
+	alice onVar: 'age' whenReadDoBefore: op.
 
-	requirement := MOPNameVariableRequirement name: 'age'.
-	instrumentation := MOPInstrumentation new before: op.
-	instrumentation requirement: requirement.
-	alice mop addInstrumentation: instrumentation.
-
-	self should: [ alice age: 42 ] raise: Exception.
 	alice prenom.
 	self should: [ alice age ] raise: Exception.
 
@@ -237,6 +218,20 @@ MetaObjectProtocolTest >> testTwoInstrumentationOnSameNode [
 
 
 	self assertCollection: collectionOfValue equals: expectedCollection
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testVariablePharoModels [
+
+	| object op result |
+	object := MOPPersonne new.
+	op := MOPBlockOperation block: [ :s | 'alice' ].
+	object mop.
+	object onVar: 'nom' whenReadDoInstead: op.
+	result := object nom.
+	self assert: result equals: 'alice'.
+	result := object age.
+	self assert: result ~= 'alice' 
 ]
 
 { #category : #tests }
@@ -267,7 +262,7 @@ self assertCollection: collectionOfValue equals: expectedCollection
 { #category : #tests }
 MetaObjectProtocolTest >> testcallstack [
 
-	| alice collectionOfValue op requirement instrumentation expectedCollection |
+	| alice collectionOfValue op expectedCollection |
 	alice := MOPPersonne new
 		         nom: 'Tartenpion';
 		         prenom: 'alice';
@@ -275,17 +270,16 @@ MetaObjectProtocolTest >> testcallstack [
 	collectionOfValue := OrderedCollection new.
 	expectedCollection := OrderedCollection new.
 
-	op := MOPBlockOperation block: [ :s | collectionOfValue add: s method selector].
-		
-	requirement := MOPMethodsRequirement new.
-	instrumentation := MOPInstrumentation new before: op.
-	instrumentation requirement: requirement.
-	alice mop addInstrumentation: instrumentation.
+	op := MOPBlockOperation block: [ :s |
+		      collectionOfValue add: s method selector ].
+
+	alice mop.
+	alice onAnyCallDoInstead: op.
 
 	alice age.
 	alice age: 42.
 	alice prenom.
-	
+
 
 	expectedCollection
 		add: #age;
