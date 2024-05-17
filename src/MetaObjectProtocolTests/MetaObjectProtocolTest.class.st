@@ -21,20 +21,17 @@ MetaObjectProtocolTest >> testBreakPointHaltOnCall [
 	| object op |
 	object := MOPPersonne new.
 	op := MOPHaltOperation new.
-	object mop.
-	object onCall: 'nom' doAfter: op.
-
-	object nom
+	object mop onCall: 'nom' doAfter: op.
+	self should:[object nom] raise: Halt
 ]
 
 { #category : #tests }
 MetaObjectProtocolTest >> testBreakPointHaltOnRead [
 
-	| object op protocol |
+	| object op  |
 	object := MOPPersonne new.
 	op := MOPHaltOperation new.
-	protocol := object mop.
-	protocol onVar: 'nom' whenReadDoInstead: op.
+	object mop onVar: 'nom' whenReadDoInstead: op.
 
 	self should: [ object nom ] raise: Halt
 ]
@@ -45,10 +42,9 @@ MetaObjectProtocolTest >> testBreakPointHaltOnWrite [
 	| object op |
 	object := MOPPersonne new.
 	op := MOPHaltOperation new.
-	object mop.
-	object onVar: 'nom' whenAssigneDoBefore: op.
+	object mop onVar: 'nom' whenAssigneDoBefore: op.
 
-	object nom: 'alice'.
+	self should: [object nom: 'alice'] raise: Halt
 ]
 
 { #category : #tests }
