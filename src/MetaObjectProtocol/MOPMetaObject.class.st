@@ -77,17 +77,19 @@ MOPMetaObject >> instrument: aMethod [
 
 
 
-	self instrumentations do: [ :instrumentation |
-		| nodes |
-		nodes := methodNeedToInstall ast allChildren select: [ :n |
-			         instrumentation requirement verify: n ].
-		nodes := nodes select: [ :n |
-			         n hasMetaLinks
-				         ifTrue: [ n links first metaObject  ~= instrumentation ]
-				         ifFalse: [ true ] ].
+	self instrumentations
+		select: [ :i | i executing not ]
+		thenDo: [ :instrumentation |
+			| nodes |
+			nodes := methodNeedToInstall ast allChildren select: [ :n |
+				         instrumentation requirement verify: n ].
+			nodes := nodes select: [ :n |
+				         n hasMetaLinks
+					         ifTrue: [ n links first metaObject ~= instrumentation ]
+					         ifFalse: [ true ] ].
 
-		nodes do: [ :n |
-			instrumentationInstalleur install: instrumentation onNode: n ] ]
+			nodes do: [ :n |
+				instrumentationInstalleur install: instrumentation onNode: n ] ]
 ]
 
 { #category : #accessing }

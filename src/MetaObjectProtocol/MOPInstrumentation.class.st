@@ -57,6 +57,12 @@ MOPInstrumentation >> execute: aRFOperation [
 	^ returnDefaultOperation
 ]
 
+{ #category : #accessing }
+MOPInstrumentation >> executing [
+
+	^ executing
+]
+
 { #category : #initialization }
 MOPInstrumentation >> initialize [
 

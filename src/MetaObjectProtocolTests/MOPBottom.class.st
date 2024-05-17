@@ -2,7 +2,8 @@ Class {
 	#name : #MOPBottom,
 	#superclass : #MOPMiddle,
 	#instVars : [
-		'var1'
+		'var1',
+		'compteur'
 	],
 	#category : #MetaObjectProtocolTests
 }
@@ -24,6 +25,12 @@ MOPBottom >> escapeWithoutSelf [
 
 	var1 := 12.
 
+]
+
+{ #category : #initialization }
+MOPBottom >> initialize [ 
+
+	compteur := 0.
 ]
 
 { #category : #accessing }

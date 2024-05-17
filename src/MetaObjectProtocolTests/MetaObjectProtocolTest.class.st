@@ -146,20 +146,15 @@ MetaObjectProtocolTest >> testMOPObjectCentric [
 { #category : #tests }
 MetaObjectProtocolTest >> testMetaLevel [
 
-	| alice op |
-	alice := MOPPersonne new
-		         nom: 'Tartenpion';
-		         prenom: 'alice';
-		         age: 22.
+	| object op |
+	object := MOPBottom new.
 
-	op := MOPHaltOperation new.
+	op := MOPBlockOperation block: [ :s | object callCompteur ].
 
-	alice mop .
-	alice onAnyCallDoInstead:  op.
+	object mop.
+	object onAnyCallDoBefore: op.
 
-	alice age.
-	alice age: 42.
-	alice prenom
+	self assert: object callCompteur equals: 1
 ]
 
 { #category : #tests }
