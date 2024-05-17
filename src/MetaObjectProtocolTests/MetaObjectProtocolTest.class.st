@@ -16,6 +16,42 @@ MetaObjectProtocolTest >> testAnonymousClass [
 ]
 
 { #category : #tests }
+MetaObjectProtocolTest >> testBreakPointHaltOnCall [
+
+	| object op |
+	object := MOPPersonne new.
+	op := MOPHaltOperation new.
+	object mop.
+	object onCall: 'nom' doAfter: op.
+
+	object nom
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testBreakPointHaltOnRead [
+
+	| object op protocol |
+	object := MOPPersonne new.
+	op := MOPHaltOperation new.
+	protocol := object mop.
+	protocol onVar: 'nom' whenReadDoInstead: op.
+
+	self should: [ object nom ] raise: Halt
+]
+
+{ #category : #tests }
+MetaObjectProtocolTest >> testBreakPointHaltOnWrite [
+
+	| object op |
+	object := MOPPersonne new.
+	op := MOPHaltOperation new.
+	object mop.
+	object onVar: 'nom' whenAssigneDoBefore: op.
+
+	object nom: 'alice'.
+]
+
+{ #category : #tests }
 MetaObjectProtocolTest >> testEscapeSelf [
 
 	| object result |
