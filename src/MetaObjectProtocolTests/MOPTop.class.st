@@ -26,7 +26,7 @@ MOPTop >> m [
 
 { #category : #accessing }
 MOPTop >> m2 [
-	'coucou' crTrace.
+
  	^self
 ]
 
