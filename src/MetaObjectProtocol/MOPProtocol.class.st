@@ -22,10 +22,11 @@ MOPProtocol >> createInstrumentationWithRequirement: aMOPRequirement [
 	| instrumentation |
 	(self metaObject instrumentations select: [ :i |
 		 i requirement class = aMOPRequirement class ])
-		ifEmpty: [ instrumentation := MOPInstrumentation new ]
+		ifEmpty: [
+			instrumentation := MOPInstrumentation new.
+			instrumentation requirement: aMOPRequirement ]
 		ifNotEmpty: [ :c | instrumentation := c first ].
-		
-	^ instrumentation 
+	^ instrumentation
 ]
 
 { #category : #accessing }
@@ -53,7 +54,6 @@ MOPProtocol >> onAnyCallDoAfter: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation after: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -65,7 +65,6 @@ MOPProtocol >> onAnyCallDoBefore: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation before: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -76,7 +75,6 @@ MOPProtocol >> onAnyCallDoInstead: aMOPOperation [
 	requirement := MOPMethodsRequirement new.
 	instrumentation := self createInstrumentationWithRequirement: requirement .
 	instrumentation operation: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -88,7 +86,6 @@ MOPProtocol >> onAnyVarAssigneDoAfter: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation after: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -100,7 +97,6 @@ MOPProtocol >> onAnyVarAssigneDoBefore: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation before: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -112,7 +108,6 @@ MOPProtocol >> onAnyVarAssigneDoInstead: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation operation: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -125,7 +120,6 @@ MOPProtocol >> onAnyVarDoAfter: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation after: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -138,7 +132,6 @@ MOPProtocol >> onAnyVarDoBefore: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation before: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -151,7 +144,6 @@ MOPProtocol >> onAnyVarDoInstead: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation operation: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -163,7 +155,6 @@ MOPProtocol >> onAnyVarReadDoAfter: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation after: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -175,7 +166,6 @@ MOPProtocol >> onAnyVarReadDoBefore: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation before: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -187,7 +177,6 @@ MOPProtocol >> onAnyVarReadDoInstead: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation operation: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -199,7 +188,6 @@ MOPProtocol >> onCall: aSelector doAfter: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation after: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -211,7 +199,6 @@ MOPProtocol >> onCall: aSelector doBefore: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation before: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -223,7 +210,6 @@ MOPProtocol >> onCall: aSelector doInstead: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation operation: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -235,7 +221,6 @@ MOPProtocol >> onVar: aString whenAssigneDoAfter: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation after: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -247,7 +232,6 @@ MOPProtocol >> onVar: aString whenAssigneDoBefore: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation before: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -259,7 +243,6 @@ MOPProtocol >> onVar: aString whenAssigneDoInstead: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation operation: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -271,7 +254,6 @@ MOPProtocol >> onVar: aString whenReadDoAfter: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation after: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -283,7 +265,6 @@ MOPProtocol >> onVar: aString whenReadDoBefore: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation before: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
@@ -295,7 +276,6 @@ MOPProtocol >> onVar: aString whenReadDoInstead: aMOPOperation [
 	instrumentation := self createInstrumentationWithRequirement:
 		                   requirement.
 	instrumentation operation: aMOPOperation.
-	instrumentation requirement: requirement.
 	self addInstrumentation: instrumentation
 ]
 
