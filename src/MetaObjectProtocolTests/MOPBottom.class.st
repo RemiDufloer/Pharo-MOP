@@ -13,6 +13,12 @@ MOPBottom >> assignmentTest [
 	var1 := 4 squared.
 ]
 
+{ #category : #accessing }
+MOPBottom >> callCompteur [
+
+	^ compteur + 1
+]
+
 { #category : #mock }
 MOPBottom >> escapeWithSelf [
 
