@@ -21,7 +21,6 @@ MOPMetaObject >> addInstrumentation: anInstrumentation [
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
-	( protocol understand: aMessage ) ifTrue: [ ^ nil ].
 	objectClass ifNotNil: [ :class |
 		(class lookupSelector: aMessage selector) ifNotNil: [ :selector |
 			self instrument: selector ] ].
