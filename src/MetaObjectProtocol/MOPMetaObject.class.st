@@ -1,6 +1,6 @@
 Class {
-	#name : #MOPMetaObject,
-	#superclass : #Object,
+	#name : 'MOPMetaObject',
+	#superclass : 'Object',
 	#instVars : [
 		'instrumentations',
 		'object',
@@ -9,15 +9,17 @@ Class {
 		'objectClass',
 		'objectAnoClass'
 	],
-	#category : #'MetaObjectProtocol-base'
+	#category : 'MetaObjectProtocol-base',
+	#package : 'MetaObjectProtocol',
+	#tag : 'base'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 MOPMetaObject >> addInstrumentation: anInstrumentation [
 	instrumentations add: anInstrumentation
 ]
 
-{ #category : #'handling DNU' }
+{ #category : 'handling DNU' }
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
@@ -31,7 +33,7 @@ MOPMetaObject >> handle: aMessage [
 		  withArguments: aMessage arguments asArray
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MOPMetaObject >> initialize [
 
 	object := Object new.
@@ -43,7 +45,7 @@ MOPMetaObject >> initialize [
 
 ]
 
-{ #category : #install }
+{ #category : 'install' }
 MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 
 	| ast selfCode sourceCode instanceProxy |
@@ -62,7 +64,7 @@ MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 	objectAnoClass compile: sourceCode
 ]
 
-{ #category : #instrument }
+{ #category : 'instrument' }
 MOPMetaObject >> instrument: aMethod [
 
 	| instrumentationInstalleur methodNeedToInstall |
@@ -91,13 +93,13 @@ MOPMetaObject >> instrument: aMethod [
 				instrumentationInstalleur install: instrumentation onNode: n ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPMetaObject >> instrumentations [
 
 	^ instrumentations 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPMetaObject >> object: anObject [
 
 	| instanceProxy |
@@ -111,13 +113,13 @@ MOPMetaObject >> object: anObject [
 	objectAnoClass addSlot: instanceProxy asSymbol  => MOPProxyInstanceVariableSlot 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPMetaObject >> protocol [
 
 	^ protocol
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPMetaObject >> proxy: aMOPProxy [
 
 	| instanceProxy |

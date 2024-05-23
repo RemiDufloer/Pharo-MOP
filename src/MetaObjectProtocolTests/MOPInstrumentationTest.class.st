@@ -1,10 +1,11 @@
 Class {
-	#name : #MOPInstrumentationTest,
-	#superclass : #MOPTest,
-	#category : #MetaObjectProtocolTests
+	#name : 'MOPInstrumentationTest',
+	#superclass : 'MOPTest',
+	#category : 'MetaObjectProtocolTests',
+	#package : 'MetaObjectProtocolTests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPInstrumentationTest >> testInstall [
 
 	| selector instrumentation receiver arguments op expectedArgument object requirement instrumentationInstalleur |
@@ -35,7 +36,7 @@ MOPInstrumentationTest >> testInstall [
 	self assert: arguments first equals: expectedArgument
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPInstrumentationTest >> testInstrumentationWithInstallationRequirementComposite [
 
 	| selector instrumentation receiver arguments op expectedArgument object requirement instrumentationInstalleur |
@@ -66,7 +67,7 @@ MOPInstrumentationTest >> testInstrumentationWithInstallationRequirementComposit
 	self assert: arguments first equals: expectedArgument
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPInstrumentationTest >> testInstrumentationWithInstallationRequirementCompositeBadRequirement [
 
 	| selector instrumentation astNode receiver arguments op expectedArgument object requirement instrumentationInstalleur |
@@ -99,7 +100,7 @@ MOPInstrumentationTest >> testInstrumentationWithInstallationRequirementComposit
 	self assert: arguments equals: nil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirement [
 
 	| selector instrumentation astNode receiver arguments op expectedArgument object requirement instrumentationInstalleur |
@@ -132,7 +133,7 @@ MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirement [
 	self assert: arguments first equals: expectedArgument
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirementNotGood [
 
 	| selector instrumentation astNode receiver arguments op expectedArgument object requirement instrumentationInstalleur |
@@ -164,7 +165,7 @@ MOPInstrumentationTest >> testInstrumentationWithOneInstallationRequirementNotGo
 	self assert: arguments equals: nil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPInstrumentationTest >> testMetaObjectInstrumentationInGoodOrder [
 
 	| instrumentation astNode result expectedArgument object op1 op2 instrumentationInstalleur |

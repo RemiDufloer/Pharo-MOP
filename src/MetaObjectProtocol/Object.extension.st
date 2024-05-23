@@ -1,6 +1,6 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*MetaObjectProtocol' }
+{ #category : '*MetaObjectProtocol' }
 Object >> mop [
 
 	| object proxy metaObject |

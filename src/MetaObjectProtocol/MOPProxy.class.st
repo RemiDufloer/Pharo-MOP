@@ -16,15 +16,17 @@ Internal Representation and Key Implementation Points:
 
 "
 Class {
-	#name : #MOPProxy,
-	#superclass : #nil,
+	#name : 'MOPProxy',
+	#superclass : 'nil',
 	#instVars : [
 		'metaObject'
 	],
-	#category : #'MetaObjectProtocol-base'
+	#category : 'MetaObjectProtocol-base',
+	#package : 'MetaObjectProtocol',
+	#tag : 'base'
 }
 
-{ #category : #'reflective operations' }
+{ #category : 'reflective operations' }
 MOPProxy >> basicIdentityHash [
 	"See ProtoObject >> #basicIdentityHash"
 
@@ -32,7 +34,7 @@ MOPProxy >> basicIdentityHash [
 	self primitiveFailed
 ]
 
-{ #category : #'reflective operations' }
+{ #category : 'reflective operations' }
 MOPProxy >> doesNotUnderstand: aMessage [
 
 	<debuggerCompleteToSender>
@@ -40,13 +42,13 @@ MOPProxy >> doesNotUnderstand: aMessage [
 	^ metaObject handle: aMessage
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 MOPProxy >> hash [
 
 	^ self identityHash
 ]
 
-{ #category : #'reflective operations' }
+{ #category : 'reflective operations' }
 MOPProxy >> identityHash [
 	
 	"See ProtoObject >> #identityHash"
@@ -54,20 +56,20 @@ MOPProxy >> identityHash [
 	^ self basicIdentityHash bitShift: 8
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProxy >> mop [
 
 	^ metaObject protocol
 ]
 
-{ #category : #'primitive failure' }
+{ #category : 'primitive failure' }
 MOPProxy >> primitiveFail [
 	"See ProtoObject >> #primitiveFail"
 
 	^ self primitiveFailed
 ]
 
-{ #category : #'primitive failure' }
+{ #category : 'primitive failure' }
 MOPProxy >> primitiveFailed [
 
 	"See ProtoObject >> #primitiveFailed"
@@ -75,7 +77,7 @@ MOPProxy >> primitiveFailed [
 	^ self primitiveFailed: thisContext sender selector
 ]
 
-{ #category : #'primitive failure' }
+{ #category : 'primitive failure' }
 MOPProxy >> primitiveFailed: selector [
 	"See ProtoObject >> #primitiveFailed:"
 

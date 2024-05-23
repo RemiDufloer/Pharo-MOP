@@ -1,19 +1,21 @@
 Class {
-	#name : #MOPWatchPointOperation,
-	#superclass : #MOPOperation,
+	#name : 'MOPWatchPointOperation',
+	#superclass : 'MOPOperation',
 	#instVars : [
 		'collection'
 	],
-	#category : #'MetaObjectProtocol-Operation'
+	#category : 'MetaObjectProtocol-Operation',
+	#package : 'MetaObjectProtocol',
+	#tag : 'Operation'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPWatchPointOperation class >> collection: aCollection [
 
 	^ self new collection: aCollection ; yourself.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPWatchPointOperation >> apply: aRFOperation with: anOrderedCollection [
 
 	collection add: (aRFOperation class == RFSlotWrite
@@ -23,7 +25,7 @@ MOPWatchPointOperation >> apply: aRFOperation with: anOrderedCollection [
 			 ifFalse: [ aRFOperation value asString ])
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPWatchPointOperation >> collection: anObject [
 
 	collection := anObject

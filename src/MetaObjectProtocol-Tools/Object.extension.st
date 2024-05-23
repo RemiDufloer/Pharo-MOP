@@ -1,12 +1,12 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*MetaObjectProtocol-Tools' }
+{ #category : '*MetaObjectProtocol-Tools' }
 Object >> haltOnCall [
 	"^ Breakpoint breakOn: aSelector inObject: self"
 	| protocol |
 	
 	protocol := self mop.
-	protocol onAnyCallDoBefore: MOPHaltOperation new.
+	protocol method before: (MOPDebugPointOperation object: self).
 	
 
 	

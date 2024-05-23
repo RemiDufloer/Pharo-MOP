@@ -1,1 +1,1 @@
-Package { #name : #'MetaObjectProtocol-Tools' }
+Package { #name : 'MetaObjectProtocol-Tools' }

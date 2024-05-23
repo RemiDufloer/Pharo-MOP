@@ -1,21 +1,22 @@
 Class {
-	#name : #MOPTestObject,
-	#superclass : #Object,
-	#category : #MetaObjectProtocolTests
+	#name : 'MOPTestObject',
+	#superclass : 'Object',
+	#category : 'MetaObjectProtocolTests',
+	#package : 'MetaObjectProtocolTests'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MOPTestObject >> exampleMethod [
 
 	^ self
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MOPTestObject >> exampleMethod: anObject [
 	^ anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MOPTestObject >> isString [ 
 
 	^ true

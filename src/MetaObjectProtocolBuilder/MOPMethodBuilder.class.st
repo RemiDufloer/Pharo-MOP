@@ -1,23 +1,24 @@
 Class {
-	#name : #MOPMethodBuilder,
-	#superclass : #MOPProtocolBuilder,
-	#category : #MetaObjectProtocolBuilder
+	#name : 'MOPMethodBuilder',
+	#superclass : 'MOPProtocolBuilder',
+	#category : 'MetaObjectProtocolBuilder',
+	#package : 'MetaObjectProtocolBuilder'
 }
 
-{ #category : #'meta-object-protocol' }
+{ #category : 'meta-object-protocol' }
 MOPMethodBuilder >> argumentsSize: anInteger [
 
 	requirement and: (MOPArgumentsSizeRequirement size: anInteger )
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MOPMethodBuilder >> initialize [
 
 	super initialize.
 	instrumentation requirement:  MOPMethodsRequirement new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPMethodBuilder >> selector: aSelector [
 
 	self requirement: (MOPSelectorNameRequirement name: aSelector)

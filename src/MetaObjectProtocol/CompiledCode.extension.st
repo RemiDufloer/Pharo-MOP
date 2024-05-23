@@ -1,6 +1,6 @@
-Extension { #name : #CompiledCode }
+Extension { #name : 'CompiledCode' }
 
-{ #category : #'*MetaObjectProtocol' }
+{ #category : '*MetaObjectProtocol' }
 CompiledCode >> hasSuperSends [
 
 	^ self ast sendNodes anySatisfy: [ :msgNode | msgNode isSuperSend ]

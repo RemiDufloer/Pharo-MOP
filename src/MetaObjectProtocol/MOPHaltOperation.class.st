@@ -1,18 +1,15 @@
 Class {
-	#name : #MOPHaltOperation,
-	#superclass : #MOPOperation,
-	#category : #'MetaObjectProtocol-Operation'
+	#name : 'MOPHaltOperation',
+	#superclass : 'MOPOperation',
+	#category : 'MetaObjectProtocol-Operation',
+	#package : 'MetaObjectProtocol',
+	#tag : 'Operation'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPHaltOperation >> apply: aRFOperation with: anOrderedCollection [
 
 	<debuggerCompleteToSender>
-	| sender |
-	sender := thisContext sender findContextSuchThat: [ :ctx |
-		          ctx notNil and: [
-			          ctx receiver isKindOf: StInspection ] ].
-	sender ifNotNil: [ ^ self ].
-	aRFOperation method selector = #stDisplayString ifTrue:[^self].
+	
 	self halt
 ]

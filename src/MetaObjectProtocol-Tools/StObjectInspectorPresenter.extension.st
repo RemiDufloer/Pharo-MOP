@@ -1,12 +1,12 @@
-Extension { #name : #StObjectInspectorPresenter }
+Extension { #name : 'StObjectInspectorPresenter' }
 
-{ #category : #'*MetaObjectProtocol-Tools' }
+{ #category : '*MetaObjectProtocol-Tools' }
 StObjectInspectorPresenter >> haltInspectedObjectOnCall [
 
 	self inspectedObject haltOnCall
 ]
 
-{ #category : #'*MetaObjectProtocol-Tools' }
+{ #category : '*MetaObjectProtocol-Tools' }
 StObjectInspectorPresenter class >> newObjectCentricBreakpointCommandsWith: aPresenter forRootGroup: aRootCommandsGroup [
 
 	<extensionCommands>

@@ -1,16 +1,18 @@
 Class {
-	#name : #MOPVariableRequirement,
-	#superclass : #MOPRequirement,
-	#category : #'MetaObjectProtocol-Requirement'
+	#name : 'MOPVariableRequirement',
+	#superclass : 'MOPRequirement',
+	#category : 'MetaObjectProtocol-Requirement',
+	#package : 'MetaObjectProtocol',
+	#tag : 'Requirement'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPVariableRequirement class >> name: aString [
 
 	^ self new name: aString 
 ]
 
-{ #category : #verifying }
+{ #category : 'verifying' }
 MOPVariableRequirement >> verify: anASTNode [
 
 	^ (MOPOrRequirement

@@ -16,40 +16,42 @@ Internal Representation and Key Implementation Points:
 
 "
 Class {
-	#name : #MOPOperation,
-	#superclass : #Object,
+	#name : 'MOPOperation',
+	#superclass : 'Object',
 	#instVars : [
 		'requirement',
 		'block'
 	],
-	#category : #'MetaObjectProtocol-Operation'
+	#category : 'MetaObjectProtocol-Operation',
+	#package : 'MetaObjectProtocol',
+	#tag : 'Operation'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPOperation >> apply: aRFOperation [
 
 	^ self apply: aRFOperation with: OrderedCollection new.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPOperation >> apply: aRFOperation with: anOrderedCollection [
    
 	self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MOPOperation >> initialize [ 
 
 	self requirement: MOPNoRequirement new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPOperation >> requirement [
 	
 	^ requirement 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPOperation >> requirement: aRequirement [
 
 	requirement := aRequirement

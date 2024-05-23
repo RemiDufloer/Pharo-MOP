@@ -1,10 +1,11 @@
 Class {
-	#name : #MOPTest,
-	#superclass : #TestCase,
-	#category : #MetaObjectProtocolTests
+	#name : 'MOPTest',
+	#superclass : 'TestCase',
+	#category : 'MetaObjectProtocolTests',
+	#package : 'MetaObjectProtocolTests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 MOPTest >> tearDown [
 
 	super tearDown .

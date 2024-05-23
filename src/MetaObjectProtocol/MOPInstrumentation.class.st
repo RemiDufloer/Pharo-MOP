@@ -1,6 +1,6 @@
 Class {
-	#name : #MOPInstrumentation,
-	#superclass : #Object,
+	#name : 'MOPInstrumentation',
+	#superclass : 'Object',
 	#instVars : [
 		'operation',
 		'before',
@@ -8,34 +8,36 @@ Class {
 		'requirement',
 		'executing'
 	],
-	#category : #'MetaObjectProtocol-base'
+	#category : 'MetaObjectProtocol-base',
+	#package : 'MetaObjectProtocol',
+	#tag : 'base'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> after [
 
 	^ after
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> after: anObject [
 
 	after := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> before [
 
 	^ before
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> before: anObject [
 
 	before := anObject
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MOPInstrumentation >> execute: aRFOperation [
 
 	<debuggerCompleteToSender>
@@ -60,13 +62,13 @@ MOPInstrumentation >> execute: aRFOperation [
 	^ returnDefaultOperation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> executing [
 
 	^ executing
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MOPInstrumentation >> initialize [
 
 	operation := MOPDefaultOperation new.
@@ -74,25 +76,25 @@ MOPInstrumentation >> initialize [
 	executing := false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> operation [
 
 	^ operation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> operation: anObject [
 
 	operation := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> requirement [
 
 	^ requirement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> requirement: aRequirement [ 
 	
 	requirement := aRequirement 
