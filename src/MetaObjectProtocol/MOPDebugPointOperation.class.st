@@ -19,7 +19,7 @@ MOPDebugPointOperation class >> object: anObject [
 
 { #category : 'accessing' }
 MOPDebugPointOperation >> apply: aRFOperation with: anOrderedCollection [
-
+	<debuggerCompleteToSender>
 	debugPoint hitWithContext: thisContext
 ]
 
@@ -27,13 +27,14 @@ MOPDebugPointOperation >> apply: aRFOperation with: anOrderedCollection [
 MOPDebugPointOperation >> object: anObject [
 
 	debugPoint := BreakDebugPoint new
+		              node: RBProgramNode new;
 		              targetInstance: anObject;
 		              addBehavior:
 			              (ScriptBehavior new script:
 					               'Transcript traceCr: thisContext');
 		              addBehavior: (ConditionBehavior new condition:
-					               'thisContext sender findContextSuchThat: [ :ctx |
+					               '(thisContext sender findContextSuchThat: [ :ctx |
  		          
- 			          ctx receiver isKindOf: StInspectionPresenter ] isNil');
+ 			          ctx receiver isKindOf: StInspectionPresenter ]) isNil');
 		              yourself
 ]
