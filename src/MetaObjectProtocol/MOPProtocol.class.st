@@ -19,6 +19,13 @@ MOPProtocol >> addInstrumentation: anInstrumentation [
 ]
 
 { #category : 'accessing' }
+MOPProtocol >> listOfInstrumentation [
+
+	metaObject instrumentations size asString traceCr.
+	^ metaObject instrumentations
+]
+
+{ #category : 'accessing' }
 MOPProtocol >> message [
 
 	^ MOPMessageBuilder protocol: self

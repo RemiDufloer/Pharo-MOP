@@ -6,12 +6,19 @@ Class {
 		'before',
 		'after',
 		'requirement',
-		'executing'
+		'executing',
+		'nodes'
 	],
 	#category : 'MetaObjectProtocol-base',
 	#package : 'MetaObjectProtocol',
 	#tag : 'base'
 }
+
+{ #category : 'adding' }
+MOPInstrumentation >> addNode:  aNode [
+
+	nodes add: aNode
+]
 
 { #category : 'accessing' }
 MOPInstrumentation >> after [
@@ -74,6 +81,13 @@ MOPInstrumentation >> initialize [
 	operation := MOPDefaultOperation new.
 	self requirement: MOPNoRequirement new.
 	executing := false
+]
+
+{ #category : 'accessing' }
+MOPInstrumentation >> nodes [
+
+	^ nodes
+
 ]
 
 { #category : 'accessing' }
