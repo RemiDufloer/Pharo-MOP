@@ -1,0 +1,16 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'MetaObjectProtocol',
+      #directory : 'src',
+      #onConflict : #useIncoming,
+      #onUpgrade : #useIncoming,
+      #ignoreImage : true
+    }
+  ],
+  #testing : {
+  	#packages : [ 
+  		'System-Settings-Tests.*',
+  		'ReleaseTests.*' ] 
+  }  
+}

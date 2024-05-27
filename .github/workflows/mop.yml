@@ -1,0 +1,33 @@
+name: MOP
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PHARO_CI_TESTING_ENVIRONMENT: 1
+
+on:
+  push:
+    branches: [ Instrumentation]
+  pull_request:
+    branches: [ main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        smalltalk: [ Pharo64-11 ]
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.smalltalk }} on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup smalltalkCI
+        uses: hpi-swa/setup-smalltalkCI@v1
+        with:
+          smalltalk-image: ${{ matrix.smalltalk }}
+      - name: Load Image and Run Tests
+        run: smalltalkci -s ${{ matrix.smalltalk }} .smalltalk.ston
+        timeout-minutes: 15

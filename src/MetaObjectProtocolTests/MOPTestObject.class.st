@@ -1,7 +1,7 @@
 Class {
 	#name : #MOPTestObject,
 	#superclass : #Object,
-	#category : #MetaObjectProtocolTest
+	#category : #MetaObjectProtocolTests
 }
 
 { #category : #testing }
@@ -12,8 +12,7 @@ MOPTestObject >> exampleMethod [
 
 { #category : #testing }
 MOPTestObject >> exampleMethod: anObject [
-
-	^ anObject 
+	^ anObject
 ]
 
 { #category : #testing }
