@@ -78,8 +78,8 @@ MOPInstrumentationInstaller >> install: aMOPInstrumentation onMethod: aRBMethod 
 MOPInstrumentationInstaller >> install: anInstrumentation onNode: aNode [
 
 	| link |
-	aNode hasMetaLinks ifTrue: [ self error:
-		(' there is already instrumentation on this node ') ].
+	aNode hasMetaLinks ifTrue: [
+		self error: ' there is already instrumentation on this node ' ].
 	link := MetaLink new.
 	link arguments: #( operation ).
 	link control: #instead.

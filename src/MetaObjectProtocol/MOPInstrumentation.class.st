@@ -41,20 +41,29 @@ MOPInstrumentation >> execute: aRFOperation [
 	<debuggerCompleteToSender>
 	| return returnDefaultOperation |
 	"if the instrumentation is executing in other part we finish first the instrumentation before executing an other, so we return the default op"
-	executing ifTrue: [ 'ici' traceCr.^ aRFOperation value ].
-	
+	executing ifTrue: [
+		^ aRFOperation value ].
+
 	"set the execution to true for stop the instrumentation in this Operation"
 	executing := true.
-	
+
 	return := OrderedCollection new.
-	before ifNotNil:[ return add: (before apply: aRFOperation with: return)].
+	before ifNotNil: [
+		return add: (before apply: aRFOperation with: return) ].
 	returnDefaultOperation := operation apply: aRFOperation with: return.
 	return add: returnDefaultOperation.
-	after ifNotNil:[ return add: (after apply: aRFOperation with: return)].
-	
+	after ifNotNil: [
+		return add: (after apply: aRFOperation with: return) ].
+
 	"set the execution to false for restart the instrumentation"
 	executing := false.
 	^ returnDefaultOperation
+]
+
+{ #category : #accessing }
+MOPInstrumentation >> executing [
+
+	^ executing
 ]
 
 { #category : #initialization }

@@ -14,7 +14,6 @@ Class {
 
 { #category : #adding }
 MOPMetaObject >> addInstrumentation: anInstrumentation [
-
 	instrumentations add: anInstrumentation
 ]
 
@@ -22,12 +21,9 @@ MOPMetaObject >> addInstrumentation: anInstrumentation [
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
-	
 	objectClass ifNotNil: [ :class |
-		(class lookupSelector: aMessage selector) ifNotNil: [ :selector | 
-			self instrument: selector 
-		]	
-	].
+		(class lookupSelector: aMessage selector) ifNotNil: [ :selector |
+			self instrument: selector ] ].
 
 	^ MirrorPrimitives
 		  withReceiver: object
@@ -80,17 +76,19 @@ MOPMetaObject >> instrument: aMethod [
 
 
 
-	self instrumentations do: [ :instrumentation |
-		| nodes |
-		nodes := methodNeedToInstall ast allChildren select: [ :n |
-			         instrumentation requirement verify: n ].
-		nodes := nodes select: [ :n |
-			         n hasMetaLinks
-				         ifTrue: [ n links first metaObject  ~= instrumentation ]
-				         ifFalse: [ true ] ].
+	self instrumentations
+		select: [ :i | i executing not ]
+		thenDo: [ :instrumentation |
+			| nodes |
+			nodes := methodNeedToInstall ast allChildren select: [ :n |
+				         instrumentation requirement verify: n ].
+			nodes := nodes select: [ :n |
+				         n hasMetaLinks
+					         ifTrue: [ n links first metaObject ~= instrumentation ]
+					         ifFalse: [ true ] ].
 
-		nodes do: [ :n |
-			instrumentationInstalleur install: instrumentation onNode: n ] ]
+			nodes do: [ :n |
+				instrumentationInstalleur install: instrumentation onNode: n ] ]
 ]
 
 { #category : #accessing }

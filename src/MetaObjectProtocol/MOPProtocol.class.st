@@ -17,6 +17,12 @@ MOPProtocol >> addInstrumentation: anInstrumentation [
 ]
 
 { #category : #accessing }
+MOPProtocol >> message [
+
+	^ MOPMessageBuilder protocol: self
+]
+
+{ #category : #accessing }
 MOPProtocol >> metaObject [
 	^ metaObject
 ]
@@ -27,8 +33,14 @@ MOPProtocol >> metaObject: aMOPMetaObject [
 	metaObject := aMOPMetaObject 
 ]
 
-{ #category : #'instance creation' }
-MOPProtocol >> newInstrumentation [
-	
-	^ MOPInstrumentationBuilder new metaObject: self metaObject; yourself 
+{ #category : #accessing }
+MOPProtocol >> method [
+
+	^ MOPMethodBuilder protocol: self
+]
+
+{ #category : #accessing }
+MOPProtocol >> variable [
+
+	^ MOPVariableBuilder protocol: self
 ]

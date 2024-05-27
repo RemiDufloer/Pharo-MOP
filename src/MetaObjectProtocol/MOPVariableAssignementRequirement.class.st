@@ -1,11 +1,11 @@
 Class {
-	#name : #MOPAssignementVariableRequirement,
+	#name : #MOPVariableAssignementRequirement,
 	#superclass : #MOPRequirement,
 	#category : #'MetaObjectProtocol-Requirement'
 }
 
 { #category : #verifying }
-MOPAssignementVariableRequirement >> verify: anASTNode [
+MOPVariableAssignementRequirement >> verify: anASTNode [
 
 	^ anASTNode isAssignment and: [ anASTNode variable isInstanceVariable ].
 
