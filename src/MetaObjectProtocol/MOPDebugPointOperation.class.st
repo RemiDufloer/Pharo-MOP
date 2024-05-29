@@ -41,5 +41,5 @@ MOPDebugPointOperation >> object: anObject [
 		addBehavior: (ConditionBehavior new condition:
 					 '(thisContext sender findContextSuchThat: [ :ctx |
  		          
- 			          (ctx receiver isKindOf: StInspectionPresenter) or: [ ctx receiver isKindOf: StInspectorPresenter ] ]) isNil')
+ 			          ((ctx receiver isKindOf: StInspectionPresenter) or: [ ctx receiver isKindOf: StInspectorPresenter ]) or: [ #( #printString . #asString . #stDisplayString) includes: ctx selector ] ]) isNil')
 ]

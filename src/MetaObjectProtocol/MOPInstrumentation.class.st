@@ -80,13 +80,14 @@ MOPInstrumentation >> initialize [
 
 	operation := MOPDefaultOperation new.
 	self requirement: MOPNoRequirement new.
+	nodes := OrderedCollection new.
 	executing := false
 ]
 
 { #category : 'accessing' }
 MOPInstrumentation >> nodes [
 
-	^ nodes
+	^ nodes 
 
 ]
 

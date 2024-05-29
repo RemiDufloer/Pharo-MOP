@@ -98,9 +98,7 @@ MOPInstrumentationInstaller >> install: anInstrumentation onNode: aNode [
 			link disable.
 			^ nil ].
 
-	(installedInstrumentation
-		 at: anInstrumentation
-		 ifAbsentPut: [ OrderedCollection new ]) add: aNode
+	anInstrumentation addNode: aNode
 ]
 
 { #category : 'accessing' }
