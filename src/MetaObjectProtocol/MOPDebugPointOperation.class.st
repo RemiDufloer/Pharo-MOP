@@ -19,7 +19,7 @@ MOPDebugPointOperation class >> object: anObject [
 
 { #category : 'accessing' }
 MOPDebugPointOperation >> apply: aRFOperation with: anOrderedCollection [
-	<debuggerCompleteToSender>
+
 	debugPoint hitWithContext: thisContext
 ]
 
