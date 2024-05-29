@@ -49,7 +49,7 @@ MOPMetaObject >> initialize [
 MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 
 	| ast selfCode sourceCode instanceProxy |
-	aRBMethod methodClass = objectAnoClass ifTrue: [ ^ nil ].
+	(objectAnoClass includesSelector: aRBMethod selector) ifTrue: [ ^ self ].
 	instanceProxy := 'proxy' , object hash asString.
 	ast := RBParser parseMethod: aRBMethod sourceCode.
 	aRBMethod ast containsReturn
