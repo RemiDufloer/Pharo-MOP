@@ -32,14 +32,14 @@ MOPDebugPointOperation >> isDebugPointOperation [
 { #category : 'accessing' }
 MOPDebugPointOperation >> object: anObject [
 
-	debugPoint := BreakDebugPoint new
-		              targetInstance: anObject;
-		              addBehavior:
-			              (ScriptBehavior new script:
-					               'Transcript traceCr: thisContext');
-		              addBehavior: (ConditionBehavior new condition:
-					               'thisContext sender findContextSuchThat: [ :ctx |
+	debugPoint := DebugPointManager
+		              installNew: MOPBreakDebugPoint
+		              forMOPProxy: anObject.
+	debugPoint
+		addBehavior:
+			(ScriptBehavior new script: 'Transcript traceCr: thisContext');
+		addBehavior: (ConditionBehavior new condition:
+					 '(thisContext sender findContextSuchThat: [ :ctx |
  		          
- 			          ctx receiver isKindOf: StInspectionPresenter ] isNil');
-		              yourself
+ 			          (ctx receiver isKindOf: StInspectionPresenter) or: [ ctx receiver isKindOf: StInspectorPresenter ] ]) isNil')
 ]
