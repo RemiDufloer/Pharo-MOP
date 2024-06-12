@@ -1,48 +1,52 @@
 Class {
-	#name : #MOPInstrumentation,
-	#superclass : #Object,
+	#name : 'MOPInstrumentation',
+	#superclass : 'Object',
 	#instVars : [
 		'operation',
 		'before',
 		'after',
 		'requirement',
-		'executing'
+		'executing',
+		'propagate'
 	],
-	#category : #'MetaObjectProtocol-base'
+	#category : 'MetaObjectProtocol-base',
+	#package : 'MetaObjectProtocol',
+	#tag : 'base'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> after [
 
 	^ after
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> after: anObject [
 
 	after := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> before [
 
 	^ before
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> before: anObject [
 
 	before := anObject
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MOPInstrumentation >> execute: aRFOperation [
 
 	<debuggerCompleteToSender>
 	| return returnDefaultOperation |
 	"if the instrumentation is executing in other part we finish first the instrumentation before executing an other, so we return the default op"
-	executing ifTrue: [
-		^ aRFOperation value ].
+	propagate ifFalse: [ executing ifTrue: [
+		^ aRFOperation value ] ].
+	
 
 	"set the execution to true for stop the instrumentation in this Operation"
 	executing := true.
@@ -60,39 +64,46 @@ MOPInstrumentation >> execute: aRFOperation [
 	^ returnDefaultOperation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> executing [
 
 	^ executing
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MOPInstrumentation >> initialize [
 
 	operation := MOPDefaultOperation new.
 	self requirement: MOPNoRequirement new.
-	executing := false
+	executing := false.
+	propagate := false.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> operation [
 
 	^ operation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> operation: anObject [
 
 	operation := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+MOPInstrumentation >> propagate: aBoolean [
+
+	propagate := aBoolean .
+]
+
+{ #category : 'accessing' }
 MOPInstrumentation >> requirement [
 
 	^ requirement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPInstrumentation >> requirement: aRequirement [ 
 	
 	requirement := aRequirement 

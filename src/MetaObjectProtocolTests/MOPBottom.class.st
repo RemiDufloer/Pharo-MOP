@@ -1,68 +1,69 @@
 Class {
-	#name : #MOPBottom,
-	#superclass : #MOPMiddle,
+	#name : 'MOPBottom',
+	#superclass : 'MOPMiddle',
 	#instVars : [
 		'var1',
 		'compteur'
 	],
-	#category : #MetaObjectProtocolTests
+	#category : 'MetaObjectProtocolTests',
+	#package : 'MetaObjectProtocolTests'
 }
 
-{ #category : #assignments }
+{ #category : 'assignments' }
 MOPBottom >> assignmentTest [
 	var1 := 4 squared.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPBottom >> callCompteur [
 
 	^ compteur + 1
 ]
 
-{ #category : #mock }
+{ #category : 'mock' }
 MOPBottom >> escapeWithSelf [
 
 	var1 := 12.
 	^ self
 ]
 
-{ #category : #mock }
+{ #category : 'mock' }
 MOPBottom >> escapeWithoutSelf [
 
 	var1 := 12.
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MOPBottom >> initialize [ 
 
 	compteur := 0.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPBottom >> mWithSuper [
 
 	^ super mWithSuper + 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPBottom >> redefineNoSuper [
 	^1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPBottom >> superUpToMiddleHierarchy [
 	"I call super"
 	^ super superUpToMiddleHierarchy + 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPBottom >> var1 [
 
 	^ var1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPBottom >> var1: anObject [
 
 	var1 := anObject

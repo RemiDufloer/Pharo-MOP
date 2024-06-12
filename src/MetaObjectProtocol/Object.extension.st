@@ -1,6 +1,6 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*MetaObjectProtocol' }
+{ #category : '*MetaObjectProtocol' }
 Object >> haltOnCall [
 	"^ Breakpoint breakOn: aSelector inObject: self"
 	| protocol |
@@ -12,7 +12,7 @@ Object >> haltOnCall [
 	
 ]
 
-{ #category : #'*MetaObjectProtocol' }
+{ #category : '*MetaObjectProtocol' }
 Object >> mop [
 
 	| object proxy metaObject |

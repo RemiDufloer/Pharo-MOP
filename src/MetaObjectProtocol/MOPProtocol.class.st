@@ -1,45 +1,47 @@
 Class {
-	#name : #MOPProtocol,
-	#superclass : #Object,
+	#name : 'MOPProtocol',
+	#superclass : 'Object',
 	#instVars : [
 		'metaObject'
 	],
 	#classInstVars : [
 		'mopRegistry'
 	],
-	#category : #'MetaObjectProtocol-base'
+	#category : 'MetaObjectProtocol-base',
+	#package : 'MetaObjectProtocol',
+	#tag : 'base'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 MOPProtocol >> addInstrumentation: anInstrumentation [ 
 
 	metaObject addInstrumentation: anInstrumentation 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProtocol >> message [
 
 	^ MOPMessageBuilder protocol: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProtocol >> metaObject [
 	^ metaObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProtocol >> metaObject: aMOPMetaObject [
 
 	metaObject := aMOPMetaObject 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProtocol >> method [
 
 	^ MOPMethodBuilder protocol: self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProtocol >> variable [
 
 	^ MOPVariableBuilder protocol: self

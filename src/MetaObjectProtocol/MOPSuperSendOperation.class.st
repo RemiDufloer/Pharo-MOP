@@ -2,15 +2,17 @@
 I redirect superclass nodes to another method whose selector is provided to me.
 "
 Class {
-	#name : #MOPSuperSendOperation,
-	#superclass : #MOPOperation,
+	#name : 'MOPSuperSendOperation',
+	#superclass : 'MOPOperation',
 	#instVars : [
 		'selector'
 	],
-	#category : #'MetaObjectProtocol-Operation'
+	#category : 'MetaObjectProtocol-Operation',
+	#package : 'MetaObjectProtocol',
+	#tag : 'Operation'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPSuperSendOperation class >> selector: aSelector [
 
 	^ self new
@@ -18,7 +20,7 @@ MOPSuperSendOperation class >> selector: aSelector [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPSuperSendOperation >> apply: aRFOperation with: anOrderedCollection [
 
 	(requirement verify: aRFOperation) ifTrue: [
@@ -27,13 +29,13 @@ MOPSuperSendOperation >> apply: aRFOperation with: anOrderedCollection [
 			  withArguments: aRFOperation arguments ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPSuperSendOperation >> selector [
 
 	^ selector
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPSuperSendOperation >> selector: anObject [
 
 	selector := anObject

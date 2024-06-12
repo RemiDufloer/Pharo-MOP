@@ -1,53 +1,54 @@
 Class {
-	#name : #MOPTop,
-	#superclass : #Object,
+	#name : 'MOPTop',
+	#superclass : 'Object',
 	#instVars : [
 		'x'
 	],
-	#category : #MetaObjectProtocolTests
+	#category : 'MetaObjectProtocolTests',
+	#package : 'MetaObjectProtocolTests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPTop >> index [
 
 	^ -3
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPTop >> instVarAccessInSuperCall [
 
 	^ self index
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPTop >> m [
  	x := self m2
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPTop >> m2 [
 
  	^self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPTop >> mWithSuper [
 
 	^ self index
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPTop >> redefineNoSuper [
 
 	^ 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPTop >> superUpToMiddleHierarchy [
 	"I do nothing"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPTop >> x [
 	 ^x
 ]

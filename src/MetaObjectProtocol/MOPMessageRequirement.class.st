@@ -1,10 +1,12 @@
 Class {
-	#name : #MOPMessageRequirement,
-	#superclass : #MOPRequirement,
-	#category : #'MetaObjectProtocol-Requirement'
+	#name : 'MOPMessageRequirement',
+	#superclass : 'MOPRequirement',
+	#category : 'MetaObjectProtocol-Requirement',
+	#package : 'MetaObjectProtocol',
+	#tag : 'Requirement'
 }
 
-{ #category : #verifying }
+{ #category : 'verifying' }
 MOPMessageRequirement >> verify: anASTNode [
 
 	^ anASTNode isMessage 

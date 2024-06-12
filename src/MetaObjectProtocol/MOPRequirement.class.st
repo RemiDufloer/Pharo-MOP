@@ -13,30 +13,32 @@ Internal Representation and Key Implementation Points:
 
 "
 Class {
-	#name : #MOPRequirement,
-	#superclass : #Object,
-	#category : #'MetaObjectProtocol-Requirement'
+	#name : 'MOPRequirement',
+	#superclass : 'Object',
+	#category : 'MetaObjectProtocol-Requirement',
+	#package : 'MetaObjectProtocol',
+	#tag : 'Requirement'
 }
 
-{ #category : #controlling }
+{ #category : 'controlling' }
 MOPRequirement class >> and: aRequirement [
 
 	^ MOPAndRequirement left: self right: aRequirement 
 ]
 
-{ #category : #controlling }
+{ #category : 'controlling' }
 MOPRequirement >> and: aRequirement [ 
 	
 	^ MOPAndRequirement left: self right: aRequirement 
 ]
 
-{ #category : #controlling }
+{ #category : 'controlling' }
 MOPRequirement >> or: aRequirement [ 
 	
 	^ MOPOrRequirement left: self right: aRequirement  
 ]
 
-{ #category : #verifying }
+{ #category : 'verifying' }
 MOPRequirement >> verify: anASTNode [
 
 	^ self subclassResponsibility 

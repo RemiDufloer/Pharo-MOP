@@ -1,5 +1,6 @@
 Class {
-	#name : #MOPProtocolTest,
-	#superclass : #TestCase,
-	#category : #MetaObjectProtocolTests
+	#name : 'MOPProtocolTest',
+	#superclass : 'TestCase',
+	#category : 'MetaObjectProtocolTests',
+	#package : 'MetaObjectProtocolTests'
 }

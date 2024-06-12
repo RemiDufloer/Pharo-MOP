@@ -1,5 +1,5 @@
 Class {
-	#name : 'MOPHaltOperation',
+	#name : 'MOPTraceOperation',
 	#superclass : 'MOPOperation',
 	#category : 'MetaObjectProtocol-Operation',
 	#package : 'MetaObjectProtocol',
@@ -7,7 +7,7 @@ Class {
 }
 
 { #category : 'accessing' }
-MOPHaltOperation >> apply: aRFOperation with: anOrderedCollection [
+MOPTraceOperation >> apply: aRFOperation with: anOrderedCollection [
    <debuggerCompleteToSender>
-	self halt.
+	aRFOperation asString traceCr.
 ]

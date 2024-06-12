@@ -1,10 +1,12 @@
 Class {
-	#name : #MOPMethodsRequirement,
-	#superclass : #MOPRequirement,
-	#category : #'MetaObjectProtocol-Requirement'
+	#name : 'MOPMethodsRequirement',
+	#superclass : 'MOPRequirement',
+	#category : 'MetaObjectProtocol-Requirement',
+	#package : 'MetaObjectProtocol',
+	#tag : 'Requirement'
 }
 
-{ #category : #verifying }
+{ #category : 'verifying' }
 MOPMethodsRequirement >> verify: anASTNode [
 	
 	

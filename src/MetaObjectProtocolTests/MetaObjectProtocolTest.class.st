@@ -1,10 +1,11 @@
 Class {
-	#name : #MetaObjectProtocolTest,
-	#superclass : #MOPTest,
-	#category : #MetaObjectProtocolTests
+	#name : 'MetaObjectProtocolTest',
+	#superclass : 'MOPTest',
+	#category : 'MetaObjectProtocolTests',
+	#package : 'MetaObjectProtocolTests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testAnonymousClass [
 
 
@@ -15,7 +16,7 @@ MetaObjectProtocolTest >> testAnonymousClass [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testBreakPointHaltOnCall [
 
 	| object |
@@ -27,7 +28,7 @@ MetaObjectProtocolTest >> testBreakPointHaltOnCall [
 	self should: [ object nom ] raise: Halt
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testBreakPointHaltOnRead [
 
 	| object op protocol |
@@ -39,7 +40,7 @@ MetaObjectProtocolTest >> testBreakPointHaltOnRead [
 	self should: [ object nom ] raise: Halt
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testBreakPointHaltOnWrite [
 
 	| object |
@@ -54,7 +55,7 @@ MetaObjectProtocolTest >> testBreakPointHaltOnWrite [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testEscapeSelf [
 
 	| object result |
@@ -67,7 +68,7 @@ MetaObjectProtocolTest >> testEscapeSelf [
 	self assert: result hash equals: object hash.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testEscapeSelfProxy [
 
 	| object result values |
@@ -88,7 +89,7 @@ MetaObjectProtocolTest >> testEscapeSelfProxy [
 	self assert: values size equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testEscapeWithoutSelf [
 
 	| object result values |
@@ -107,7 +108,7 @@ MetaObjectProtocolTest >> testEscapeWithoutSelf [
 	self assert: values size equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 
 	| object result |
@@ -123,7 +124,7 @@ MetaObjectProtocolTest >> testMOPCreateInstrumentation [
 	self assert: result equals: 'string :op1'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testMOPCreation [
 
 	| object  dictionary result |
@@ -144,7 +145,7 @@ MetaObjectProtocolTest >> testMOPCreation [
 	self assert: result equals: 'expected'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testMOPFlatten [
 
 	| object result |
@@ -161,7 +162,7 @@ MetaObjectProtocolTest >> testMOPFlatten [
 	self assert: result equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testMOPObjectCentric [
 
 	| objectA objectB result |
@@ -180,7 +181,7 @@ MetaObjectProtocolTest >> testMOPObjectCentric [
 	self assert: result equals: 'string :op1'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testMetaLevel [
 
 	| object |
@@ -193,7 +194,7 @@ MetaObjectProtocolTest >> testMetaLevel [
 	self assert: object callCompteur equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testMethodPharoModels [
 
 	| object result |
@@ -209,7 +210,7 @@ MetaObjectProtocolTest >> testMethodPharoModels [
 	self assert: result ~= 'alice'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testMethodPharoModelsWhithMultipleOperation [
 
 	| object result |
@@ -227,7 +228,7 @@ MetaObjectProtocolTest >> testMethodPharoModelsWhithMultipleOperation [
 	self assert: result equals: 'alicetartenpion'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testTwoInstrumentationOnSameNode [
 
 	| alice collectionOfValue op expectedCollection |
@@ -259,7 +260,7 @@ MetaObjectProtocolTest >> testTwoInstrumentationOnSameNode [
 	self assertCollection: collectionOfValue equals: expectedCollection
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testVariablePharoModels [
 
 	| object result |
@@ -274,7 +275,7 @@ MetaObjectProtocolTest >> testVariablePharoModels [
 	self assert: result ~= 'alice'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testWatchPointBefore [
 
 	| alice collectionOfValue op expectedCollection |
@@ -307,7 +308,7 @@ MetaObjectProtocolTest >> testWatchPointBefore [
 	self assertCollection: collectionOfValue equals: expectedCollection
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MetaObjectProtocolTest >> testcallstack [
 
 	| alice collectionOfValue expectedCollection |

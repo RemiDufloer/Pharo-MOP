@@ -1,10 +1,11 @@
 Class {
-	#name : #MOPOperationTest,
-	#superclass : #TestCase,
-	#category : #MetaObjectProtocolTests
+	#name : 'MOPOperationTest',
+	#superclass : 'TestCase',
+	#category : 'MetaObjectProtocolTests',
+	#package : 'MetaObjectProtocolTests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPOperationTest >> testApply [
 
 	| operation value |

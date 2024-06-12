@@ -2,22 +2,24 @@
 I compose conditions logically using the 'and' and 'or' operators.
 "
 Class {
-	#name : #MOPLogicRequirement,
-	#superclass : #MOPRequirement,
+	#name : 'MOPLogicRequirement',
+	#superclass : 'MOPRequirement',
 	#instVars : [
 		'left',
 		'right'
 	],
-	#category : #'MetaObjectProtocol-Requirement'
+	#category : 'MetaObjectProtocol-Requirement',
+	#package : 'MetaObjectProtocol',
+	#tag : 'Requirement'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MOPLogicRequirement class >> isAbstract [
 
 	^ self == MOPLogicRequirement
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MOPLogicRequirement class >> left: aRequirementLeft right: aRequirementRight [
 
 	^ self new
@@ -26,25 +28,25 @@ MOPLogicRequirement class >> left: aRequirementLeft right: aRequirementRight [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPLogicRequirement >> left [
 
 	^ left
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPLogicRequirement >> left: aRequirement [
 
 	left := aRequirement
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPLogicRequirement >> right [
 
 	^ right
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPLogicRequirement >> right: aRequirement [
 
 	right := aRequirement

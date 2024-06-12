@@ -1,10 +1,12 @@
 Class {
-	#name : #MOPProxyInstanceVariableSlot,
-	#superclass : #InstanceVariableSlot,
-	#category : #'MetaObjectProtocol-base'
+	#name : 'MOPProxyInstanceVariableSlot',
+	#superclass : 'InstanceVariableSlot',
+	#category : 'MetaObjectProtocol-base',
+	#package : 'MetaObjectProtocol',
+	#tag : 'base'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 MOPProxyInstanceVariableSlot >> isInstanceVariable [ 
 
 	^ false.

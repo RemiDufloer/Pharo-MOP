@@ -1,32 +1,33 @@
 Class {
-	#name : #MOPInstrumentationInstalleurTest,
-	#superclass : #TestCase,
+	#name : 'MOPInstrumentationInstalleurTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'instrumenter',
 		'testObject'
 	],
-	#category : #MetaObjectProtocolTests
+	#category : 'MetaObjectProtocolTests',
+	#package : 'MetaObjectProtocolTests'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 MOPInstrumentationInstalleurTest >> receive: selector [
 	^testObject perform: selector
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPInstrumentationInstalleurTest >> setUp [
 	super setUp.
 	instrumenter := MOPInstrumentationInstaller new.
 	testObject := Object new
 ]
 
-{ #category : #'tests - method flattening' }
+{ #category : 'tests - method flattening' }
 MOPInstrumentationInstalleurTest >> testCompileEmptySuperSendChain [
 
 	self assertEmpty: (instrumenter compileSuperSendChain: #(  ))
 ]
 
-{ #category : #'tests - method flattening' }
+{ #category : 'tests - method flattening' }
 MOPInstrumentationInstalleurTest >> testCompileSuperSendChain [
 
 	| chain compiledSelectors |
@@ -59,7 +60,7 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChain [
 		equals: (MOPTop >> #mWithSuper) ast body sourceCode
 ]
 
-{ #category : #'tests - method flattening' }
+{ #category : 'tests - method flattening' }
 MOPInstrumentationInstalleurTest >> testCompileSuperSendChainWithoutSuper [
 
 	| chain compiledSelectors |
@@ -78,7 +79,7 @@ MOPInstrumentationInstalleurTest >> testCompileSuperSendChainWithoutSuper [
 		equals: (MOPBottom >> #mWithSuper) sourceCode
 ]
 
-{ #category : #'tests - method flattening' }
+{ #category : 'tests - method flattening' }
 MOPInstrumentationInstalleurTest >> testFindSuperSendsChainFor [
 
 	| method chain |
@@ -111,7 +112,7 @@ MOPInstrumentationInstalleurTest >> testFindSuperSendsChainFor [
 	self assert: chain last identicalTo: MOPTop >> #mWithSuper
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPInstrumentationInstalleurTest >> testInstrumentedClass [
 
 	instrumenter object: testObject.
@@ -120,7 +121,7 @@ MOPInstrumentationInstalleurTest >> testInstrumentedClass [
 		identicalTo: testObject class
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPInstrumentationInstalleurTest >> testIntrumentationOfNotExistingMessage [
 
 	| object |

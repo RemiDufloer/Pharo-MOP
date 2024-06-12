@@ -1,6 +1,6 @@
-Extension { #name : #StMetaBrowser }
+Extension { #name : 'StMetaBrowser' }
 
-{ #category : #'*MetaObjectProtocol' }
+{ #category : '*MetaObjectProtocol' }
 StMetaBrowser >> haltInspectedObjectOnCall [
 
 	self model haltOnCall

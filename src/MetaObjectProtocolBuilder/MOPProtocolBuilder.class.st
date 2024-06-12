@@ -1,15 +1,16 @@
 Class {
-	#name : #MOPProtocolBuilder,
-	#superclass : #Object,
+	#name : 'MOPProtocolBuilder',
+	#superclass : 'Object',
 	#instVars : [
 		'requirement',
 		'instrumentation',
 		'protocol'
 	],
-	#category : #MetaObjectProtocolBuilder
+	#category : 'MetaObjectProtocolBuilder',
+	#package : 'MetaObjectProtocolBuilder'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProtocolBuilder class >> protocol: aMOPProtocol [
 
 	^ self new
@@ -17,32 +18,38 @@ MOPProtocolBuilder class >> protocol: aMOPProtocol [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProtocolBuilder >> after: anOperation [
 
 	instrumentation after: anOperation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProtocolBuilder >> before: anOperation [
 
 	instrumentation before: anOperation
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MOPProtocolBuilder >> initialize [
 
 	instrumentation := MOPInstrumentation new.
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProtocolBuilder >> instead: anOperation [
 
 	instrumentation operation: anOperation
 ]
 
-{ #category : #accessing }
+{ #category : 'as yet unclassified' }
+MOPProtocolBuilder >> propagate: aBoolean [
+
+	instrumentation propagate: aBoolean .
+]
+
+{ #category : 'accessing' }
 MOPProtocolBuilder >> protocol: aMOPProtocol [
 
 	protocol := aMOPProtocol.
@@ -50,7 +57,7 @@ MOPProtocolBuilder >> protocol: aMOPProtocol [
 	protocol addInstrumentation: instrumentation .
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MOPProtocolBuilder >> requirement: aMOPRequirement [
 
 	instrumentation requirement: (instrumentation requirement  and: aMOPRequirement )

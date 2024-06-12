@@ -1,10 +1,11 @@
 Class {
-	#name : #MOPRequirementTest,
-	#superclass : #MOPTest,
-	#category : #MetaObjectProtocolTests
+	#name : 'MOPRequirementTest',
+	#superclass : 'MOPTest',
+	#category : 'MetaObjectProtocolTests',
+	#package : 'MetaObjectProtocolTests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MOPRequirementTest >> testRequirementCheckNameMethod [
 
 	| requirement node result name |
