@@ -21,6 +21,7 @@ MetaObjectProtocolTest >> testBreakPointHaltOnCall [
 
 	| object |
 	object := MOPPersonne new.
+
 	object mop method
 		selector: #nom ;
 		after: MOPHaltOperation new.
@@ -36,6 +37,7 @@ MetaObjectProtocolTest >> testBreakPointHaltOnRead [
 	op := MOPHaltOperation new.
 	protocol := object mop.
 	protocol variable name: 'nom' ;  acces ; instead:  op.
+
 
 	self should: [ object nom ] raise: Halt
 ]

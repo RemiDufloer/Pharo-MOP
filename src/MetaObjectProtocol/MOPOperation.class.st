@@ -45,6 +45,12 @@ MOPOperation >> initialize [
 	self requirement: MOPNoRequirement new
 ]
 
+{ #category : 'testing' }
+MOPOperation >> isDebugPointOperation [
+
+	^ false
+]
+
 { #category : 'accessing' }
 MOPOperation >> requirement [
 	

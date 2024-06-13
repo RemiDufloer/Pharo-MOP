@@ -8,6 +8,8 @@ Class {
 
 { #category : 'accessing' }
 MOPHaltOperation >> apply: aRFOperation with: anOrderedCollection [
-   <debuggerCompleteToSender>
-	self halt.
+
+	<debuggerCompleteToSender>
+	
+	self halt
 ]

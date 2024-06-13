@@ -14,6 +14,12 @@ Class {
 	#tag : 'base'
 }
 
+{ #category : 'adding' }
+MOPInstrumentation >> addNode:  aNode [
+
+	nodes add: aNode
+]
+
 { #category : 'accessing' }
 MOPInstrumentation >> after [
 
@@ -91,6 +97,13 @@ MOPInstrumentation >> initialize [
 	self requirement: MOPNoRequirement new.
 	executing := false.
 	propagate := false.
+]
+
+{ #category : 'accessing' }
+MOPInstrumentation >> nodes [
+
+	^ nodes 
+
 ]
 
 { #category : 'accessing' }
