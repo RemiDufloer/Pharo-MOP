@@ -7,6 +7,7 @@ Class {
 		'after',
 		'requirement',
 		'executing',
+		'propagate',
 		'nodes'
 	],
 	#category : 'MetaObjectProtocol-base',
@@ -48,25 +49,8 @@ MOPInstrumentation >> before: anObject [
 MOPInstrumentation >> execute: aRFOperation [
 
 	<debuggerCompleteToSender>
-	| return returnDefaultOperation |
-	"if the instrumentation is executing in other part we finish first the instrumentation before executing an other, so we return the default op"
-	executing ifTrue: [
-		^ aRFOperation value ].
-
-	"set the execution to true for stop the instrumentation in this Operation"
-	executing := true.
-
-	return := OrderedCollection new.
-	before ifNotNil: [
-		return add: (before apply: aRFOperation with: return) ].
-	returnDefaultOperation := operation apply: aRFOperation with: return.
-	return add: returnDefaultOperation.
-	after ifNotNil: [
-		return add: (after apply: aRFOperation with: return) ].
-
-	"set the execution to false for restart the instrumentation"
-	executing := false.
-	^ returnDefaultOperation
+	^ propagate ifTrue:[self executingOperation: aRFOperation ] ifFalse: [ self executingWithoutPropagation: aRFOperation ] 
+	
 ]
 
 { #category : 'accessing' }
@@ -75,13 +59,46 @@ MOPInstrumentation >> executing [
 	^ executing
 ]
 
+{ #category : 'execution' }
+MOPInstrumentation >> executingOperation: aRFOperation [
+
+	<debuggerCompleteToSender>
+	| return returnDefaultOperation |
+	[
+	return := OrderedCollection new.
+
+	before ifNotNil: [
+		return add: (before apply: aRFOperation with: return) ].
+	returnDefaultOperation := operation apply: aRFOperation with: return.
+	return add: returnDefaultOperation.
+	after ifNotNil: [
+		return add: (after apply: aRFOperation with: return) ] ] 
+ensure: [
+		executing := false ].
+	"set the execution to false for restart the instrumentation if we are without propagation"
+	
+	^ returnDefaultOperation
+]
+
+{ #category : 'execution' }
+MOPInstrumentation >> executingWithoutPropagation: aRFOperation [
+
+"if the instrumentation is executing in other part we finish first the instrumentation before executing an other, so we return the default op"
+	 executing ifTrue: [
+		^ aRFOperation value ].
+	"set the execution to true for stop the instrumentation in this Operation"
+	executing := true.
+	^ self executingOperation: aRFOperation
+]
+
 { #category : 'initialization' }
 MOPInstrumentation >> initialize [
 
 	operation := MOPDefaultOperation new.
 	self requirement: MOPNoRequirement new.
+	executing := false.
+	propagate := false.
 	nodes := OrderedCollection new.
-	executing := false
 ]
 
 { #category : 'accessing' }
@@ -101,6 +118,12 @@ MOPInstrumentation >> operation [
 MOPInstrumentation >> operation: anObject [
 
 	operation := anObject
+]
+
+{ #category : 'accessing' }
+MOPInstrumentation >> propagate: aBoolean [
+
+	propagate := aBoolean .
 ]
 
 { #category : 'accessing' }

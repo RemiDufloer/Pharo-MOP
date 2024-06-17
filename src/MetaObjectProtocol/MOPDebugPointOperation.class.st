@@ -40,6 +40,8 @@ MOPDebugPointOperation >> object: anObject [
 			(ScriptBehavior new script: 'Transcript traceCr: thisContext');
 		addBehavior: (ConditionBehavior new condition:
 					 '(thisContext sender findContextSuchThat: [ :ctx |
- 		          
- 			          ((ctx receiver isKindOf: StInspectionPresenter) or: [ ctx receiver isKindOf: StInspectorPresenter ]) or: [ #( #printString . #asString . #stDisplayString) includes: ctx selector ] ]) isNil')
+	 (#(#class. #isKindOf: . #printString . #asString . #stDisplayString ) includes:
+		  ctx selector) or: [
+		 (ctx receiver isKindOf: StInspectionPresenter) or: [
+			 ctx receiver isKindOf: StInspectorPresenter ] ] ]) isNil')
 ]

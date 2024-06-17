@@ -23,6 +23,7 @@ MOPMetaObject >> addInstrumentation: anInstrumentation [
 MOPMetaObject >> handle: aMessage [
 
 	<debuggerCompleteToSender>
+	aMessage traceCr.
 	objectClass ifNotNil: [ :class |
 		(class lookupSelector: aMessage selector) ifNotNil: [ :selector |
 			self instrument: selector ] ].
@@ -49,18 +50,16 @@ MOPMetaObject >> initialize [
 MOPMetaObject >> installOnAnnonymousClass: aRBMethod [
 
 	| ast selfCode sourceCode instanceProxy |
-	(objectAnoClass includesSelector: aRBMethod selector) ifTrue: [ ^ self ].
+	(objectAnoClass includesSelector: aRBMethod selector) ifTrue: [
+		^ self ].
 	instanceProxy := 'proxy' , object hash asString.
 	ast := RBParser parseMethod: aRBMethod sourceCode.
-	aRBMethod ast containsReturn
-		ifTrue: [
-			selfCode := (RBReturnNode value: RBVariableNode selfNode)
-				            formattedCode.
-			sourceCode := ast formattedCode
-				              copyReplaceAll: selfCode
-				              with: '^ ' , instanceProxy ]
-		ifFalse: [ sourceCode := ast sourceCode , '. ^ ' , instanceProxy ].
-
+	selfCode := 'self'.
+	sourceCode := ast formattedCode
+		              copyReplaceAll: selfCode
+		              with: instanceProxy.
+	aRBMethod ast containsReturn ifFalse: [
+		sourceCode := ast sourceCode , '. ^ ' , instanceProxy ].
 	objectAnoClass compile: sourceCode
 ]
 
@@ -78,19 +77,17 @@ MOPMetaObject >> instrument: aMethod [
 
 
 
-	self instrumentations
-		select: [ :i | i executing not ]
-		thenDo: [ :instrumentation |
-			| nodes |
-			nodes := methodNeedToInstall ast allChildren select: [ :n |
-				         instrumentation requirement verify: n ].
-			nodes := nodes select: [ :n |
-				         n hasMetaLinks
-					         ifTrue: [ n links first metaObject ~= instrumentation ]
-					         ifFalse: [ true ] ].
+	self instrumentations do: [ :instrumentation |
+		| nodes |
+		nodes := methodNeedToInstall ast allChildren select: [ :n |
+			         instrumentation requirement verify: n ].
+		nodes := nodes select: [ :n |
+			         n hasMetaLinks
+				         ifTrue: [ n links first metaObject ~= instrumentation ]
+				         ifFalse: [ true ] ].
 
-			nodes do: [ :n |
-				instrumentationInstalleur install: instrumentation onNode: n ] ]
+		nodes do: [ :n |
+			instrumentationInstalleur install: instrumentation onNode: n ] ]
 ]
 
 { #category : 'accessing' }
@@ -110,7 +107,7 @@ MOPMetaObject >> object: anObject [
 	objectClass := anObject class.
 	objectAnoClass := objectClass newAnonymousSubclass.
 	objectAnoClass adoptInstance: anObject.
-	objectAnoClass addSlot: instanceProxy asSymbol  => MOPProxyInstanceVariableSlot 
+	objectAnoClass addSlot: instanceProxy asSymbol  => MOPProxyInstanceVariableSlot .
 ]
 
 { #category : 'accessing' }

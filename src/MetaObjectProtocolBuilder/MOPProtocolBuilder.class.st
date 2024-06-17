@@ -43,6 +43,12 @@ MOPProtocolBuilder >> instead: anOperation [
 	instrumentation operation: anOperation
 ]
 
+{ #category : 'as yet unclassified' }
+MOPProtocolBuilder >> propagate: aBoolean [
+
+	instrumentation propagate: aBoolean .
+]
+
 { #category : 'accessing' }
 MOPProtocolBuilder >> protocol: aMOPProtocol [
 

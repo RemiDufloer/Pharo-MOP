@@ -51,7 +51,8 @@ MOPPersonne >> prenom: anObject [
 
 { #category : 'accessing' }
 MOPPersonne >> signature [
-
-	^ String streamContents: [ :s |
-		  s << ' ' << self nom << ' ' << self prenom << ' ' << self age  ]
+	
+	self age.
+	self prenom.
+	^ self.
 ]
