@@ -7,7 +7,8 @@ Class {
 		'after',
 		'requirement',
 		'executing',
-		'propagate'
+		'propagate',
+		'nodes'
 	],
 	#category : 'MetaObjectProtocol-base',
 	#package : 'MetaObjectProtocol',
@@ -97,6 +98,7 @@ MOPInstrumentation >> initialize [
 	self requirement: MOPNoRequirement new.
 	executing := false.
 	propagate := false.
+	nodes := OrderedCollection new.
 ]
 
 { #category : 'accessing' }
