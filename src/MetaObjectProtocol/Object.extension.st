@@ -1,6 +1,18 @@
 Extension { #name : 'Object' }
 
 { #category : '*MetaObjectProtocol' }
+Object >> isInspection [
+
+	^ false
+]
+
+{ #category : '*MetaObjectProtocol' }
+Object >> isInspector [
+
+	^ false
+]
+
+{ #category : '*MetaObjectProtocol' }
 Object >> mop [
 
 	| object proxy metaObject |

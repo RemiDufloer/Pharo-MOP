@@ -36,12 +36,12 @@ MOPDebugPointOperation >> object: anObject [
 		              installNew: MOPBreakDebugPoint
 		              forMOPProxy: anObject.
 	debugPoint
-		addBehavior:
-			(ScriptBehavior new script: 'Transcript traceCr: thisContext');
+"		addBehavior:
+			(ScriptBehavior new script: ' thisContext traceCr');"
 		addBehavior: (ConditionBehavior new condition:
 					 '(thisContext sender findContextSuchThat: [ :ctx |
-	 (#(#class. #isKindOf: . #printString . #asString . #stDisplayString ) includes:
+	 (#(#isInspector. #isInspection. #class. #isKindOf: . #printString . #asString . #stDisplayString ) includes:
 		  ctx selector) or: [
-		 (ctx receiver isKindOf: StInspectionPresenter) or: [
-			 ctx receiver isKindOf: StInspectorPresenter ] ] ]) isNil')
+		 (ctx receiver isInspector) or: [
+			 ctx receiver isInspection ] ] ]) isNil')
 ]
