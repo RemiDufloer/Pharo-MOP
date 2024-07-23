@@ -318,7 +318,7 @@ DebugPointManager class >> notifyDebugPointAdded: aDebugPoint [
 
 	| announcement |
 	announcement := DebugPointAdded on: aDebugPoint nodes: aDebugPoint link nodes.
-	self codeSupportAnnouncer announce: announcement
+	SystemAnnouncer uniqueInstance  announce: announcement
 ]
 
 { #category : #announcements }
@@ -326,7 +326,7 @@ DebugPointManager class >> notifyDebugPointChanged: aDebugPoint [
 
 	| announcement |
 	announcement := DebugPointChanged on: aDebugPoint nodes: aDebugPoint link nodes.
-	self codeSupportAnnouncer announce: announcement
+	SystemAnnouncer uniqueInstance  announce: announcement
 ]
 
 { #category : #announcements }
@@ -334,7 +334,7 @@ DebugPointManager class >> notifyDebugPointHit: aDebugPoint inContext: aContext 
 
 	| announcement |
 	announcement := aDebugPoint hitAnnouncementOn: aDebugPoint inContext: aContext.
-	self codeSupportAnnouncer announce: announcement
+	SystemAnnouncer uniqueInstance  announce: announcement
 ]
 
 { #category : #announcements }
@@ -343,7 +343,7 @@ DebugPointManager class >> notifyDebugPointRemoved: aDebugPoint fromNodes: nodes
 
 	| announcement |
 	announcement := DebugPointRemoved on: aDebugPoint nodes: nodes.
-	self codeSupportAnnouncer announce: announcement
+	SystemAnnouncer uniqueInstance  announce: announcement
 ]
 
 { #category : #'announcements - registration' }
