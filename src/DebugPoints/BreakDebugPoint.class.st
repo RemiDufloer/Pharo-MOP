@@ -2,14 +2,12 @@
 I am a debug point that breaks when it is hit.
 "
 Class {
-	#name : 'BreakDebugPoint',
-	#superclass : 'DebugPoint',
-	#category : 'DebugPoints-Implementations',
-	#package : 'DebugPoints',
-	#tag : 'Implementations'
+	#name : #BreakDebugPoint,
+	#superclass : #DebugPoint,
+	#category : 'DebugPoints-Implementations'
 }
 
-{ #category : 'API' }
+{ #category : #API }
 BreakDebugPoint >> hitWithContext: aContext [
 
 	<debuggerCompleteToSender>
@@ -18,13 +16,13 @@ BreakDebugPoint >> hitWithContext: aContext [
 	Break break
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BreakDebugPoint >> name [
 
 	^ name ifNil: [ #Breakpoint ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 BreakDebugPoint >> type [
 
 	^ #Breakpoint

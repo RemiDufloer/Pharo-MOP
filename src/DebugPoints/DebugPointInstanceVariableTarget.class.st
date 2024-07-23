@@ -4,35 +4,33 @@ I am a debug point target that installs a metalink on an instance variable slot 
 
 "
 Class {
-	#name : 'DebugPointInstanceVariableTarget',
-	#superclass : 'DebugPointClassTarget',
+	#name : #DebugPointInstanceVariableTarget,
+	#superclass : #DebugPointClassTarget,
 	#instVars : [
 		'accessStrategy'
 	],
-	#category : 'DebugPoints-Implementations',
-	#package : 'DebugPoints',
-	#tag : 'Implementations'
+	#category : 'DebugPoints-Implementations'
 }
 
-{ #category : 'accessing - classes' }
+{ #category : #'accessing - classes' }
 DebugPointInstanceVariableTarget class >> hitAnnouncementClass [
 
 	^ VariableDebugPointHit
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointInstanceVariableTarget >> accessStrategy [
 
 	^ accessStrategy
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointInstanceVariableTarget >> accessStrategy: aSymbol [
 
 	accessStrategy := aSymbol
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 DebugPointInstanceVariableTarget >> browse [
 
 	(Smalltalk tools browser openOnClass:
@@ -41,7 +39,7 @@ DebugPointInstanceVariableTarget >> browse [
 		selectVariableNamed: self instanceVariable name
 ]
 
-{ #category : 'announcements' }
+{ #category : #announcements }
 DebugPointInstanceVariableTarget >> hitAnnouncementOn: aDebugPoint inContext: aContext [
 
 	| announcement |
@@ -54,13 +52,13 @@ DebugPointInstanceVariableTarget >> hitAnnouncementOn: aDebugPoint inContext: aC
 		  yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointInstanceVariableTarget >> impactedNodes [
 
 	^ self instanceVariable accessingNodesFor: self accessStrategy
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 DebugPointInstanceVariableTarget >> install: aLink on: aClassOrObject [
 
 	aClassOrObject
@@ -69,37 +67,37 @@ DebugPointInstanceVariableTarget >> install: aLink on: aClassOrObject [
 		option: self accessStrategy
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointInstanceVariableTarget >> instanceVariable [
 
 	^ self target
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointInstanceVariableTarget >> instanceVariable: anInstanceVariable [
 
 	self target: anInstanceVariable
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 DebugPointInstanceVariableTarget >> isReadOnly [
 
 	^ accessStrategy = #read
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 DebugPointInstanceVariableTarget >> isReadWrite [
 
 	^ accessStrategy = #all
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 DebugPointInstanceVariableTarget >> isWriteOnly [
 
 	^ accessStrategy = #write
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPointInstanceVariableTarget >> removeFromMethod: aMethod for: aDebugPoint [
 
 	(aDebugPoint nodes select: [ :n |
@@ -107,7 +105,7 @@ DebugPointInstanceVariableTarget >> removeFromMethod: aMethod for: aDebugPoint [
 		aDebugPoint removeNode: n ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointInstanceVariableTarget >> targetClass [
 
 	^ self instanceVariable owningClass

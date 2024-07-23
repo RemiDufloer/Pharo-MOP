@@ -11,83 +11,81 @@ API:
 - #remove method can be used if something has to be cleaned up when a behavior is removed from a debug point.
 "
 Class {
-	#name : 'DebugPointBehavior',
-	#superclass : 'Object',
+	#name : #DebugPointBehavior,
+	#superclass : #Object,
 	#instVars : [
 		'priority',
 		'debugPoint'
 	],
-	#category : 'DebugPoints-Base',
-	#package : 'DebugPoints',
-	#tag : 'Base'
+	#category : 'DebugPoints-Base'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 DebugPointBehavior class >> addToDebugPoint: aDebugPoint [
 	aDebugPoint addBehavior: (self new debugPoint: aDebugPoint).
 	^aDebugPoint 
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 DebugPointBehavior class >> isAbstract [
 
 	^ true
 ]
 
-{ #category : 'comparing' }
+{ #category : #comparing }
 DebugPointBehavior >> <= aDebugPointBehavior [
 
 	^ self priority <= aDebugPointBehavior priority
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 DebugPointBehavior >> addToDebugPoint: aDebugPoint [
 
 	self subclassResponsibility 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointBehavior >> debugPoint [
 	^ debugPoint 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointBehavior >> debugPoint: aDebugPoint [
 	debugPoint := aDebugPoint 
 ]
 
-{ #category : 'execution' }
+{ #category : #execution }
 DebugPointBehavior >> execute [
 	self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointBehavior >> getArgument: aSymbol [
 	^self debugPoint getArgument: aSymbol
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 DebugPointBehavior >> initialize [ 
 	self priority: 0
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointBehavior >> priority [
 	^priority 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointBehavior >> priority: anInteger [
 	priority := anInteger 
 ]
 
-{ #category : 'cleanup' }
+{ #category : #cleanup }
 DebugPointBehavior >> remove [
 	"cleanup actions should be taken here"
 	^self.
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPointBehavior >> removeFromDebugPoint: aDebugPoint [
 
 	self subclassResponsibility

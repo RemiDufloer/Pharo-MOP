@@ -4,33 +4,31 @@ I count how often the debug point has been reached.
 I only increase the count if conditions are evaluated to true: all previous behaviors have to return ""true"" when their #execute methods are called.
 "
 Class {
-	#name : 'CountBehavior',
-	#superclass : 'DebugPointMetaBehavior',
+	#name : #CountBehavior,
+	#superclass : #DebugPointMetaBehavior,
 	#instVars : [
 		'count'
 	],
-	#category : 'DebugPoints-Behaviors',
-	#package : 'DebugPoints',
-	#tag : 'Behaviors'
+	#category : 'DebugPoints-Behaviors'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 CountBehavior class >> isAbstract [
 
 	^ false
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 CountBehavior >> count [
 	^count ifNil: [ count := 0 ].
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 CountBehavior >> count: anInteger [
 	count:= anInteger 
 ]
 
-{ #category : 'execution' }
+{ #category : #execution }
 CountBehavior >> execute [
 	self increaseCount.
 	DebugPointManager notifyDebugPointChanged: self debugPoint.
@@ -41,7 +39,7 @@ CountBehavior >> execute [
 	
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 CountBehavior >> increaseCount [
 	self count: self count + 1.
 	

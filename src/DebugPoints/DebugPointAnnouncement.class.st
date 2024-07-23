@@ -2,19 +2,17 @@
 I am the base class for DebugPoint Announcements that are required to update UIs when a debug point has been added/changed/removed.
 "
 Class {
-	#name : 'DebugPointAnnouncement',
-	#superclass : 'SystemAnnouncement',
+	#name : #DebugPointAnnouncement,
+	#superclass : #SystemAnnouncement,
 	#instVars : [
 		'debugPoint',
 		'nodes',
 		'methods'
 	],
-	#category : 'DebugPoints-Announcements',
-	#package : 'DebugPoints',
-	#tag : 'Announcements'
+	#category : 'DebugPoints-Announcements'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 DebugPointAnnouncement class >> on: aDebugPoint nodes: nodes [
 	^ self new
 		debugPoint: aDebugPoint;
@@ -22,60 +20,60 @@ DebugPointAnnouncement class >> on: aDebugPoint nodes: nodes [
 		yourself
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 DebugPointAnnouncement >> affectsMethod: aMethod [
 
 	^ self methods anySatisfy: [:each |  each compiledMethod == aMethod compiledMethod.  ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 DebugPointAnnouncement >> affectsMethods [
 	^true
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 DebugPointAnnouncement >> affectsMethodsDefinedInClass: aClass [
 	^ self methods
 		anySatisfy: [ :each | each methodClass isNotNil and: [ each origin == aClass ] ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 DebugPointAnnouncement >> affectsMethodsDefinedInPackage: aPackage [
 	^ self methods
 		anySatisfy:
 			[ :each | each methodClass isNotNil and: [ each package == aPackage ] ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 DebugPointAnnouncement >> canAffectResultOfMethodQuery: aMethodQuery [
 
 	^ self methods anySatisfy: [:each | 
 		aMethodQuery isAffectedByChangedMethod: each ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointAnnouncement >> debugPoint [
 	^debugPoint 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointAnnouncement >> debugPoint: aDebugPoint [
 	debugPoint := aDebugPoint 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointAnnouncement >> methods [
 
 	^ methods ifNil: [
 		  methods := nodes flatCollect: [ :entity | entity usingMethods ] ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointAnnouncement >> nodes [
 	^nodes
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointAnnouncement >> nodes: someNodes [
 	nodes := someNodes 
 ]

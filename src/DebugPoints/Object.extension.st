@@ -1,13 +1,13 @@
-Extension { #name : 'Object' }
+Extension { #name : #Object }
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> breakOnAccess: anAccessStrategySymbol [
 
 	^ self class allSlots do: [ :slot |
 		  self breakOnAccess: anAccessStrategySymbol toSlotNamed: slot name ]
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> breakOnAccess: anAccessStrategySymbol toSlotNamed: slotName [
 
 	^ self
@@ -16,7 +16,7 @@ Object >> breakOnAccess: anAccessStrategySymbol toSlotNamed: slotName [
 		  onAccess: anAccessStrategySymbol
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> breakOnCallTo: aMethodSelector [
 
 	^ DebugPointManager
@@ -25,43 +25,43 @@ Object >> breakOnCallTo: aMethodSelector [
 		  forObject: self
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> breakOnRead [
 
 	^ self breakOnAccess: #read
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> breakOnReadTo: aSlotName [
 
 	^ self breakOnAccess: #read toSlotNamed: aSlotName
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> breakOnReadWrite [
 
 	^ self breakOnAccess: #all
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> breakOnReadWriteTo: aSlotName [
 
 	^ self breakOnAccess: #all toSlotNamed: aSlotName
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> breakOnWrite [
 
 	^ self breakOnAccess: #write
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> breakOnWriteTo: aSlotName [
 
 	^ self breakOnAccess: #write toSlotNamed: aSlotName
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> breakOnceOnCallTo: aMethodSelector [
 
 	^ DebugPointManager
@@ -71,7 +71,7 @@ Object >> breakOnceOnCallTo: aMethodSelector [
 		  withBehaviors: { OnceBehavior }
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> installDebugPoint: aDebugPointClass onSlotNamed: slotName onAccess: anAccessStrategySymbol [
 
 	^ DebugPointManager
@@ -81,14 +81,14 @@ Object >> installDebugPoint: aDebugPointClass onSlotNamed: slotName onAccess: an
 		  accessStrategy: anAccessStrategySymbol
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> watchOnAccess: anAccessStrategySymbol [
 
 	^ self class allSlots do: [ :slot |
 		  self watchOnAccess: anAccessStrategySymbol toSlotNamed: slot name ]
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> watchOnAccess: anAccessStrategySymbol toSlotNamed: slotName [
 
 	^ self
@@ -97,37 +97,37 @@ Object >> watchOnAccess: anAccessStrategySymbol toSlotNamed: slotName [
 		  onAccess: anAccessStrategySymbol
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> watchOnRead [
 
 	^ self watchOnAccess: #read
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> watchOnReadTo: aSlotName [
 
 	^ self watchOnAccess: #read toSlotNamed: aSlotName
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> watchOnReadWrite [
 
 	^ self watchOnAccess: #all
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> watchOnReadWriteTo: aSlotName [
 
 	^ self watchOnAccess: #all toSlotNamed: aSlotName
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> watchOnWrite [
 
 	^ self watchOnAccess: #write
 ]
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 Object >> watchOnWriteTo: aSlotName [
 
 	^ self watchOnAccess: #write toSlotNamed: aSlotName

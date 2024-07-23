@@ -3,28 +3,26 @@ I am a script behavior that can be added to debug points.
 I execute arbitrary code that is saved in my script variable.
 "
 Class {
-	#name : 'ScriptBehavior',
-	#superclass : 'DebugPointMetaBehavior',
+	#name : #ScriptBehavior,
+	#superclass : #DebugPointMetaBehavior,
 	#instVars : [
 		'script'
 	],
-	#category : 'DebugPoints-Behaviors',
-	#package : 'DebugPoints',
-	#tag : 'Behaviors'
+	#category : 'DebugPoints-Behaviors'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 ScriptBehavior class >> isAbstract [
 
 	^ false
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ScriptBehavior >> context [
 	^self getArgument: #context
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ScriptBehavior >> evaluate: expression withContext: aContext [
 
 	^ Smalltalk compiler
@@ -35,7 +33,7 @@ ScriptBehavior >> evaluate: expression withContext: aContext [
 		  evaluate
 ]
 
-{ #category : 'execution' }
+{ #category : #execution }
 ScriptBehavior >> execute [
 
 	self script ifNil: [ ^ true ].
@@ -43,18 +41,18 @@ ScriptBehavior >> execute [
 	^ true
 ]
 
-{ #category : 'cleanup' }
+{ #category : #cleanup }
 ScriptBehavior >> remove [ 
 	"saving the script in case the script behavior is added again later"
 	self debugPoint properties at: #Script put: self script.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ScriptBehavior >> script [
 	^script ifNil:['']
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ScriptBehavior >> script: aScript [
 	script := aScript 
 ]

@@ -2,75 +2,73 @@
 I am a debug point target that installs a metalink on an AST node of a method
 "
 Class {
-	#name : 'DebugPointNodeTarget',
-	#superclass : 'DebugPointClassTarget',
-	#category : 'DebugPoints-Implementations',
-	#package : 'DebugPoints',
-	#tag : 'Implementations'
+	#name : #DebugPointNodeTarget,
+	#superclass : #DebugPointClassTarget,
+	#category : 'DebugPoints-Implementations'
 }
 
-{ #category : 'accessing - classes' }
+{ #category : #'accessing - classes' }
 DebugPointNodeTarget class >> hitAnnouncementClass [
 
 	^ DebugPointHit
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 DebugPointNodeTarget >> browse [
 
 	^ self method browse
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 DebugPointNodeTarget >> install: aLink on: aClassOrObject [
 
 	aClassOrObject link: aLink toAST: self node
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointNodeTarget >> method [
 	"returns the method to which the debug point is attached"
 
 	^ self methodNode compiledMethod
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointNodeTarget >> methodNode [
 
 	^ self node methodNode
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointNodeTarget >> node [
 
 	^ self target
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointNodeTarget >> node: aNode [
 
 	self target: aNode
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPointNodeTarget >> removeFromMethod: aMethod for: aDebugPoint [
 
 	aDebugPoint remove
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointNodeTarget >> sourceCode [
 
 	^ self methodNode sourceCode
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointNodeTarget >> targetClass [
 
 	^ self method methodClass
 ]
 
-{ #category : 'description' }
+{ #category : #description }
 DebugPointNodeTarget >> targetString [
 
 	^ self method printString

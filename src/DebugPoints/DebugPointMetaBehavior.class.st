@@ -8,20 +8,18 @@ API:
 - #execute method, returns self and performs side effects on the attached debug point or its context.
 "
 Class {
-	#name : 'DebugPointMetaBehavior',
-	#superclass : 'DebugPointBehavior',
-	#category : 'DebugPoints-Base',
-	#package : 'DebugPoints',
-	#tag : 'Base'
+	#name : #DebugPointMetaBehavior,
+	#superclass : #DebugPointBehavior,
+	#category : 'DebugPoints-Base'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 DebugPointMetaBehavior >> addToDebugPoint: aDebugPoint [
 
 	aDebugPoint addSideEffectBehavior: self
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPointMetaBehavior >> removeFromDebugPoint: aDebugPoint [
 
 	aDebugPoint removeSideEffectBehavior: self

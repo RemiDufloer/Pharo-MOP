@@ -3,38 +3,36 @@ I am a behavior defining an execution condition that can be added to debug point
 If my condition evaluates to true or nil, the #execute method will return true, else it will return false or an error.
 "
 Class {
-	#name : 'ConditionBehavior',
-	#superclass : 'DebugPointCheckBehavior',
+	#name : #ConditionBehavior,
+	#superclass : #DebugPointCheckBehavior,
 	#instVars : [
 		'condition'
 	],
-	#category : 'DebugPoints-Behaviors',
-	#package : 'DebugPoints',
-	#tag : 'Behaviors'
+	#category : 'DebugPoints-Behaviors'
 }
 
-{ #category : 'testing' }
+{ #category : #testing }
 ConditionBehavior class >> isAbstract [
 
 	^ false
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConditionBehavior >> condition [
 	^condition
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConditionBehavior >> condition: aCondition [
 	condition := aCondition
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ConditionBehavior >> context [
 	^self getArgument: #context
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 ConditionBehavior >> evaluate: expression withContext: aContext [
 	^ Smalltalk compiler
 		source: expression;
@@ -44,13 +42,13 @@ ConditionBehavior >> evaluate: expression withContext: aContext [
 		evaluate
 ]
 
-{ #category : 'execution' }
+{ #category : #execution }
 ConditionBehavior >> execute [
 	self condition ifNil: [ ^true ].
 	^(self evaluate: self condition withContext: self context).
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ConditionBehavior >> initialize [
 	"should be executed before once and count etc."
 
@@ -58,7 +56,7 @@ ConditionBehavior >> initialize [
 	self condition: 'false'
 ]
 
-{ #category : 'cleanup' }
+{ #category : #cleanup }
 ConditionBehavior >> remove [ 
 	"saving the condition in case the condition behavior is added again later"
 	self debugPoint properties at: #Condition put: self condition.

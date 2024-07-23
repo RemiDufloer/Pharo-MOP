@@ -1,1 +1,1 @@
-Package { #name : 'DebugPoints' }
+Package { #name : #DebugPoints }

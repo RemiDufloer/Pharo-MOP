@@ -8,27 +8,25 @@ API:
 - #execute method should return true if execution should continue and false if it should interrupt.
 "
 Class {
-	#name : 'DebugPointCheckBehavior',
-	#superclass : 'DebugPointBehavior',
-	#category : 'DebugPoints-Base',
-	#package : 'DebugPoints',
-	#tag : 'Base'
+	#name : #DebugPointCheckBehavior,
+	#superclass : #DebugPointBehavior,
+	#category : 'DebugPoints-Base'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 DebugPointCheckBehavior >> addToDebugPoint: aDebugPoint [
 
 	aDebugPoint addCheckBehavior: self
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 DebugPointCheckBehavior >> initialize [
 
 	super initialize.
 	self priority: SmallInteger maxVal
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPointCheckBehavior >> removeFromDebugPoint: aDebugPoint [
 
 	aDebugPoint removeCheckBehavior: self

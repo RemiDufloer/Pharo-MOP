@@ -3,38 +3,36 @@ I am a behavior that can be added to debug points.
 I maintain a chain of debug points. When a debug point in the chain is hit I deactivate it and activate the next debug point in the chain.
 "
 Class {
-	#name : 'ChainBehavior',
-	#superclass : 'DebugPointMetaBehavior',
+	#name : #ChainBehavior,
+	#superclass : #DebugPointMetaBehavior,
 	#classVars : [
 		'Chains'
 	],
-	#category : 'DebugPoints-Behaviors',
-	#package : 'DebugPoints',
-	#tag : 'Behaviors'
+	#category : 'DebugPoints-Behaviors'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ChainBehavior class >> allChains [
 	^Chains ifNil: [ Chains := Dictionary new. ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ChainBehavior class >> childFor: aDebugPoint [
 	^self allChains at: aDebugPoint ifAbsent: [ ^nil ]
 ]
 
-{ #category : 'testing' }
+{ #category : #testing }
 ChainBehavior class >> isAbstract [
 
 	^ false
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ChainBehavior class >> parentFor: aDebugPoint [
 	^self allChains keyAtValue: aDebugPoint ifAbsent: [^nil].
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 ChainBehavior class >> removeChild: aDebugPoint [
 
 	self allChains
@@ -44,7 +42,7 @@ ChainBehavior class >> removeChild: aDebugPoint [
 		ifAbsent: [  ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ChainBehavior class >> rootFor: aDebugPoint [
 
 	| parent |
@@ -54,7 +52,7 @@ ChainBehavior class >> rootFor: aDebugPoint [
 	^ self rootFor: parent
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 ChainBehavior >> checkCircularChain: aDebugPoint withParent: aParent [
 	"should return true if there is a circular dependency so that the child will not be added"
 	| parent |
@@ -69,31 +67,31 @@ ChainBehavior >> checkCircularChain: aDebugPoint withParent: aParent [
 
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ChainBehavior >> child [
 	^self class childFor: self debugPoint.
 
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 ChainBehavior >> circularChainPopup [
 		SpInformDialog new title: 'Circular Dependency';label: 'Adding this child would result in a circular chain, which is not allowed.'; openModal.
 
 ]
 
-{ #category : 'execution' }
+{ #category : #execution }
 ChainBehavior >> execute [
 	self child ifNotNil: [:child | child enabled: true].
 	self debugPoint enabled: false.
 	^true
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ChainBehavior >> parent [
 	^self class parentFor: self debugPoint.
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 ChainBehavior >> putChild: aDebugPoint [
 
 	(self checkCircularChain: aDebugPoint withParent: self debugPoint)
@@ -106,7 +104,7 @@ ChainBehavior >> putChild: aDebugPoint [
 	DebugPointManager notifyDebugPointChanged: aDebugPoint
 ]
 
-{ #category : 'cleanup' }
+{ #category : #cleanup }
 ChainBehavior >> remove [ 
 	"removing element as child and as parent of other debug points"
 	self class allChains removeKey: self debugPoint ifAbsent: [].
@@ -114,7 +112,7 @@ ChainBehavior >> remove [
 
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 ChainBehavior >> resetChain [
 	| root |
 	root := (self class rootFor: self debugPoint).
@@ -123,7 +121,7 @@ ChainBehavior >> resetChain [
 	
 ]
 
-{ #category : 'private' }
+{ #category : #private }
 ChainBehavior >> resetSubChain: aDebugPoint [
 	| child |
 	child := 	self class allChains at: aDebugPoint ifAbsent: [ ^nil. ].

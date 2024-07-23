@@ -1,6 +1,6 @@
-Extension { #name : 'RBProgramNode' }
+Extension { #name : #RBProgramNode }
 
-{ #category : '*DebugPoints' }
+{ #category : #'*DebugPoints' }
 RBProgramNode >> usingMethods [
 
 	^ { self methodNode compiledMethod }

@@ -4,36 +4,34 @@ I am responsible for managing the debug points.
 An exception is the removal of Debug points, which is handled in the ""remove"" method of DebugPoint instances.
 "
 Class {
-	#name : 'DebugPointManager',
-	#superclass : 'Object',
-	#category : 'DebugPoints-Base',
-	#package : 'DebugPoints',
-	#tag : 'Base'
+	#name : #DebugPointManager,
+	#superclass : #Object,
+	#category : #'DebugPoints-Base'
 }
 
-{ #category : 'announcement handling' }
+{ #category : #'announcement handling' }
 DebugPointManager class >> handleClassRemoved: anAnnouncement [
 
 	DebugPoint all copy do: [ :dp |
 		dp removeFromClass: anAnnouncement classRemoved ]
 ]
 
-{ #category : 'announcement handling' }
+{ #category : #'announcement handling' }
 DebugPointManager class >> handleMethodModified: anAnnouncement [
 	self removeFromMethod: anAnnouncement oldMethod
 ]
 
-{ #category : 'announcement handling' }
+{ #category : #'announcement handling' }
 DebugPointManager class >> handleMethodRemoved: anAnnouncement [
 	self removeFromMethod: anAnnouncement method
 ]
 
-{ #category : 'class initialization' }
+{ #category : #'class initialization' }
 DebugPointManager class >> initialize [
 	self registerInterestToSystemAnnouncement
 ]
 
-{ #category : 'private - helpers' }
+{ #category : #'private - helpers' }
 DebugPointManager class >> installDebugPoint: dp withBehaviors: aListOfBehaviorClasses [
 
 	dp install.
@@ -47,7 +45,7 @@ DebugPointManager class >> installDebugPoint: dp withBehaviors: aListOfBehaviorC
 	^ dp
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVariableAccessNamed: aSlotNameSymbol [
 	"access strategy can be #all or #read or #write"
 
@@ -61,7 +59,7 @@ DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVa
 		  withBehaviors: {  }
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVariableAccessNamed: aSlotNameSymbol withBehaviors: aListOfBehaviorClasses [
 	"access strategy can be #all or #read or #write"
 
@@ -75,7 +73,7 @@ DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVa
 		  withBehaviors: aListOfBehaviorClasses
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVariableNamed: aSlotNameSymbol accessStrategy: anAccessStrategySymbol [
 	"access strategy can be #all or #read or #write"
 
@@ -89,7 +87,7 @@ DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVa
 		  withBehaviors: {  }
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVariableNamed: aSlotNameSymbol accessStrategy: anAccessStrategySymbol withBehaviors: aListOfBehaviorClasses [
 	"access strategy can be #all or #read or #write"
 
@@ -106,7 +104,7 @@ DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVa
 	^ self installDebugPoint: dp withBehaviors: aListOfBehaviorClasses
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVariableReadNamed: aSlotNameSymbol [
 	"access strategy can be #all or #read or #write"
 
@@ -120,7 +118,7 @@ DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVa
 		  withBehaviors: {  }
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVariableReadNamed: aSlotNameSymbol withBehaviors: aListOfBehaviorClasses [
 	"access strategy can be #all or #read or #write"
 
@@ -134,7 +132,7 @@ DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVa
 		  withBehaviors: aListOfBehaviorClasses
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVariableWriteNamed: aSlotNameSymbol [
 	"access strategy can be #all or #read or #write"
 
@@ -148,7 +146,7 @@ DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVa
 		  withBehaviors: {  }
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVariableWriteNamed: aSlotNameSymbol withBehaviors: aListOfBehaviorClasses [
 	"access strategy can be #all or #read or #write"
 
@@ -162,7 +160,7 @@ DebugPointManager class >> installNew: aDebugPointClass forObject: anObject onVa
 		  withBehaviors: aListOfBehaviorClasses
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariableAccessNamed: aSlotNameSymbol [
 	"access strategy can be #all or #read or #write"
 
@@ -176,7 +174,7 @@ DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariab
 		  withBehaviors: {  }
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariableAccessNamed: aSlotNameSymbol withBehaviors: aListOfBehaviorClasses [
 	"access strategy can be #all or #read or #write"
 
@@ -190,7 +188,7 @@ DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariab
 		  withBehaviors: aListOfBehaviorClasses
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariableNamed: aSlotNameSymbol accessStrategy: anAccessStrategySymbol [
 	"access strategy can be #all or #read or #write"
 
@@ -204,7 +202,7 @@ DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariab
 		  withBehaviors: {  }
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariableNamed: aSlotNameSymbol accessStrategy: anAccessStrategySymbol withBehaviors: aListOfBehaviorClasses [
 	"access strategy can be #all or #read or #write"
 
@@ -220,7 +218,7 @@ DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariab
 	^ self installDebugPoint: dp withBehaviors: aListOfBehaviorClasses
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariableReadNamed: aSlotNameSymbol [
 	"access strategy can be #all or #read or #write"
 
@@ -234,7 +232,7 @@ DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariab
 		  withBehaviors: {  }
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariableReadNamed: aSlotNameSymbol withBehaviors: aListOfBehaviorClasses [
 	"access strategy can be #all or #read or #write"
 
@@ -248,7 +246,7 @@ DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariab
 		  withBehaviors: aListOfBehaviorClasses
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariableWriteNamed: aSlotNameSymbol [
 	"access strategy can be #all or #read or #write"
 
@@ -262,7 +260,7 @@ DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariab
 		  withBehaviors: {  }
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariableWriteNamed: aSlotNameSymbol withBehaviors: aListOfBehaviorClasses [
 	"access strategy can be #all or #read or #write"
 
@@ -276,19 +274,19 @@ DebugPointManager class >> installNew: aDebugPointClass inClass: aClass onVariab
 		  withBehaviors: aListOfBehaviorClasses
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass on: aNode [
 
 	^self installNew: aDebugPointClass on: aNode withBehaviors: {  }.
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass on: aNode forObject: anObject [
 
 	^self installNew: aDebugPointClass on: aNode forObject: anObject withBehaviors: {  }.
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass on: aNode forObject: anObject withBehaviors: aListOfBehaviorClasses [
 	"this should be the single point of installation for debug points, removal is in the remove method of debug point instances"
 
@@ -301,7 +299,7 @@ DebugPointManager class >> installNew: aDebugPointClass on: aNode forObject: anO
 	^ self installDebugPoint: dp withBehaviors: aListOfBehaviorClasses
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPointManager class >> installNew: aDebugPointClass on: aNode withBehaviors: aListOfBehaviorClasses [
 	"this should be the single point of installation for debug points, removal is in the remove method of debug point instances"
 
@@ -315,7 +313,7 @@ DebugPointManager class >> installNew: aDebugPointClass on: aNode withBehaviors:
 		  withBehaviors: aListOfBehaviorClasses
 ]
 
-{ #category : 'announcements' }
+{ #category : #announcements }
 DebugPointManager class >> notifyDebugPointAdded: aDebugPoint [
 
 	| announcement |
@@ -323,7 +321,7 @@ DebugPointManager class >> notifyDebugPointAdded: aDebugPoint [
 	self codeSupportAnnouncer announce: announcement
 ]
 
-{ #category : 'announcements' }
+{ #category : #announcements }
 DebugPointManager class >> notifyDebugPointChanged: aDebugPoint [
 
 	| announcement |
@@ -331,7 +329,7 @@ DebugPointManager class >> notifyDebugPointChanged: aDebugPoint [
 	self codeSupportAnnouncer announce: announcement
 ]
 
-{ #category : 'announcements' }
+{ #category : #announcements }
 DebugPointManager class >> notifyDebugPointHit: aDebugPoint inContext: aContext [
 
 	| announcement |
@@ -339,7 +337,7 @@ DebugPointManager class >> notifyDebugPointHit: aDebugPoint inContext: aContext 
 	self codeSupportAnnouncer announce: announcement
 ]
 
-{ #category : 'announcements' }
+{ #category : #announcements }
 DebugPointManager class >> notifyDebugPointRemoved: aDebugPoint fromNodes: nodes [
 	"nodes have to be seperate because they will be removed from the debugpoint before this method is called"
 
@@ -348,18 +346,18 @@ DebugPointManager class >> notifyDebugPointRemoved: aDebugPoint fromNodes: nodes
 	self codeSupportAnnouncer announce: announcement
 ]
 
-{ #category : 'announcements - registration' }
+{ #category : #'announcements - registration' }
 DebugPointManager class >> registerInterestToSystemAnnouncement [
 
 	<systemEventRegistration>
-	self codeChangeAnnouncer unsubscribe: self.
-	self codeChangeAnnouncer weak
+	SystemAnnouncer uniqueInstance  unsubscribe: self.
+	SystemAnnouncer uniqueInstance   weak
 		when: MethodRemoved send: #handleMethodRemoved: to: self;
 		when: MethodModified send: #handleMethodModified: to: self;
 		when: ClassRemoved send: #handleClassRemoved: to: self
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPointManager class >> removeFromMethod: aMethod [
 
 	DebugPoint all copy do: [ :debugPoint | 

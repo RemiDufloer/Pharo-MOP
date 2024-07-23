@@ -4,17 +4,15 @@ I am the base class that serevs as wrappers for debug point targets.
 I define how to install a metalink on me, and how to update the DebugPoint browser when it is selected in the debug point browser.
 "
 Class {
-	#name : 'DebugPointTarget',
-	#superclass : 'Object',
+	#name : #DebugPointTarget,
+	#superclass : #Object,
 	#instVars : [
 		'#target => WeakSlot'
 	],
-	#category : 'DebugPoints-Base',
-	#package : 'DebugPoints',
-	#tag : 'Base'
+	#category : 'DebugPoints-Base'
 }
 
-{ #category : 'scope creation' }
+{ #category : #'scope creation' }
 DebugPointTarget >> beForObject: anObject [
 
 	^ DebugPointObjectTarget new
@@ -23,74 +21,74 @@ DebugPointTarget >> beForObject: anObject [
 		  yourself
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 DebugPointTarget >> browse [
 
 	self subclassResponsibility 
 ]
 
-{ #category : 'announcements' }
+{ #category : #announcements }
 DebugPointTarget >> hitAnnouncementOn: aDebugPoint inContext: aContext [
 
 	^ self subclassResponsibility 
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 DebugPointTarget >> initialize [
 
 	self class initializeSlots: self.
 	super initialize.
 ]
 
-{ #category : 'installing' }
+{ #category : #installing }
 DebugPointTarget >> install: aLink [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPointTarget >> removeFromMethod: aMethod for: aDebugPoint [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'scope' }
+{ #category : #scope }
 DebugPointTarget >> resetObjectScope [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'description' }
+{ #category : #description }
 DebugPointTarget >> scope [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'description' }
+{ #category : #description }
 DebugPointTarget >> scopeString [
 
 	^ self subclassResponsibility
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointTarget >> target [
 
 	^ target
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointTarget >> target: anObject [
 
 	target := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPointTarget >> targetClass [
 
 	self subclassResponsibility
 ]
 
-{ #category : 'description' }
+{ #category : #description }
 DebugPointTarget >> targetString [
 
 	^ self target printString

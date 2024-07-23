@@ -3,23 +3,21 @@ I am an announcement that is sent when a DebugPoint targeting a variable has bee
 I hold the value of the variable that has been read or hit
 "
 Class {
-	#name : 'VariableDebugPointHit',
-	#superclass : 'DebugPointHit',
+	#name : #VariableDebugPointHit,
+	#superclass : #DebugPointHit,
 	#instVars : [
 		'variableValue'
 	],
-	#category : 'DebugPoints-Announcements',
-	#package : 'DebugPoints',
-	#tag : 'Announcements'
+	#category : 'DebugPoints-Announcements'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 VariableDebugPointHit >> variableValue [
 
 	^ variableValue
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 VariableDebugPointHit >> variableValue: anObject [
 
 	variableValue := anObject

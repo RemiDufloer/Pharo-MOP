@@ -2,8 +2,8 @@
 I am the base class for all debug point classes. New Debug points should be implemented as subclasses.
 "
 Class {
-	#name : 'DebugPoint',
-	#superclass : 'Object',
+	#name : #DebugPoint,
+	#superclass : #Object,
 	#instVars : [
 		'name',
 		'enabled',
@@ -17,22 +17,20 @@ Class {
 	#classVars : [
 		'AllDebugPoints'
 	],
-	#category : 'DebugPoints-Base',
-	#package : 'DebugPoints',
-	#tag : 'Base'
+	#category : 'DebugPoints-Base'
 }
 
-{ #category : 'adding' }
+{ #category : #adding }
 DebugPoint class >> add: aDebugPoint [
 	self all add: aDebugPoint.
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint class >> all [
 	^AllDebugPoints ifNil: [ AllDebugPoints := Set new. ]
 ]
 
-{ #category : 'world menu' }
+{ #category : #'world menu' }
 DebugPoint class >> menuCommandOn: aBuilder [
 
 	<worldMenu>
@@ -56,21 +54,21 @@ DebugPoint class >> menuCommandOn: aBuilder [
 	aBuilder withSeparatorAfter
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPoint class >> remove: aDebugPoint [
 
 	self all remove: aDebugPoint ifAbsent: [].
 	
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPoint class >> removeAll [
 
 	<script>
 	self all copy do: #remove
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPoint >> addBehavior: aDebugPointBehavior [
 	"adding a new behavior"
 
@@ -81,55 +79,55 @@ DebugPoint >> addBehavior: aDebugPointBehavior [
 	DebugPointManager notifyDebugPointChanged: self
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 DebugPoint >> addCheckBehavior: aConditionBehavior [
 
 	checkBehaviors add: aConditionBehavior
 ]
 
-{ #category : 'adding' }
+{ #category : #adding }
 DebugPoint >> addSideEffectBehavior: aSideEffectBehavior [
 
 	sideEffectBehaviors add: aSideEffectBehavior
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> arguments [
 
 	^ arguments ifNil: [ arguments := Dictionary new ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> arguments: aDictionary [
 
 	arguments := aDictionary
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> behaviors [
 
 	^ checkBehaviors , sideEffectBehaviors
 ]
 
-{ #category : 'actions' }
+{ #category : #actions }
 DebugPoint >> browse [
 
 	^ self target browse
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> checkBehaviors [
 
 	^ checkBehaviors
 ]
 
-{ #category : 'protocol' }
+{ #category : #protocol }
 DebugPoint >> disable [
 
 	self enabled: false
 ]
 
-{ #category : 'reflective operations' }
+{ #category : #'reflective operations' }
 DebugPoint >> doesNotUnderstand: message [
 	"forward not understood messages to behaviors, 'delegation complements composition' "
 
@@ -142,32 +140,32 @@ DebugPoint >> doesNotUnderstand: message [
 	^ super doesNotUnderstand: message
 ]
 
-{ #category : 'protocol' }
+{ #category : #protocol }
 DebugPoint >> enable [
 
 	self enabled: true
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> enabled [
 
 	^ enabled
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> enabled: aBoolean [
 
 	enabled := aBoolean.
 	DebugPointManager notifyDebugPointChanged: self
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> getArgument: aSymbol [
 
 	^ self arguments at: aSymbol
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> getBehavior: aBehaviorClass [
 
 	^ self behaviors
@@ -175,13 +173,13 @@ DebugPoint >> getBehavior: aBehaviorClass [
 		  ifNone: [ nil ]
 ]
 
-{ #category : 'announcements' }
+{ #category : #announcements }
 DebugPoint >> hitAnnouncementOn: aDebugPoint inContext: aContext [
 
 	^ self target hitAnnouncementOn: aDebugPoint inContext: aContext
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPoint >> hitWithContext: aContext [
 	"executes side effect behaviors if and only if this debug point is enabled and if all check behaviors return true"
 
@@ -195,7 +193,7 @@ DebugPoint >> hitWithContext: aContext [
 	^ true
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 DebugPoint >> initialize [
 
 	enabled := true.
@@ -205,7 +203,7 @@ DebugPoint >> initialize [
 		                       elem1 priority >= elem2 priority ]
 ]
 
-{ #category : 'installing' }
+{ #category : #installing }
 DebugPoint >> install [
 
 	self link ifNil: [ ^self ].
@@ -213,7 +211,7 @@ DebugPoint >> install [
 	self target install: self link
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPoint >> instanceVariable: aSlot accessStrategy: aSymbol [
 
 	target := DebugPointInstanceVariableTarget new
@@ -226,19 +224,19 @@ DebugPoint >> instanceVariable: aSlot accessStrategy: aSymbol [
 			        aSymbol }
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> link [
 
 	^ link ifNil: [ link := self metaLink ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> link: aMetaLink [
 
 	link := aMetaLink
 ]
 
-{ #category : 'default values' }
+{ #category : #'default values' }
 DebugPoint >> metaLink [
 
 	^ MetaLink new
@@ -248,19 +246,19 @@ DebugPoint >> metaLink [
 		  arguments: #( context )
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> name [
 
 	^ name ifNil: [ #Debugpoint ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> name: aSymbol [
 
 	name := aSymbol
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPoint >> node: aNode [
 
 	target := DebugPointNodeTarget new
@@ -268,19 +266,19 @@ DebugPoint >> node: aNode [
 		          yourself
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> nodes [
 
 	^ self link nodes
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> properties [
 
 	^ properties ifNil: [ properties := Dictionary new ]
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPoint >> remove [
 
 	| nodes |
@@ -292,7 +290,7 @@ DebugPoint >> remove [
 	DebugPointManager notifyDebugPointRemoved: self fromNodes: nodes
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPoint >> removeBehavior: aDebugPointBehaviorClass [
 	"removing a behavior"
 
@@ -303,13 +301,13 @@ DebugPoint >> removeBehavior: aDebugPointBehaviorClass [
 	DebugPointManager notifyDebugPointChanged: self
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPoint >> removeCheckBehavior: aCheckBehavior [
 
 	checkBehaviors remove: aCheckBehavior
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPoint >> removeFromClass: aClass [
 	"If the removed class is the class we target or one of its superclasses,
 	then after that class is removed we have no reason to exist. We need to uninstall."
@@ -327,82 +325,82 @@ DebugPoint >> removeFromClass: aClass [
 		do: [ :n | self link removeNode: n ]
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPoint >> removeFromMethod: aMethod [
 	"only used when editing methods with debug points"
 
 	self target removeFromMethod: aMethod for: self
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPoint >> removeNode: aRBNode [
 
 	self link removeNode: aRBNode
 ]
 
-{ #category : 'removing' }
+{ #category : #removing }
 DebugPoint >> removeSideEffectBehavior: aSideEffectBehavior [
 
 	sideEffectBehaviors remove: aSideEffectBehavior
 ]
 
-{ #category : 'scope' }
+{ #category : #scope }
 DebugPoint >> resetObjectScope [
 
 	target := target resetObjectScope.
 	self install
 ]
 
-{ #category : 'API' }
+{ #category : #API }
 DebugPoint >> saveContext: aContext [
 
 	self arguments at: #context put: aContext
 ]
 
-{ #category : 'scope' }
+{ #category : #scope }
 DebugPoint >> scope [
 
 	^ self target scope
 ]
 
-{ #category : 'scope' }
+{ #category : #scope }
 DebugPoint >> scopeString [
 
 	^ self target scopeString
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> sideEffectBehaviors [
 
 	^ sideEffectBehaviors
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> target [
 
 	^ target
 ]
 
-{ #category : 'description' }
+{ #category : #description }
 DebugPoint >> targetClass [
 
 	^ self target targetClass
 ]
 
-{ #category : 'scope' }
+{ #category : #scope }
 DebugPoint >> targetInstance: anObject [
 
 	target := self target beForObject: anObject.
 	self install
 ]
 
-{ #category : 'description' }
+{ #category : #description }
 DebugPoint >> targetString [
 
 	^ self target targetString
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DebugPoint >> type [
 
 	^ #Debugpoint
